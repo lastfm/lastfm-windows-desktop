@@ -1,0 +1,67 @@
+New Last.fm Scrobbler for Windows
+
+Internal references: CLIENT-2188, WEB-23449
+Commission
+Build a new Windows Desktop Scrobbler application for end-users
+Application’s purpose is to scrobble the tracks a user listens to music in major Desktop media players (that do not have native Scrobbling support). It should be as passive as possible - we hope users will leave it enabled and not worry about it.
+Supported media players:
+iTunes
+Windows Media Player
+Optionally supported media players:
+WinAmp
+Application is intended to replace (and simplify) the existing Last.fm desktop application which no longer works with iTunes 12.7
+Application is intended to be open source
+Timeline
+ASAP (2 weeks if possible) as iTunes 12.7 is breaking Last.fm in the wild.
+Deliverable
+Working application as specified below or agreed upon with Last.fm
+Dependencies only on open-source code with a compatible license
+Intellectual Property assigned to Last.fm
+Source code with git history
+Build instructions
+Product specification
+Windows Desktop application
+Windows 7+ (to match platforms supported by iTunes 12.7)
+Application lives mainly in the System Tray by the clock
+Application starts when iTunes is launched
+This can be disabled
+Application has a method to push through future updates
+Connects to Last.fm using the Last.fm API at https://www.last.fm/api
+User authenticates using the Desktop Authentication Flow https://www.last.fm/api/desktopauth and remains logged in
+Option to log-out
+Must use a sensible, non-generic, versioned User-Agent when communicating with web services
+Sends updates to Last.fm when a user is listening in iTunes
+Sends a “now playing” API call to Last.fm whenever the user listens to a song
+https://www.last.fm/api/show/track.updateNowPlaying 
+Sends a “remove now playing” API call to Last.fm whenever the user stops listening to a song
+https://www.last.fm/api/show/track.removeNowPlaying 
+Sends a “scrobble” API call to Last.fm whenever the user has listened to (more than half)
+https://www.last.fm/api/show/track.scrobble
+Must send artist, track title, duration
+Should send album title when possible
+Should send album artist when possible, if album title is sent
+Cache scrobbles that should happen when API is unreachable (e.g. user is offline) and then send them later when the user is back online.
+When a scrobble is submitted, a tooltip or notification is shown to the user to indicate that the application is working. This can be disabled.
+Link back to the user’s logged-in account (https://www.last.fm/user/<username>)
+Ability to send a “love” for the currently playing track
+Resources
+Existing API Libraries for Last.fm written for .NET:
+https://lpfm.codeplex.com/ (MIT License)
+https://github.com/inflatablefriends/lastfm (MIT License)
+https://github.com/avatar29A/Last.fm (MIT License)
+http://lastfmlibnet.sourceforge.net/ 
+Other libraries https://www.programmableweb.com/api/lastfm/libraries
+Third-party Existing iTunes Scrobbling implementation that we believe works:
+https://github.com/coczero/Last.fm-Scrubbler-WPF (GPLv3 License)
+This application is a fully-featured power-user scrobbler. You may choose to use code from this project, or just draw inspiration from it
+C# Wrapper around iTunes COM library
+https://github.com/jasonsch/iTunesLibrary
+Existing Last.fm Desktop Client (2.0) source code
+https://github.com/lastfm/lastfm-desktop 
+Includes plugin code for iTunes, Windows Media Player, Winamp and Foobar
+
+Considerations
+WinAmp is a popular media player supported by Last.fm Desktop Client 1.5 and 2.0. However, as it’s no longer in active development, and does not have a C# SDK, it may be difficult to support.
+
+
+

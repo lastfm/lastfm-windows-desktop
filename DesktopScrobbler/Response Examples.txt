@@ -1,0 +1,1 @@
+{"scrobbles":{"@attr":{"accepted":1,"ignored":0},"scrobble":{"artist":{"corrected":"0","#text":"daZZla & Ronny Clark"},"ignoredMessage":{"code":"0","#text":""},"albumArtist":{"corrected":"0","#text":""},"timestamp":"1506540603","album":{"corrected":"0","#text":"Electro House Sessions Vol.1"},"track":{"corrected":"0","#text":"That Moment (She Came)"}}}}

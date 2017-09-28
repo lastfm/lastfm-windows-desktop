@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" DefaultTargets="IncrementBuild"
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <UsingTask AssemblyFile="PATH_TO_TASK_DLL" TaskName="AutoIncrementTask" />
+   <Target Name="IncrementBuild">
+      <AutoIncrementTask AssemblyInfoPath="..\SharedAssemblyInfo.cs" />
+   </Target>
+</Project>

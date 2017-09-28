@@ -1,0 +1,2 @@
+1. removeNowPlaying?  Doesn't appear in the API... ?
+2. 'Logout', should this essentially 'de-authorize' the application, forcing a re-authorization... or something else?

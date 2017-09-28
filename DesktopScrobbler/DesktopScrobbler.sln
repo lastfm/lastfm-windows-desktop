@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopScrobbler", "DesktopScrobbler\DesktopScrobbler.csproj", "{FD5F00FB-DC8E-47D0-910F-F6C03C723CE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTask", "BuildTask\BuildTask.csproj", "{DED7064B-295C-4236-9336-75EE1186D767}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{4A282486-AC41-45D4-9E5B-6876747DC33C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastFMApi", "LastFMApi\LastFMApi.csproj", "{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes and scrawls", "Notes and scrawls", "{FC1FEAFE-E900-4639-B403-B61C585F18E7}"
+	ProjectSection(SolutionItems) = preProject
+		API Details.txt = API Details.txt
+		Questions.txt = Questions.txt
+		Response Examples.txt = Response Examples.txt
+		Specification.txt = Specification.txt
+		Suggested Links.txt = Suggested Links.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITunesScrobblePlugin", "ITunesScrobblePlugin\ITunesScrobblePlugin.csproj", "{670CCD89-8EE5-4637-9185-9299FA1B3019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginSupport", "PluginSupport\PluginSupport.csproj", "{119A1E78-2110-48B3-A76B-F419A288D8B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD5F00FB-DC8E-47D0-910F-F6C03C723CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5F00FB-DC8E-47D0-910F-F6C03C723CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5F00FB-DC8E-47D0-910F-F6C03C723CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5F00FB-DC8E-47D0-910F-F6C03C723CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DED7064B-295C-4236-9336-75EE1186D767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DED7064B-295C-4236-9336-75EE1186D767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DED7064B-295C-4236-9336-75EE1186D767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DED7064B-295C-4236-9336-75EE1186D767}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A282486-AC41-45D4-9E5B-6876747DC33C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A282486-AC41-45D4-9E5B-6876747DC33C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A282486-AC41-45D4-9E5B-6876747DC33C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A282486-AC41-45D4-9E5B-6876747DC33C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{670CCD89-8EE5-4637-9185-9299FA1B3019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{670CCD89-8EE5-4637-9185-9299FA1B3019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{670CCD89-8EE5-4637-9185-9299FA1B3019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{670CCD89-8EE5-4637-9185-9299FA1B3019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

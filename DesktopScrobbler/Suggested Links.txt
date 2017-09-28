@@ -1,0 +1,6 @@
+https://github.com/dei79/netsparkle <-- auto update framework
+https://www.last.fm/api/ <-- Last FM API
+https://github.com/inflatablefriends/lastfm/ <-- implementation of Last FM API
+https://t.co/oVpf4dweUT <-- Existing iTunes Scrobbler Plugin (auto-launch desktop scrobbler example)
+https://drive.google.com/drive/folders/0B2TxchzBkFkyb2lLS2xPLUdEMFU <- Image assets
+https://docs.google.com/document/d/1WJ6zWBpt5ORTLXfJl0VuIbmkTWd-TXsm8NMMvJD8Sgg/edit?ts=59c3d36b <- Specification

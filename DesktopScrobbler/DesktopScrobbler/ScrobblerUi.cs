@@ -12,6 +12,7 @@ using LastFM.Common.Static_Classes;
 using LastFM.Common.Factories;
 using PluginSupport;
 using LastFM.Common.Classes;
+using static LastFM.Common.Factories.ScrobbleFactory;
 
 namespace DesktopScrobbler
 {
@@ -75,6 +76,16 @@ namespace DesktopScrobbler
             ConnectToLastFM();
 
             ScrobbleFactory.Initialize(_apiClient, this);
+
+            ScrobbleFactory.OnlineStatusUpdated += OnlineStatusUpdated;
+
+            linkSettings.Visible = true;
+
+        }
+
+        private void OnlineStatusUpdated(OnlineState currentState)
+        {
+            RefreshOnlineStatus(currentState);
         }
 
         private async Task GetPlugins()
@@ -128,6 +139,27 @@ namespace DesktopScrobbler
             }
         }
 
+        public void RefreshOnlineStatus(OnlineState currentState)
+        {
+            this.Invoke(new MethodInvoker(()  => {
+            
+                if (currentState == OnlineState.Online)
+                {
+                    if (!string.IsNullOrEmpty(Core.Settings.Username))
+                    {
+                        lblSignInName.Text = $"Welcome {Core.Settings.Username}";
+                    }
+                }
+                else if (!string.IsNullOrEmpty(Core.Settings.Username))
+                {
+                    lblSignInName.Text = $"(Offline) {Core.Settings.Username}";
+                }            
+
+                linkProfile.Visible = currentState == OnlineState.Online;
+                linkLogOut.Visible = currentState == OnlineState.Online;
+            }));
+        }
+
         private async void DisplayCurrentUser()
         {
             try
@@ -136,10 +168,7 @@ namespace DesktopScrobbler
 
                 if(!string.IsNullOrEmpty(userInfo?.Name))
                 {
-                    lblSignInName.Text = $"Welcome {userInfo.Name}";
-                    linkProfile.Visible = true;
-                    linkLogOut.Visible = true;
-                    linkSettings.Visible = true;
+                    RefreshOnlineStatus(OnlineState.Online);
 
                     linkProfile.Click += (o, e) => 
                     {
@@ -151,14 +180,20 @@ namespace DesktopScrobbler
                         // Not sure what this is meant to do - clarify with LastFM
                     };
                 }
-
-                ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
-                ShowIdleStatus();
-
+                else if (!string.IsNullOrEmpty(Core.Settings.Username))
+                {
+                    RefreshOnlineStatus(OnlineState.Offline);
+                }
             }
             catch (Exception)
             {
+                RefreshOnlineStatus(OnlineState.Offline);
                 SetStatus("A connection to LastFM is not available.");
+            }
+            finally
+            {
+                ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
+                ShowIdleStatus();
             }
         }
 

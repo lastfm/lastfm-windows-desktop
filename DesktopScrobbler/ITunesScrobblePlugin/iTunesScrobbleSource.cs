@@ -18,6 +18,8 @@ namespace ITunesScrobblePlugin
         private iTunesApp _iTunesApp = null;
 
         private MediaItem _currentMediaItem = null;
+        private MediaItem _lastQueuedItem = null;
+
         private List<MediaItem> _mediaToScrobble = new List<MediaItem>();
 
         private object _mediaLock = new object();
@@ -70,6 +72,18 @@ namespace ITunesScrobblePlugin
             }
         }
 
+        public void ClearQueuedMedia()
+        {
+            _scrobbleTimer.Stop();
+
+            lock (_mediaLock)
+            {
+                _mediaToScrobble.Clear();
+            }
+
+            _scrobbleTimer.Start();
+        }
+
         public List<MediaItem> MediaToScrobble
         {
             get
@@ -77,9 +91,12 @@ namespace ITunesScrobblePlugin
                 return _mediaToScrobble;
             }
 
-            set
+            private set
             {
-                _mediaToScrobble = value;
+                lock (_mediaLock)
+                {
+                    _mediaToScrobble = value;
+                }
             }
         }
 
@@ -141,8 +158,12 @@ namespace ITunesScrobblePlugin
                                 {
                                     Console.WriteLine($"Player position {_playerPosition} of {_currentMediaItem.TrackLength}.");
 
-                                    if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 && _playerPosition >= _minimumScrobbleSeconds && _playerPosition >= _currentMediaItem.TrackLength / 2)
+                                    if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 && 
+                                        _playerPosition >= _minimumScrobbleSeconds && _playerPosition >= _currentMediaItem.TrackLength / 2 &&
+                                        mediaDetail?.TrackName != _lastQueuedItem?.TrackName)
                                     {
+                                        _lastQueuedItem = mediaDetail;
+
                                         lock (_mediaLock)
                                         {
                                             _mediaToScrobble.Add(mediaDetail);

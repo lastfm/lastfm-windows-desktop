@@ -154,7 +154,6 @@ namespace LastFM.Common.Classes
 
             mnuExit.Click += (o, ev) =>
             {
-
                 ScrobbleFactory.ScrobblingEnabled = false;
                 ScrobbleFactory.Dispose();
 

@@ -5,7 +5,7 @@ namespace LastFM.ApiClient.Models
     public class Scrobble
     {
         [JsonProperty("artist")]
-        public CorrectedStatus artist { get; set; }
+        public CorrectedStatus Artist { get; set; }
 
         [JsonProperty("ignoredMessage")]
         public IgnoredMessage IgnoredMessage { get; set; }

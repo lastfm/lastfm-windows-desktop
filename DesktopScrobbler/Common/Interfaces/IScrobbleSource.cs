@@ -15,7 +15,9 @@ namespace LastFM.Common
 
         bool IsEnabled { get; set; }
 
-        List<MediaItem> MediaToScrobble{ get; set; }
+        List<MediaItem> MediaToScrobble{ get; }
+
+        void ClearQueuedMedia();
 
     }
 }

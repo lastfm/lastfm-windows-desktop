@@ -13,11 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastFMApi", "LastFMApi\Last
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes and scrawls", "Notes and scrawls", "{FC1FEAFE-E900-4639-B403-B61C585F18E7}"
 	ProjectSection(SolutionItems) = preProject
-		API Details.txt = API Details.txt
-		Questions.txt = Questions.txt
-		Response Examples.txt = Response Examples.txt
-		Specification.txt = Specification.txt
-		Suggested Links.txt = Suggested Links.txt
+		ReadMe.txt = ReadMe.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITunesScrobblePlugin", "ITunesScrobblePlugin\ITunesScrobblePlugin.csproj", "{670CCD89-8EE5-4637-9185-9299FA1B3019}"

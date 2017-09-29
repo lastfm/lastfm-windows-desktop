@@ -2,21 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using iTunesLib;
 using System.Timers;
 using System.Runtime.InteropServices;
 using static LastFM.Common.Factories.ScrobbleFactory;
 using LastFM.ApiClient.Models;
 using System.Diagnostics;
+using DesktopScrobbler;
 
-namespace ITunesScrobblePlugin
+namespace WindowsMediaPlayerScrobblePlugin
 {
-    public class iTunesScrobblePlugin : IScrobbleSource
+    public class WindowsMediaScrobbleSource : IScrobbleSource
     {
-        private iTunesApp _iTunesApp = null;
-
         private MediaItem _currentMediaItem = null;
         private MediaItem _lastQueuedItem = null;
 
@@ -34,11 +31,13 @@ namespace ITunesScrobblePlugin
         private TrackStarted _onTrackStarted = null;
         private TrackEnded _onTrackEnded = null;
 
+        private WindowsMediaPlayer _mediaPlayer = null;
+
         public Guid SourceIdentifier
         {
             get
             {
-                return new Guid("a458e8af-4282-4bd7-8894-14969c63a7d5");
+                return new Guid("7471fa52-0007-43c9-a644-945fbc7f5897");
             }
         }
 
@@ -46,7 +45,7 @@ namespace ITunesScrobblePlugin
         {
             get
             {
-                return "iTunes";
+                return "Windows Media Player";
             }
         }
 
@@ -110,7 +109,7 @@ namespace ITunesScrobblePlugin
 
             try
             {
-                _scrobbleTimer = new Timer();
+                _scrobbleTimer = new System.Timers.Timer();
                 _scrobbleTimer.Interval = 1000;
 
                     _scrobbleTimer.Elapsed += async (o, e) =>
@@ -119,22 +118,23 @@ namespace ITunesScrobblePlugin
 
                         // Check for the iTunes process to ensure it's running.
                         // If we don't check for it, the plugin would end up launching it, which we don't want
-                        Process[] iTunesProcesses = Process.GetProcessesByName("iTunes");
+                        Process[] wmpProcesses = Process.GetProcessesByName("wmplayer");
 
-                        if (iTunesProcesses.Length > 0 && _iTunesApp == null)
+                        if (wmpProcesses.Length > 0 && _mediaPlayer == null)
                         {
-                            _iTunesApp = new iTunesApp();
-                            Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
+                            _mediaPlayer = new WindowsMediaPlayer();
+                            _mediaPlayer.Show();
+                            Console.WriteLine("Windows Media Player Plugin successfully connected to the WMP COM library.");
                         }
-                        else if (iTunesProcesses.Length == 0 && _iTunesApp != null)
+                        else if (wmpProcesses.Length == 0 && _mediaPlayer != null)
                         {
-                            _iTunesApp = null;
-                            Console.WriteLine("iTunes process not detected.  Waiting for iTunes process to start...");
+                            //_mediaPlayer = null;
+                            Console.WriteLine("Windows Media Player process not detected.  Waiting for Windows Media Player process to start...");
                         }
 
-                        if (_iTunesApp != null)
+                        if (_mediaPlayer != null)
                         {
-                            Console.WriteLine("iTunes Plugin checking media state...");
+                            Console.WriteLine("Windows Media Player Plugin checking media state...");
 
                             if (_isEnabled)
                             {
@@ -152,7 +152,6 @@ namespace ITunesScrobblePlugin
                                     Console.WriteLine("Raising Track Change Method.");
 
                                     _onTrackStarted?.Invoke(mediaDetail);
-                                    mediaDetail.StartedPlaying = DateTime.Now;
                                 }
 
                                 if (_currentMediaItem != null)
@@ -174,7 +173,7 @@ namespace ITunesScrobblePlugin
                                 }
                             }
 
-                            Console.WriteLine("iTunes Plugin checking media state complete.");
+                            Console.WriteLine("Windows Media Plugin checking media state complete.");
                         }
 
                         _scrobbleTimer.Start();
@@ -186,17 +185,23 @@ namespace ITunesScrobblePlugin
             }
         }
 
+        [STAThread]
         private async Task<MediaItem> GetMediaDetail()
         {
-            MediaItem iTunesMediaDetail = null;
+            MediaItem playerMedia = null;
 
             try
             {
-                iTunesMediaDetail = new MediaItem() { TrackName = _iTunesApp?.CurrentTrack?.Name, AlbumName = _iTunesApp?.CurrentTrack?.Album, ArtistName = _iTunesApp?.CurrentTrack?.Artist, TrackLength = Convert.ToDouble(_iTunesApp?.CurrentTrack?.Duration) };
+                var currentMedia = _mediaPlayer?.Player?.Ctlcontrols?.currentItem;
 
-                if (iTunesMediaDetail.TrackName != null)
+                if (currentMedia != null)
                 {
-                    _playerPosition = Convert.ToInt32(_iTunesApp?.PlayerPosition);
+                    playerMedia = new MediaItem() { TrackName = currentMedia?.getItemInfo("Title"), AlbumName = currentMedia?.getItemInfo("Album"), ArtistName = currentMedia?.getItemInfo("Artist"), TrackLength = Convert.ToDouble(currentMedia?.duration) };
+
+                    if (playerMedia.TrackName != null)
+                    {
+                        _playerPosition = Convert.ToInt32(_mediaPlayer?.Player?.Ctlcontrols?.currentPosition);
+                    }
                 }
                 else
                 {
@@ -207,7 +212,7 @@ namespace ITunesScrobblePlugin
             {
             }
 
-            return iTunesMediaDetail;
+            return playerMedia;
         }
 
         public void Dispose()
@@ -215,9 +220,9 @@ namespace ITunesScrobblePlugin
             _scrobbleTimer?.Stop();
             _scrobbleTimer?.Dispose();
 
-            if (_iTunesApp != null)
+            if (_mediaPlayer != null)
             {
-                Marshal.ReleaseComObject(_iTunesApp);
+                Marshal.ReleaseComObject(_mediaPlayer);
             }
         }
     }

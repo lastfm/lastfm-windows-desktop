@@ -20,16 +20,25 @@ namespace DesktopScrobbler
     {
         private LastFM.ApiClient.LastFMClient _apiClient = null;
         private AuthenticationUi _authUi = null;
+        private WindowsMediaPlayer _playerForm = null;
 
         public ScrobblerUi()
         {
             InitializeComponent();
 
             this.Load += ScrobblerUi_Load;
+
         }
 
         private void ScrobblerUi_Load(object sender, System.EventArgs e)
         {
+            _playerForm = new WindowsMediaPlayer();
+            _playerForm.ShowInTaskbar = false;
+            _playerForm.WindowState = FormWindowState.Minimized;
+
+            _playerForm.Show();
+            _playerForm.Hide();
+
             linkSettings.Click += (o, ev) => 
             {
                 base.ShowSettings();
@@ -78,7 +87,9 @@ namespace DesktopScrobbler
             foreach (Plugin pluginItem in typedPlugins)
             {
                 var pluginInstance = pluginItem.PluginInstance as IScrobbleSource;
+
                 ScrobbleFactory.ScrobblePlugins.Add(pluginInstance);
+                ScrobbleFactory.ScrobblePlugins.Add(new WindowsMediaScrobbleSource(_playerForm));
 
                 if (Core.Settings.ScrobblerStatus.Count(item => item.Identifier == pluginInstance.SourceIdentifier) == 0)
                 {

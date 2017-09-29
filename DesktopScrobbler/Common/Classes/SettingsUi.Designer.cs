@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F); // for design in 96 DPI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsUi));
             this.checkedPluginList = new System.Windows.Forms.CheckedListBox();
             this.lblPlugins = new System.Windows.Forms.Label();

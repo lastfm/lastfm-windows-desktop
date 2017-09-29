@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITunesScrobblePlugin", "ITu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginSupport", "PluginSupport\PluginSupport.csproj", "{119A1E78-2110-48B3-A76B-F419A288D8B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerScrobblePlugin", "WindowsMediaPlayerScrobblePlugin\WindowsMediaPlayerScrobblePlugin.csproj", "{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

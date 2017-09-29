@@ -63,8 +63,9 @@ namespace DesktopScrobbler
 
         }
 
-        private void OnlineStatusUpdated(OnlineState currentState)
+        private void OnlineStatusUpdated(OnlineState currentState, UserInfo latestUserInfo)
         {
+            base.CurrentUser = latestUserInfo;
             RefreshOnlineStatus(currentState);
         }
 
@@ -125,9 +126,9 @@ namespace DesktopScrobbler
             
                 if (currentState == OnlineState.Online)
                 {
-                    if (!string.IsNullOrEmpty(Core.Settings.Username))
+                    if (!string.IsNullOrEmpty(base.CurrentUser?.Name))
                     {
-                        lblSignInName.Text = $"Welcome {Core.Settings.Username}";
+                        lblSignInName.Text = $"Welcome {base.CurrentUser?.Name}";
                     }
                 }
                 else if (!string.IsNullOrEmpty(Core.Settings.Username))

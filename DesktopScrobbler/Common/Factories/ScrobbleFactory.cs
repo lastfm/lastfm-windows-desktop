@@ -33,7 +33,7 @@ namespace LastFM.Common.Factories
         public delegate void TrackStarted(MediaItem mediaItem);
         public delegate void TrackEnded(MediaItem mediaItem);
 
-        public delegate void OnlineStatusUpdate(OnlineState currentState);
+        public delegate void OnlineStatusUpdate(OnlineState currentState, UserInfo latestUserInfo);
 
         public static OnlineStatusUpdate OnlineStatusUpdated { get; set; }
 
@@ -300,18 +300,19 @@ namespace LastFM.Common.Factories
         private static async Task<bool> CanScrobble()
         {
             bool canScrobble = false;
+            UserInfo currentUser = null;
 
             try
             {
-                var userInfo = await _lastFMClient.GetUserInfo(Core.Settings.Username);
-                canScrobble = !string.IsNullOrEmpty(userInfo?.Name);
+                currentUser = await _lastFMClient.GetUserInfo(Core.Settings.Username);
+                canScrobble = !string.IsNullOrEmpty(currentUser?.Name);
             }
             catch (Exception ex)
             {
 
             }
 
-            OnlineStatusUpdated?.Invoke((canScrobble) ? OnlineState.Online : OnlineState.Offline);
+            OnlineStatusUpdated?.Invoke((canScrobble) ? OnlineState.Online : OnlineState.Offline, currentUser);
 
             return canScrobble;
         }

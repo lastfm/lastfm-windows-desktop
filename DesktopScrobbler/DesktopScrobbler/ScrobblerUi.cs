@@ -20,7 +20,6 @@ namespace DesktopScrobbler
     {
         private LastFM.ApiClient.LastFMClient _apiClient = null;
         private AuthenticationUi _authUi = null;
-        private SettingsUi _settingsUI = null;
 
         public ScrobblerUi()
         {
@@ -33,30 +32,11 @@ namespace DesktopScrobbler
         {
             linkSettings.Click += (o, ev) => 
             {
-                if(_settingsUI == null)
-                {
-                    _settingsUI = new SettingsUi();
-                    _settingsUI.FormClosing += SettingsUi_FormClosing;
-                    _settingsUI.StartPosition = FormStartPosition.CenterParent;
-                }
-
-                bool previousScrobbleState = ScrobbleFactory.ScrobblingEnabled;
-
-                ScrobbleFactory.ScrobblingEnabled = false;
-
-                _settingsUI.ShowDialog(this);
-
-                ScrobbleFactory.ScrobblingEnabled = previousScrobbleState;
+                base.ShowSettings();
+                ShowIdleStatus();
             };
 
             Startup();
-        }
-
-        private void SettingsUi_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _settingsUI = null;
-
-            ShowIdleStatus();
         }
 
         private async void Startup()
@@ -164,15 +144,15 @@ namespace DesktopScrobbler
         {
             try
             {
-                var userInfo = await _apiClient.GetUserInfo(Core.Settings.Username);
+                base.CurrentUser = await _apiClient.GetUserInfo(Core.Settings.Username);
 
-                if(!string.IsNullOrEmpty(userInfo?.Name))
+                if(!string.IsNullOrEmpty(base.CurrentUser?.Name))
                 {
                     RefreshOnlineStatus(OnlineState.Online);
 
                     linkProfile.Click += (o, e) => 
                     {
-                        ProcessHelper.LaunchUrl(userInfo.Url);
+                        base.ViewUserProfile();
                     };
 
                     linkLogOut.Click += (o, e) =>

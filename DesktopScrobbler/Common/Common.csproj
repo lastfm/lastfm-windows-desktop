@@ -61,6 +61,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Classes\ScrobblerSourceStatus.cs" />
+    <Compile Include="Classes\SettingsUi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Classes\SettingsUi.Designer.cs">
+      <DependentUpon>SettingsUi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Factories\ScrobbleFactory.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\ProcessHelper.cs" />
@@ -77,6 +83,9 @@
     <Compile Include="Static Classes\VersionChecker.cs" />
     <EmbeddedResource Include="Classes\NotificationThread.resx">
       <DependentUpon>NotificationThread.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Classes\SettingsUi.resx">
+      <DependentUpon>SettingsUi.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

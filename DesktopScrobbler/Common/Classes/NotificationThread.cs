@@ -1,5 +1,8 @@
 ﻿
+using Common.Classes;
+using LastFM.ApiClient.Models;
 using LastFM.Common.Factories;
+using LastFM.Common.Helpers;
 using LastFM.Common.Static_Classes;
 using System;
 using System.Windows.Forms;
@@ -20,6 +23,10 @@ namespace LastFM.Common.Classes
         private NotifyIcon trayIcon;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel stripStatus;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem mnuShowSettings;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripMenuItem mnuViewUserProfile;
         private ToolStripStatusLabel stripVersionLabel;
 
         private void InitializeComponent()
@@ -36,6 +43,10 @@ namespace LastFM.Common.Classes
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.stripStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.stripVersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuShowSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuViewUserProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.trayMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -46,37 +57,41 @@ namespace LastFM.Common.Classes
             this.mnuShow,
             this.toolStripSeparator1,
             this.mnuPauseScrobbling,
+            this.toolStripSeparator3,
+            this.mnuShowSettings,
+            this.toolStripSeparator4,
+            this.mnuViewUserProfile,
             this.toolStripSeparator2,
             this.mnuExit});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(153, 104);
+            this.trayMenu.Size = new System.Drawing.Size(205, 160);
             // 
             // mnuShow
             // 
             this.mnuShow.Name = "mnuShow";
-            this.mnuShow.Size = new System.Drawing.Size(152, 22);
+            this.mnuShow.Size = new System.Drawing.Size(204, 22);
             this.mnuShow.Text = "&Show";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(201, 6);
             // 
             // mnuPauseScrobbling
             // 
             this.mnuPauseScrobbling.Name = "mnuPauseScrobbling";
-            this.mnuPauseScrobbling.Size = new System.Drawing.Size(152, 22);
+            this.mnuPauseScrobbling.Size = new System.Drawing.Size(204, 22);
             this.mnuPauseScrobbling.Text = "&Pause";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(201, 6);
             // 
             // mnuExit
             // 
             this.mnuExit.Name = "mnuExit";
-            this.mnuExit.Size = new System.Drawing.Size(152, 22);
+            this.mnuExit.Size = new System.Drawing.Size(204, 22);
             this.mnuExit.Text = "E&xit";
             // 
             // trayIcon
@@ -110,6 +125,28 @@ namespace LastFM.Common.Classes
             this.stripVersionLabel.Spring = true;
             this.stripVersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
+            // 
+            // mnuShowSettings
+            // 
+            this.mnuShowSettings.Name = "mnuShowSettings";
+            this.mnuShowSettings.Size = new System.Drawing.Size(204, 22);
+            this.mnuShowSettings.Text = "Show Se&ttings";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(201, 6);
+            // 
+            // mnuViewUserProfile
+            // 
+            this.mnuViewUserProfile.Name = "mnuViewUserProfile";
+            this.mnuViewUserProfile.Size = new System.Drawing.Size(204, 22);
+            this.mnuViewUserProfile.Text = "&View your LastFM Profile";
+            // 
             // NotificationThread
             // 
             this.ClientSize = new System.Drawing.Size(444, 165);
@@ -126,6 +163,14 @@ namespace LastFM.Common.Classes
         #endregion 
 
         private bool _userExiting = false;
+        private SettingsUi _settingsUI = null;
+        private UserInfo _currentUser = null;
+
+        public UserInfo CurrentUser
+        {
+            get { return _currentUser; }
+            set { _currentUser = value; }
+        }
 
         public NotificationThread()
         {
@@ -152,6 +197,16 @@ namespace LastFM.Common.Classes
 
             };
 
+            mnuShowSettings.Click += (o, ev) =>
+            {
+                ShowSettings();
+            };
+
+            mnuViewUserProfile.Click += (o, ev) =>
+            {
+                ViewUserProfile();
+            };
+
             mnuExit.Click += (o, ev) =>
             {
                 ScrobbleFactory.ScrobblingEnabled = false;
@@ -167,6 +222,7 @@ namespace LastFM.Common.Classes
         {
             mnuShow.Enabled = this.Visible;
             mnuPauseScrobbling.Checked = !ScrobbleFactory.ScrobblingEnabled;
+            mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);
         }
 
         private void TrayIcon_DoubleClick(object sender, EventArgs e)
@@ -223,6 +279,34 @@ namespace LastFM.Common.Classes
 
                 trayIcon.Text = newStatus;
             }));
+        }
+
+        protected void ShowSettings()
+        {
+            if (_settingsUI == null)
+            {
+                _settingsUI = new SettingsUi();
+                _settingsUI.FormClosing += SettingsUi_FormClosing;
+                _settingsUI.StartPosition = (this.WindowState == FormWindowState.Normal) ? FormStartPosition.CenterParent : FormStartPosition.CenterScreen;
+            }
+
+            bool previousScrobbleState = ScrobbleFactory.ScrobblingEnabled;
+
+            ScrobbleFactory.ScrobblingEnabled = false;
+
+            _settingsUI.ShowDialog(this);
+
+            ScrobbleFactory.ScrobblingEnabled = previousScrobbleState;
+        }
+
+        private void SettingsUi_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _settingsUI = null;
+        }
+
+        protected void ViewUserProfile()
+        {
+            ProcessHelper.LaunchUrl(_currentUser.Url);
         }
     }
 }

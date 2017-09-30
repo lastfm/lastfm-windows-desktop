@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LastFM.ApiClient.Enums
+﻿namespace LastFM.ApiClient.Enums
 {
     public static class ReasonCodes
     {

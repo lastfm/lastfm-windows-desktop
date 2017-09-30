@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using iTunesLib;
 using System.Timers;
@@ -140,7 +139,7 @@ namespace ITunesScrobblePlugin
                             {
                                 MediaItem mediaDetail = await GetMediaDetail();
 
-                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName)
+                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && _playerPosition > 0)
                                 {
                                     if (_currentMediaItem != null)
                                     {

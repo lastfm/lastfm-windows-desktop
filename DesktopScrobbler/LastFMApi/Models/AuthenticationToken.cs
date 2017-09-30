@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace LastFM.ApiClient.Models
 {
-    class AuthenticationToken
+    public class AuthenticationToken
     {
         [JsonProperty("token")]
         public String Token { get; set; }

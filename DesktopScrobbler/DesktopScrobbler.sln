@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTask", "BuildTask\Buil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{4A282486-AC41-45D4-9E5B-6876747DC33C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastFMApi", "LastFMApi\LastFMApi.csproj", "{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastFMApiClient", "LastFMApi\LastFMApiClient.csproj", "{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes and scrawls", "Notes and scrawls", "{FC1FEAFE-E900-4639-B403-B61C585F18E7}"
 	ProjectSection(SolutionItems) = preProject

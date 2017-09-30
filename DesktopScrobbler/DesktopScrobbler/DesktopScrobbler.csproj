@@ -111,9 +111,9 @@
       <Project>{4a282486-ac41-45d4-9e5b-6876747dc33c}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LastFMApi\LastFMApi.csproj">
+    <ProjectReference Include="..\LastFMApi\LastFMApiClient.csproj">
       <Project>{9056d2cc-a14e-42bf-84b9-8f357a1b8b8e}</Project>
-      <Name>LastFMApi</Name>
+      <Name>LastFMApiClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\PluginSupport\PluginSupport.csproj">
       <Project>{119a1e78-2110-48b3-a76b-f419a288d8b5}</Project>

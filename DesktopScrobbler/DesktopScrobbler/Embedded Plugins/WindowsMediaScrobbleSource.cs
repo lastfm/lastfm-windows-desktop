@@ -3,12 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Runtime.InteropServices;
 using static LastFM.Common.Factories.ScrobbleFactory;
 using LastFM.ApiClient.Models;
 using System.Diagnostics;
-using DesktopScrobbler;
 using System.Windows.Forms;
 
 namespace DesktopScrobbler
@@ -147,7 +145,7 @@ namespace DesktopScrobbler
                             {
                                 MediaItem mediaDetail = await GetMediaDetail();
 
-                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName)
+                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && _playerPosition > 0)
                                 {
                                     if (_currentMediaItem != null)
                                     {

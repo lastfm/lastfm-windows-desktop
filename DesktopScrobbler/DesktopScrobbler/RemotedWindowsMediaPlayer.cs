@@ -37,7 +37,7 @@ namespace WindowsMediaPlayerScrobblePlugin
                 }
                 catch (System.Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(ex.ToString());
+                    //System.Diagnostics.Debug.WriteLine(ex.ToString());
                 }
             }
 
@@ -45,8 +45,6 @@ namespace WindowsMediaPlayerScrobblePlugin
             {
                 try
                 {
-                    //_oleObject = this.GetOcx() as IOleObject;
-
                     //Set the Client Site for the WMP control.
                     _oleObject.SetClientSite(this as IOleClientSite);
                     _isControlSited = true;
@@ -60,7 +58,8 @@ namespace WindowsMediaPlayerScrobblePlugin
             this._controlOcx = ((WMPLib.IWMPPlayer4)(this.GetOcx()));
 
         }
-        #region IOleServiceProvider Memebers - Working
+
+        #region IOleServiceProvider Members - Working
         /// <summary>
         /// During SetClientSite, WMP calls this function to get the pointer to <see cref="RemoteHostInfo"/>.
         /// </summary>
@@ -77,7 +76,8 @@ namespace WindowsMediaPlayerScrobblePlugin
 				return Marshal.GetComInterfaceForObject(iwmp, typeof(IWMPRemoteMediaServices));
 			}
 
-			throw new System.Runtime.InteropServices.COMException("No Interface", (int) HResults.E_NOINTERFACE);
+            return IntPtr.Zero;
+			//throw new System.Runtime.InteropServices.COMException("No Interface", (int) HResults.E_NOINTERFACE);
 		}
 		#endregion
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.VersionControl.Client; 
 
 namespace VersionIncrementBuildTask
 {
@@ -18,34 +16,21 @@ namespace VersionIncrementBuildTask
          {
             if (String.IsNullOrEmpty(AssemblyInfoPath)) throw new ArgumentException("AssemblyInfoPath must have a value");
 
-			var workspaceInfo = Workstation.Current.GetLocalWorkspaceInfo(AssemblyInfoPath);
-
 	         FileAttributes attributes = File.GetAttributes(AssemblyInfoPath);
 
 	         if (attributes.HasFlag(FileAttributes.ReadOnly))
 	         {
-		         try
-		         {
-			         using (var server = new TfsTeamProjectCollection(workspaceInfo.ServerUri))
-			         {
-				         var workspace = workspaceInfo.GetWorkspace(server);
-				         workspace.PendEdit(AssemblyInfoPath);
-			         }
-		         }
-		         catch (Exception)
-		         {
-			         try
-					 {					
-						// Try and make the file 'Non readonly'
-						File.SetAttributes(AssemblyInfoPath, FileAttributes.Normal);
-			         }
-					 catch (Exception ex)
-			         {
-						 Console.Out.WriteLine(ex);
-						 return false;
+			    try
+				{					
+				    // Try and make the file 'Non readonly'
+				    File.SetAttributes(AssemblyInfoPath, FileAttributes.Normal);
+			    }
+				catch (Exception ex)
+			    {
+					Console.Out.WriteLine(ex);
+					return false;
 
-			         }
-		         }
+			    }
 	         }
 
 
@@ -84,7 +69,7 @@ namespace VersionIncrementBuildTask
 		 string[] currentVersionParams = currentVersion.Split('.');
 
 	     int day = DateTime.Now.Day;
-	     int months = Math.Abs(((DateTime.Now.Year - ProjectStartDate.Year)*12) + DateTime.Now.Month - ProjectStartDate.Month) + 1;
+	     int months = Math.Abs(((DateTime.Now.Year - ProjectStartDate.Year) * 12) + DateTime.Now.Month - ProjectStartDate.Month);
 		 int revision = 1;
 
 		 string newVersionFormat = "{0}.{1}.{2}.{3}";

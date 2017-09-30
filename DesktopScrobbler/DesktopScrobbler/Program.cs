@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LastFM.Common;
+using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DesktopScrobbler
@@ -23,10 +22,8 @@ namespace DesktopScrobbler
             }
             else
             {
-                MessageBox.Show("You already have an instance of the Desktop Scrobbler running.", "LastFM Desktop Scrobbler", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("You already have an instance of the Desktop Scrobbler running.", Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
-
         }
     }
 }

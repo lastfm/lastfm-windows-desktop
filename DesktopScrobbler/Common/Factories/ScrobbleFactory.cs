@@ -1,7 +1,6 @@
 ﻿using LastFM.ApiClient;
 using LastFM.ApiClient.Models;
 using LastFM.Common.Classes;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -97,6 +96,15 @@ namespace LastFM.Common.Factories
         {
             mediaItem.StartedPlaying = DateTime.Now;
             _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StartedListening);
+            
+            if(Core.Settings.ShowTrackChanges)
+            {
+                string trackName = mediaItem?.TrackName ?? "<unknown>";
+                string artistName = mediaItem?.ArtistName ?? "<unknown>";
+
+                string balloonText = $"The track '{trackName}' by '{artistName}' just started playing...";
+                _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+            }
         }
 
         private static void ScrobbleSource_OnTrackEnded(MediaItem mediaItem)
@@ -156,12 +164,18 @@ namespace LastFM.Common.Factories
                         try
                         {
                             ScrobbleResponse scrobbleResult = await _lastFMClient.SendScrobbles(sourceMedia);
+
                             CacheFailedItems(scrobbleResult.Scrobbles.ScrobbleItems.ToList());
+
+                            ShowScrobbleResult(scrobbleResult);
                         }
                         catch (Exception)
                         {
                             CacheOfflineItems(sourceMedia);
+
+                            ShowScrobbleResult(sourceMedia);
                         }
+
                     }
                     else
                     {
@@ -169,7 +183,33 @@ namespace LastFM.Common.Factories
                     }
                 }
             }
+        }
 
+        private static void ShowScrobbleResult(List<MediaItem> sourceMedia)
+        {
+            if (Core.Settings.ShowScrobbleNotifications)
+            {
+                string balloonText = $"Failed to scrobble {sourceMedia.Count()} track(s).";
+
+                _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Warning, Core.APPLICATION_TITLE, balloonText);
+            }
+        }
+
+        private static void ShowScrobbleResult(ScrobbleResponse scrobbleResult)
+        {
+            if (Core.Settings.ShowScrobbleNotifications)
+            {
+                int successfulScrobbleCount = scrobbleResult.Scrobbles.AcceptedResult.Accepted;
+                int ignoredScrobbles = scrobbleResult.Scrobbles.AcceptedResult.Ignored;
+
+                string resultText = (successfulScrobbleCount > 0) ? $"Accepted: {successfulScrobbleCount}" : "";
+                resultText += !string.IsNullOrEmpty(resultText) ? ", " : "";
+                resultText += (ignoredScrobbles > 0) ? $"Ignored: {ignoredScrobbles}" : "";
+
+                string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).\r\n{resultText}";
+
+                _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+            }
         }
 
         private async static Task<List<MediaItem>> LoadCachedScrobbles()

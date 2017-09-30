@@ -1,13 +1,7 @@
 ﻿using LastFM.Common;
 using LastFM.Common.Factories;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Common.Classes
@@ -25,12 +19,16 @@ namespace Common.Classes
         {
             chkMinimizeToTray.Checked = Core.Settings.CloseToTray;
             chkStartMinimized.Checked = Core.Settings.StartMinimized;
+            chkShowScrobbleNotifications.Checked = Core.Settings.ShowScrobbleNotifications;
+            chkShowtrackChanges.Checked = Core.Settings.ShowTrackChanges;
 
             foreach(IScrobbleSource plugin in ScrobbleFactory.ScrobblePlugins)
             {
                 checkedPluginList.Items.Add(plugin.SourceDescription, Core.Settings.ScrobblerStatus.Count(pluginItem => pluginItem.Identifier == plugin.SourceIdentifier && Convert.ToBoolean(pluginItem.IsEnabled == true)) > 0);
             }
 
+            chkShowScrobbleNotifications.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
+            chkShowtrackChanges.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
             chkMinimizeToTray.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
             chkStartMinimized.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
             checkedPluginList.ItemCheck += (o, ev) => { SettingItem_Changed(); };
@@ -45,6 +43,9 @@ namespace Common.Classes
         {
             Core.Settings.CloseToTray = chkMinimizeToTray.Checked;
             Core.Settings.StartMinimized = chkStartMinimized.Checked;
+            Core.Settings.ShowScrobbleNotifications = chkShowScrobbleNotifications.Checked;
+            Core.Settings.ShowTrackChanges = chkShowtrackChanges.Checked;
+
             Core.Settings.ScrobblerStatus.Clear();
 
             foreach (var checkedItem in checkedPluginList.Items)

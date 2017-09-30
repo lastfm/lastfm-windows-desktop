@@ -2,9 +2,9 @@
 using LastFM.Common.Static_Classes;
 using System;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 using LastFM.ApiClient;
 using LastFM.ApiClient.Models;
+using LastFM.Common;
 
 namespace DesktopScrobbler
 {
@@ -33,7 +33,7 @@ namespace DesktopScrobbler
             }
             else
             {
-                MessageBox.Show(this, "Failed to retrieve an authentication token from LastFM, so authorization cannot take place.", "Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, "Failed to retrieve an authentication token from LastFM, so authorization cannot take place.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -1,9 +1,5 @@
 ﻿using LastFM.Common.Classes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LastFM.Common
 {
@@ -21,5 +17,7 @@ namespace LastFM.Common
 
         public List<ScrobblerSourceStatus> ScrobblerStatus { get; set; } = new List<ScrobblerSourceStatus>();
 
+        public bool ShowTrackChanges { get; internal set; } = true;
+        public bool ShowScrobbleNotifications { get; internal set; }
     }
 }

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using LastFM.ApiClient;
 using LastFM.ApiClient.Models;
 using LastFM.Common;
-using LastFM.Common.Helpers;
 using LastFM.Common.Static_Classes;
 using LastFM.Common.Factories;
 using PluginSupport;

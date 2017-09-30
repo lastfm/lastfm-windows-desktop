@@ -52,9 +52,9 @@
       <Project>{4A282486-AC41-45D4-9E5B-6876747DC33C}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LastFMApi\LastFMApi.csproj">
+    <ProjectReference Include="..\LastFMApi\LastFMApiClient.csproj">
       <Project>{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}</Project>
-      <Name>LastFMApi</Name>
+      <Name>LastFMApiClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -30,6 +30,8 @@ You _MUST_ build this project first!  (Right-click and 'Build' is sufficient)
 
 If you don't want to adopt the automated versioning, you can remove this requirement, by right-clicking on the 'DesktopScrobbler' project, selecting 'Properties', selecting 'Build Events' and removing the 'Pre-build event command line'
 
+To use the iTunes Scrobbler Plugin (track iTunes playback) then you must Build this project separately.  Right-click the 'iTunesScrobblerPlugin' project and 'Build', which will build the plugin into the main application bin folder.
+
 LastFM API Details
 ------------------
 
@@ -39,7 +41,12 @@ Some General Debugging Advice
 =============================
 
 Windows Media Player Plugin (WindowsMediaScrobbleSource.cs): If you can avoid it, do NOT place breakpoints or step-through any of the COM interop code (COMInterfaces.cs, RemotedWindowsMediaPlayer.cs, RemoteHostInfo.cs).
-Due to the nature of this code, Visual Studio doesn't always recover well if you 'stand-still' for too long a period of time.
+Due to the nature of this code, Visual Studio doesn't always recover well if you 'stand-still' for too long a period of time.  The same applies with the WindowsMediaPlayerScrobblerSource.cs.
+
+If you take too long (literally a matter of seconds) stuck at a breakpoint, the COM interoperability will become broken and one of 2 things will happen:
+
+1) Visual Studio will stop responding, taking upwards of 3 minutes to come back to life.  It will come bakc to life, at which point you should stop debugging (and restart if you need to).
+2) Windows Media Player will stop responding, and will never recover until you 'End Task' it.
 
 WindowsMediaPlayerScrobbleplugin
 --------------------------------

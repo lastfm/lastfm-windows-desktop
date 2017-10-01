@@ -27,6 +27,8 @@ namespace LastFM.Common.Classes
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotificationThread));
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuLoveThisTrack = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuShow = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuPauseScrobbling = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,6 +41,8 @@ namespace LastFM.Common.Classes
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.stripStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stripLoveTrack = new System.Windows.Forms.ToolStripStatusLabel();
             this.stripVersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.trayMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -47,6 +51,8 @@ namespace LastFM.Common.Classes
             // trayMenu
             // 
             this.trayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuLoveThisTrack,
+            this.toolStripSeparator5,
             this.mnuShow,
             this.toolStripSeparator1,
             this.mnuPauseScrobbling,
@@ -57,7 +63,18 @@ namespace LastFM.Common.Classes
             this.toolStripSeparator2,
             this.mnuExit});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(205, 138);
+            this.trayMenu.Size = new System.Drawing.Size(205, 166);
+            // 
+            // mnuLoveThisTrack
+            // 
+            this.mnuLoveThisTrack.Name = "mnuLoveThisTrack";
+            this.mnuLoveThisTrack.Size = new System.Drawing.Size(204, 22);
+            this.mnuLoveThisTrack.Text = "&Love this Track";
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(201, 6);
             // 
             // mnuShow
             // 
@@ -120,10 +137,13 @@ namespace LastFM.Common.Classes
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stripStatus,
+            this.toolStripStatusLabel1,
+            this.stripLoveTrack,
             this.stripVersionLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 143);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(444, 22);
+            this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -133,11 +153,26 @@ namespace LastFM.Common.Classes
             this.stripStatus.Size = new System.Drawing.Size(77, 17);
             this.stripStatus.Text = "Starting up....";
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(222, 17);
+            this.toolStripStatusLabel1.Spring = true;
+            // 
+            // stripLoveTrack
+            // 
+            this.stripLoveTrack.AutoSize = false;
+            this.stripLoveTrack.Enabled = false;
+            this.stripLoveTrack.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.stripLoveTrack.Name = "stripLoveTrack";
+            this.stripLoveTrack.Size = new System.Drawing.Size(24, 17);
+            this.stripLoveTrack.Text = "<3";
+            // 
             // stripVersionLabel
             // 
+            this.stripVersionLabel.AutoSize = false;
             this.stripVersionLabel.Name = "stripVersionLabel";
-            this.stripVersionLabel.Size = new System.Drawing.Size(352, 17);
-            this.stripVersionLabel.Spring = true;
+            this.stripVersionLabel.Size = new System.Drawing.Size(75, 17);
             this.stripVersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // NotificationThread
@@ -146,6 +181,7 @@ namespace LastFM.Common.Classes
             this.Controls.Add(this.statusStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "NotificationThread";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.trayMenu.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -154,7 +190,11 @@ namespace LastFM.Common.Classes
 
         }
 
-        #endregion 
+        #endregion
 
+        private ToolStripStatusLabel stripLoveTrack;
+        private ToolStripMenuItem mnuLoveThisTrack;
+        private ToolStripSeparator toolStripSeparator5;
+        private ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

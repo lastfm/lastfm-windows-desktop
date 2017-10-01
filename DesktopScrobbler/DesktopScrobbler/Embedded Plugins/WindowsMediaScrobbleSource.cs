@@ -22,6 +22,7 @@ namespace DesktopScrobbler
 
         private int _minimumScrobbleSeconds = 30;
         private int _playerPosition = 0;
+        private WMPLib.WMPPlayState _currentPlaystate = WMPLib.WMPPlayState.wmppsWaiting;
 
         private bool _isIntialized = false;
         private bool _isEnabled = false;
@@ -143,9 +144,9 @@ namespace DesktopScrobbler
 
                             if (_isEnabled)
                             {
-                                MediaItem mediaDetail = await GetMediaDetail();
+                                MediaItem mediaDetail = await GetMediaDetail();                               
 
-                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && _playerPosition > 0)
+                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && _playerPosition > 0 && _currentPlaystate == WMPLib.WMPPlayState.wmppsPlaying)
                                 {
                                     if (_currentMediaItem != null)
                                     {
@@ -200,6 +201,8 @@ namespace DesktopScrobbler
             try
             {
                 var currentMedia = _mediaPlayer?.Player?.Ctlcontrols?.currentItem;
+
+                _currentPlaystate = _mediaPlayer?.Player?.playState != null ? (WMPLib.WMPPlayState)_mediaPlayer?.Player?.playState : WMPLib.WMPPlayState.wmppsWaiting;
 
                 if (currentMedia != null)
                 {

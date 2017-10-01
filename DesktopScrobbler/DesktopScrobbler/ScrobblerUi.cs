@@ -14,9 +14,14 @@ using static LastFM.Common.Factories.ScrobbleFactory;
 
 namespace DesktopScrobbler
 {
+    // Comment in this line of code when you need to view / make changes using the UI designer
+    // Comment it out when you are done
+    // public partial class ScrobblerUi : Form
+
+    // Comment out this line of code when you need to view / make changes using the UI designer
+    // Comment it in when you are done
     public partial class ScrobblerUi : NotificationThread
     {
-        private LastFM.ApiClient.LastFMClient _apiClient = null;
         private AuthenticationUi _authUi = null;
         private WindowsMediaPlayer _playerForm = null;
 
@@ -67,7 +72,7 @@ namespace DesktopScrobbler
 
                 Core.SaveSettings();
 
-                _apiClient.LoggedOut();
+                base.APIClient.LoggedOut();
 
                 RefreshOnlineStatus(OnlineState.Offline);
 
@@ -102,7 +107,9 @@ namespace DesktopScrobbler
             SetStatus("Checking connection to LastFM...");
             await ConnectToLastFM(afterLogOut);
 
-            ScrobbleFactory.Initialize(_apiClient, this);
+            await ScrobbleFactory.Initialize(base.APIClient, this);
+
+            ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
 
             ScrobbleFactory.OnlineStatusUpdated += OnlineStatusUpdated;
 
@@ -146,16 +153,16 @@ namespace DesktopScrobbler
         {
             if (!afterLogout)
             {
-                _apiClient = new LastFMClient(APIDetails.EndPointUrl, APIDetails.Key, APIDetails.SharedSecret);
+                base.APIClient = new LastFMClient(APIDetails.EndPointUrl, APIDetails.Key, APIDetails.SharedSecret);
             }
 
             if (!Core.Settings.UserHasAuthorizedApp)
             {
                 if (await VerifyAuthorization("Authentication Required"))
                 {
-                    Core.Settings.SessionToken = _apiClient.SessionToken.Key;
+                    Core.Settings.SessionToken = base.APIClient.SessionToken.Key;
                     Core.Settings.UserHasAuthorizedApp = true;
-                    Core.Settings.Username = _apiClient.SessionToken.Name;
+                    Core.Settings.Username = base.APIClient.SessionToken.Name;
 
                     Core.SaveSettings();
                 }
@@ -166,7 +173,7 @@ namespace DesktopScrobbler
             }
             else
             {
-                _apiClient.SessionToken = new SessionToken() { Key = Core.Settings.SessionToken };
+                base.APIClient.SessionToken = new SessionToken() { Key = Core.Settings.SessionToken };
             }
 
             if(Core.Settings.UserHasAuthorizedApp)
@@ -174,11 +181,11 @@ namespace DesktopScrobbler
                 // Make an initial connection to get the user profile (to validate there is a connection)
                 DisplayCurrentUser();
 
-                if (afterLogout)
-                {
-                    // Re-initialize the Scrobbling
-                    ScrobbleFactory.ScrobblingEnabled = true;
-                }
+                //if (afterLogout)
+                //{
+                //    // Re-initialize the Scrobbling
+                //    ScrobbleFactory.ScrobblingEnabled = true;
+                //}
             }
         }
 
@@ -207,6 +214,8 @@ namespace DesktopScrobbler
 
                 linkProfile.Visible = currentState == OnlineState.Online;
                 linkLogOut.Visible = currentState == OnlineState.Online;
+
+                base.RefreshLoveTrackState();
             }));
         }
 
@@ -214,7 +223,7 @@ namespace DesktopScrobbler
         {
             try
             {
-                base.CurrentUser = await _apiClient.GetUserInfo(Core.Settings.Username);
+                base.CurrentUser = await base.APIClient.GetUserInfo(Core.Settings.Username);
 
                 if(!string.IsNullOrEmpty(base.CurrentUser?.Name))
                 {
@@ -232,7 +241,6 @@ namespace DesktopScrobbler
             }
             finally
             {
-                ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
                 ShowIdleStatus();
             }
         }
@@ -265,7 +273,7 @@ namespace DesktopScrobbler
             {
                 _authUi = new AuthenticationUi();
                 _authUi.StartPosition = FormStartPosition.CenterScreen;
-                _authUi.ApiClient = _apiClient;
+                _authUi.ApiClient = base.APIClient;
             }
 
             _authUi.Reset();
@@ -284,13 +292,13 @@ namespace DesktopScrobbler
                 SetStatus("Checking your connection to LastFM...");
 
                 // Verify the result by trying to get a SessionToken
-                var returnedSessionToken = await _apiClient.GetSessionToken();
+                var returnedSessionToken = await base.APIClient.GetSessionToken();
 
                 _isApplicationAuthed = !string.IsNullOrEmpty(returnedSessionToken?.Key);
 
                 if(_isApplicationAuthed)
                 {
-                    Core.Settings.SessionToken = _apiClient.SessionToken?.Key;
+                    Core.Settings.SessionToken = base.APIClient.SessionToken?.Key;
                     Core.SaveSettings();
                 }
             }

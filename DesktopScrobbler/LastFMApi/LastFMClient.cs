@@ -36,6 +36,12 @@ namespace LastFM.ApiClient
             StoppedListening
         }
 
+        public enum LoveStatus
+        {
+            Love,
+            Unlove
+        }
+
         public string AuthenticationToken => _authToken?.Token;
 
         public LastFMClient(string lastFmBaseUrl, string apiKey, string apiSecret)
@@ -119,6 +125,33 @@ namespace LastFM.ApiClient
             }
 
             return response?.NowPlaying;
+        }
+
+        public async Task LoveTrack(LoveStatus loveStatus, MediaItem mediaItem)
+        {
+            var baseParameters = new Dictionary<string, string>();
+            string updateMethod = string.Empty;
+
+            baseParameters.Add("artist", mediaItem.ArtistName);
+            baseParameters.Add("track", mediaItem.TrackName);
+
+            if (loveStatus == LoveStatus.Love)
+            {
+                updateMethod = "track.love";
+            }
+            else if (loveStatus == LoveStatus.Unlove)
+            {
+                updateMethod = "track.unlove";
+            }
+
+            AddRequiredRequestParams(baseParameters, updateMethod, _sessionToken.Key);
+
+            if (!string.IsNullOrEmpty(updateMethod))
+            {
+                FormUrlEncodedContent postContent = new FormUrlEncodedContent(baseParameters);
+
+                var rawResponse = await Post<JObject>(updateMethod, postContent, baseParameters.ToArray());
+            }
         }
 
         public async Task<ScrobbleResponse> SendScrobbles(List<MediaItem> mediaItems)

@@ -51,11 +51,16 @@ namespace WindowsMediaPlayerScrobblePlugin
                 }
                 catch (Exception ex)
                 {
-                    // This doesn't appear to have any effect on things.
+                    // This doesn't appear to have any effect on things, so once fired
+                    // don't attempt to fire it again
+                    _isControlSited = true;
                 }
             }
 
-            this._controlOcx = ((WMPLib.IWMPPlayer4)(this.GetOcx()));
+            if (_controlOcx == null)
+            {
+                _controlOcx = ((WMPLib.IWMPPlayer4)(this.GetOcx()));
+            }
 
         }
 
@@ -166,6 +171,20 @@ namespace WindowsMediaPlayerScrobblePlugin
                     throw new System.Windows.Forms.AxHost.InvalidActiveXStateException("Ctlcontrols", System.Windows.Forms.AxHost.ActiveXInvokeKind.PropertyGet);
                 }
                 return ((WMPLib.IWMPPlayer4)_oleObject).controls;
+            }
+        }
+
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        [System.Runtime.InteropServices.DispIdAttribute(10)]
+        public virtual WMPLib.WMPPlayState playState
+        {
+            get
+            {
+                if ((_controlOcx == null))
+                {
+                    throw new System.Windows.Forms.AxHost.InvalidActiveXStateException("playState", System.Windows.Forms.AxHost.ActiveXInvokeKind.PropertyGet);
+                }
+                return _controlOcx.playState;
             }
         }
     }   

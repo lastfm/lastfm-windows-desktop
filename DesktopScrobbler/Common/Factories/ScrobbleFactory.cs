@@ -75,13 +75,13 @@ namespace LastFM.Common.Factories
             }
         }
 
-        public static void Initialize(LastFMClient lastFMClient, NotificationThread uiThread)
+        public static async Task Initialize(LastFMClient lastFMClient, NotificationThread uiThread)
         {
             _uiThread = uiThread;
             _lastFMClient = lastFMClient;
 
             // Get the plugins
-            foreach(IScrobbleSource source in ScrobblePlugins)
+            foreach (IScrobbleSource source in ScrobblePlugins)
             {
                 source.InitializeSource(MinimumScrobbleSeconds, ScrobbleSource_OnTrackStarted, ScrobbleSource_OnTrackEnded);
             }
@@ -92,18 +92,19 @@ namespace LastFM.Common.Factories
             _isInitialized = true;
         }
 
-        private static void ScrobbleSource_OnTrackStarted(MediaItem mediaItem)
+        private static async void ScrobbleSource_OnTrackStarted(MediaItem mediaItem)
         {
             mediaItem.StartedPlaying = DateTime.Now;
-            _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StartedListening);
-            
-            if(Core.Settings.ShowTrackChanges)
-            {
-                string trackName = mediaItem?.TrackName ?? "<unknown>";
-                string artistName = mediaItem?.ArtistName ?? "<unknown>";
 
-                string balloonText = $"The track '{trackName}' by '{artistName}' just started playing...";
-                _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+            _uiThread.TrackChanged(mediaItem);
+
+            try
+            {
+                await _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StartedListening);
+            }
+            catch (Exception)
+            {
+                // No connection available...
             }
         }
 
@@ -190,13 +191,17 @@ namespace LastFM.Common.Factories
                             // Show the result of the scrobble
                             ShowScrobbleResult(sourceMedia);
                         }
-
                     }
                     else
                     {
                         // The API wasn't available.  Cache the media so we can try again.
                         CacheOfflineItems(sourceMedia);
                     }
+                }
+                else
+                {
+                    // The API wasn't available.  Cache the media so we can try again.
+                    CacheOfflineItems(sourceMedia);
                 }
             }
         }

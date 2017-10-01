@@ -5,20 +5,31 @@ using LastFM.Common.Factories;
 using LastFM.Common.Helpers;
 using LastFM.Common.Static_Classes;
 using System;
+using System.Net.NetworkInformation;
 using System.Windows.Forms;
+using static LastFM.ApiClient.LastFMClient;
 
 namespace LastFM.Common.Classes
 {
-    public partial class NotificationThread: Form
+    public partial class NotificationThread : Form
     {
         private bool _userExiting = false;
         private SettingsUi _settingsUI = null;
         private UserInfo _currentUser = null;
 
-        public UserInfo CurrentUser
+        private ApiClient.LastFMClient _apiClient = null;
+        private MediaItem _currentMediaItem = null;
+
+        protected UserInfo CurrentUser
         {
             get { return _currentUser; }
             set { _currentUser = value; }
+        }
+
+        protected ApiClient.LastFMClient APIClient
+        {
+            get { return _apiClient; }
+            set { _apiClient = value; }
         }
 
         public NotificationThread()
@@ -28,7 +39,7 @@ namespace LastFM.Common.Classes
             this.Load += NotificationThread_Load;
         }
 
-        private void NotificationThread_Load(object sender, System.EventArgs e)
+        private async void NotificationThread_Load(object sender, System.EventArgs e)
         {
             trayIcon.Visible = true;
             trayIcon.DoubleClick += TrayIcon_DoubleClick;
@@ -41,12 +52,15 @@ namespace LastFM.Common.Classes
 
             trayMenu.Opening += TrayMenu_Opening;
 
-            mnuShow.Click += (o, ev) => { ShowForm(); };
-            mnuPauseScrobbling.Click += (o, ev) => {
+            mnuShow.Click += (o, ev) => 
+            {
+                ShowForm();
+            };
 
+            mnuPauseScrobbling.Click += (o, ev) => 
+            {
                 mnuPauseScrobbling.Checked = !mnuPauseScrobbling.Checked;
                 ScrobbleFactory.ScrobblingEnabled = !mnuPauseScrobbling.Checked;
-
             };
 
             mnuShowSettings.Click += (o, ev) =>
@@ -67,6 +81,81 @@ namespace LastFM.Common.Classes
                 _userExiting = true;
                 this.Close();
             };
+
+            mnuLoveThisTrack.Click += (o, ev) =>
+            {
+                LoveorUnloveCurrentMedia();
+            };
+
+            ResetLoveTrackState(LoveStatus.Love);
+
+            stripLoveTrack.Click += stripLoveTrack_Click;
+
+            stripLoveTrack.MouseEnter += (o, ev) =>
+            {
+                statusStrip1.Cursor = stripLoveTrack.Enabled ? Cursors.Hand : Cursors.No;
+            };
+
+            stripLoveTrack.MouseLeave += (o, ev) => 
+            {
+                statusStrip1.Cursor = Cursors.Default;
+            };
+        }
+
+        public void RefreshLoveTrackState()
+        {
+            LoveStatus currentState = (LoveStatus)stripLoveTrack.Tag;
+            ResetLoveTrackState(currentState);
+        }
+
+        internal void ResetLoveTrackState(LoveStatus newState)
+        {
+            this.Invoke(new MethodInvoker(async () => { 
+
+                stripLoveTrack.Text = string.Empty;
+                stripLoveTrack.Tag = newState;
+
+                stripLoveTrack.Enabled = _currentUser != null;
+
+                switch(newState)
+                {
+                    case LoveStatus.Love:
+                    {
+                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\heart-empty.png");
+                        break;
+                    }
+                    case LoveStatus.Unlove:
+                    {
+                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\heart-full.png");
+                        break;
+                    }
+                }
+            }));
+        }
+
+        private async void stripLoveTrack_Click(object sender, EventArgs e)
+        {
+            LoveorUnloveCurrentMedia();
+        }
+
+        private async void LoveorUnloveCurrentMedia()
+        {
+            LoveStatus statusToSend = (LoveStatus)stripLoveTrack.Tag;
+
+            try
+            {
+                await _apiClient.LoveTrack(statusToSend, _currentMediaItem);
+                ResetLoveTrackState((statusToSend == LoveStatus.Love) ? LoveStatus.Unlove : LoveStatus.Love);
+            }
+            catch (Exception)
+            {
+                // As current user is generally handled outside of this routine, we'll set it here
+                _currentUser = null;
+
+                // No connection to the API is available not a lot we can do about it...
+                // (well not that is in scope for this phase of the project)
+                ResetLoveTrackState(statusToSend);                
+            }
         }
 
         private void ClearBallonTip(object sender, EventArgs e)
@@ -78,7 +167,28 @@ namespace LastFM.Common.Classes
 
         private void TrayMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
+
             mnuShow.Enabled = this.Visible;
+
+            mnuLoveThisTrack.Enabled = _currentMediaItem != null && _currentUser != null;
+
+            if (_currentMediaItem != null)
+            {
+                if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Love)
+                {
+                    mnuLoveThisTrack.Text = $"Love '{trackName}'";
+                }
+                else if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Unlove)
+            {
+                    mnuLoveThisTrack.Text = $"Un-Love '{trackName}'";
+                }
+            }
+            else
+            {
+                mnuLoveThisTrack.Text = "&Love this Track";
+            }
+
             mnuPauseScrobbling.Checked = !ScrobbleFactory.ScrobblingEnabled;
             mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);
         }
@@ -128,15 +238,18 @@ namespace LastFM.Common.Classes
 
         public void SetStatus(string newStatus)
         {
-            this.Invoke(new MethodInvoker(() =>
+            if (!this.IsDisposed && !this.Disposing)
             {
-                if (stripStatus != null)
+                this.Invoke(new MethodInvoker(() =>
                 {
-                    stripStatus.Text = newStatus;
-                }
+                    if (stripStatus != null)
+                    {
+                        stripStatus.Text = newStatus;
+                    }
 
-                trayIcon.Text = newStatus;
-            }));
+                    trayIcon.Text = newStatus;
+                }));
+            }
         }
 
         protected void ShowSettings()
@@ -167,12 +280,34 @@ namespace LastFM.Common.Classes
             ProcessHelper.LaunchUrl(_currentUser.Url);
         }
 
-        public void DoBallonTip(ToolTipIcon icon, string title, string text)
+        internal void DoBallonTip(ToolTipIcon icon, string title, string text)
         {            
             trayIcon.BalloonTipText = text;
             trayIcon.BalloonTipTitle = title;
             trayIcon.BalloonTipIcon = icon;
             trayIcon.ShowBalloonTip(3000);
+        }
+
+        internal void TrackChanged(MediaItem mediaItem)
+        {
+            _currentMediaItem = mediaItem;
+
+            string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
+            string artistName = _currentMediaItem?.ArtistName ?? "<unknown>";
+
+            if (Core.Settings.ShowTrackChanges)
+            {
+                string balloonText = $"The track '{trackName}' by '{artistName}' just started playing...";
+                DoBallonTip(ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+            }
+
+
+            ResetLoveTrackState(LoveStatus.Love);
+
+            this.Invoke(new MethodInvoker(() =>
+            {
+                stripLoveTrack.Enabled = true;
+            }));
         }
     }
 }

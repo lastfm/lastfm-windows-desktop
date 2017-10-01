@@ -224,7 +224,7 @@ namespace LastFM.Common.Factories
                 int ignoredScrobbles = scrobbleResult.Scrobbles.AcceptedResult.Ignored;
 
                 string resultText = (successfulScrobbleCount > 0) ? $"Accepted: {successfulScrobbleCount}" : "";
-                resultText += !string.IsNullOrEmpty(resultText) ? ", " : "";
+                resultText += !string.IsNullOrEmpty(resultText) && ignoredScrobbles > 0 ? ", " : "";
                 resultText += (ignoredScrobbles > 0) ? $"Ignored: {ignoredScrobbles}" : "";
 
                 string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).\r\n{resultText}";

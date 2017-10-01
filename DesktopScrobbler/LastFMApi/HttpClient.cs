@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Web;
 using Newtonsoft.Json.Serialization;
+using System.Reflection;
 
 namespace LastFM.ApiClient
 {
@@ -23,6 +24,13 @@ namespace LastFM.ApiClient
         //private bool _responseAsJson;
 
         internal Func<string, string> HttpResponsePreProcessing { get; set; }
+
+        private const string _userAgentString = "LastFM Desktop Scrobbler v";
+
+        public string GetApplicationVersionNumber()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
 
         private string ValidateURLPath(string urlPath)
         {
@@ -67,10 +75,10 @@ namespace LastFM.ApiClient
 
             HttpClientHandler handler = new HttpClientHandler()
             {
-                //AllowAutoRedirect = false,
             };
 
             System.Net.Http.HttpClient client = new System.Net.Http.HttpClient(handler);
+            client.DefaultRequestHeaders.Add("User-Agent", $"{_userAgentString}{GetApplicationVersionNumber()}");
 
             client.DefaultRequestHeaders.ExpectContinue = false;
 
@@ -123,10 +131,10 @@ namespace LastFM.ApiClient
 
             HttpClientHandler handler = new HttpClientHandler()
             {
-                AllowAutoRedirect = false
             };
 
             System.Net.Http.HttpClient client = new System.Net.Http.HttpClient(handler);
+            client.DefaultRequestHeaders.Add("User-Agent", $"{_userAgentString}{GetApplicationVersionNumber()}");
 
             switch (requestType)
             {

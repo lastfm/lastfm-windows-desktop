@@ -165,6 +165,12 @@ namespace LastFM.ApiClient
             {
                 baseParameters.Add($"artist[{mediaItemCount}]", mediaItem.ArtistName);
                 baseParameters.Add($"album[{mediaItemCount}]", mediaItem.AlbumName);
+
+                if (!string.IsNullOrEmpty(mediaItem.AlbumArtist))
+                {
+                    baseParameters.Add($"albumArtist[{mediaItemCount}]", mediaItem.AlbumArtist);
+                }
+
                 baseParameters.Add($"track[{mediaItemCount}]", mediaItem.TrackName);
                 baseParameters.Add($"duration[{mediaItemCount}]", mediaItem.TrackLength.ToString());
                 baseParameters.Add($"timestamp[{mediaItemCount}]", UnixTimeStampHelper.GetUnixTimeStampFromDateTime( mediaItem.StartedPlaying).ToString("#0"));

@@ -163,22 +163,38 @@ namespace LastFM.Common.Factories
 
                         try
                         {
-                            ScrobbleResponse scrobbleResult = await _lastFMClient.SendScrobbles(sourceMedia);
+                            do
+                            {
+                                // Ensure the media is split up into groups of 50
+                                List<MediaItem> scrobbleBatch = sourceMedia.Take(50).ToList();
+                                ScrobbleResponse scrobbleResult = await _lastFMClient.SendScrobbles(scrobbleBatch);
 
-                            CacheFailedItems(scrobbleResult.Scrobbles.ScrobbleItems.ToList());
+                                // Only remove the items in the batch AFTER a successful scrobble request is sent
+                                // so that we can cache the full media list without manipulating the lists again.
+                                sourceMedia.RemoveRange(0, scrobbleBatch.Count);
 
-                            ShowScrobbleResult(scrobbleResult);
+                                // Check the response from LastFM, and cache anything where the API Limit was exceeded
+                                CacheFailedItems(scrobbleResult.Scrobbles.ScrobbleItems.ToList());
+
+                                // Show the result of the scrobble
+                                ShowScrobbleResult(scrobbleResult);
+                            }
+
+                            while (sourceMedia.Count > 0);
                         }
                         catch (Exception)
                         {
+                            // The API wasn't available.  Cache the media so we can try again.
                             CacheOfflineItems(sourceMedia);
 
+                            // Show the result of the scrobble
                             ShowScrobbleResult(sourceMedia);
                         }
 
                     }
                     else
                     {
+                        // The API wasn't available.  Cache the media so we can try again.
                         CacheOfflineItems(sourceMedia);
                     }
                 }

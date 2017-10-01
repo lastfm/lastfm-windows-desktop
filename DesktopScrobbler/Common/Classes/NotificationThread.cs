@@ -58,7 +58,7 @@ namespace LastFM.Common.Classes
             {
                 ViewUserProfile();
             };
-
+            
             mnuExit.Click += (o, ev) =>
             {
                 ScrobbleFactory.ScrobblingEnabled = false;
@@ -66,7 +66,6 @@ namespace LastFM.Common.Classes
 
                 _userExiting = true;
                 this.Close();
-
             };
         }
 

@@ -58,6 +58,12 @@ namespace LastFM.ApiClient
             };
         }
 
+        public void LoggedOut()
+        {
+            _authToken = null;
+            _sessionToken = null;
+        }
+
         public Task<bool> GetAuthorisationToken()
         {
             return Authenticate();

@@ -36,6 +36,7 @@
             this.linkSettings = new System.Windows.Forms.LinkLabel();
             this.linkLogOut = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.linkLogIn = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -81,7 +82,7 @@
             // 
             // linkSettings
             // 
-            this.linkSettings.Location = new System.Drawing.Point(3, 23);
+            this.linkSettings.Location = new System.Drawing.Point(3, 46);
             this.linkSettings.Name = "linkSettings";
             this.linkSettings.Size = new System.Drawing.Size(62, 23);
             this.linkSettings.TabIndex = 5;
@@ -91,7 +92,7 @@
             // 
             // linkLogOut
             // 
-            this.linkLogOut.Location = new System.Drawing.Point(3, 0);
+            this.linkLogOut.Location = new System.Drawing.Point(3, 23);
             this.linkLogOut.Name = "linkLogOut";
             this.linkLogOut.Size = new System.Drawing.Size(62, 23);
             this.linkLogOut.TabIndex = 6;
@@ -103,12 +104,23 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel1.Controls.Add(this.linkLogIn);
             this.flowLayoutPanel1.Controls.Add(this.linkLogOut);
             this.flowLayoutPanel1.Controls.Add(this.linkSettings);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(327, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(72, 59);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(72, 84);
             this.flowLayoutPanel1.TabIndex = 7;
+            // 
+            // linkLogIn
+            // 
+            this.linkLogIn.Location = new System.Drawing.Point(3, 0);
+            this.linkLogIn.Name = "linkLogIn";
+            this.linkLogIn.Size = new System.Drawing.Size(62, 23);
+            this.linkLogIn.TabIndex = 7;
+            this.linkLogIn.TabStop = true;
+            this.linkLogIn.Text = "Log In...";
+            this.linkLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ScrobblerUi
             // 
@@ -139,6 +151,7 @@
         private System.Windows.Forms.LinkLabel linkSettings;
         private System.Windows.Forms.LinkLabel linkLogOut;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.LinkLabel linkLogIn;
     }
 }
 

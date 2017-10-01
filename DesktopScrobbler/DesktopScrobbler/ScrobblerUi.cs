@@ -43,24 +43,64 @@ namespace DesktopScrobbler
                 ShowIdleStatus();
             };
 
+            linkProfile.Click += linkProfile_Click;
+            linkLogOut.Click += LogoutUser;
+            linkLogIn.Click += LogInUser;
+
             Startup();
         }
 
-        private async void Startup()
+        private void LogInUser(object sender, EventArgs e)
         {
-            SetStatus("Starting up...");
-            Core.InitializeSettings();
+            Startup(true);
+        }
 
-            if (Core.Settings.StartMinimized)
+        private void LogoutUser(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(this, "Are you sure you want to log out?", Core.APPLICATION_TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                this.WindowState = FormWindowState.Minimized;
+                ScrobbleFactory.ScrobblingEnabled = false;
+
+                Core.Settings.UserHasAuthorizedApp = false;
+                Core.Settings.SessionToken = string.Empty;
+                Core.Settings.Username = string.Empty;
+
+                Core.SaveSettings();
+
+                _apiClient.LoggedOut();
+
+                RefreshOnlineStatus(OnlineState.Offline);
+
+            }
+        }
+
+        private void linkProfile_Click(object sender, EventArgs e)
+        {
+            base.ViewUserProfile();
+        }
+
+        private async void Startup(bool afterLogOut = false)
+        {
+            if (!afterLogOut)
+            {
+                SetStatus("Starting up...");
+                Core.InitializeSettings();
+
+                if (Core.Settings.StartMinimized)
+                {
+                    this.WindowState = FormWindowState.Minimized;
+                }
+
+                SetStatus("Loading plugins...");
+                await GetPlugins();
+            }
+            else
+            {
+                ScrobbleFactory.OnlineStatusUpdated -= OnlineStatusUpdated;
             }
 
-            SetStatus("Loading plugins...");
-            await GetPlugins();
-
-            SetStatus("Starting up... checking connection to LastFM...");
-            ConnectToLastFM();
+            SetStatus("Checking connection to LastFM...");
+            await ConnectToLastFM(afterLogOut);
 
             ScrobbleFactory.Initialize(_apiClient, this);
 
@@ -102,9 +142,12 @@ namespace DesktopScrobbler
             }
         }
 
-        private async Task ConnectToLastFM()
+        private async Task ConnectToLastFM(bool afterLogout)
         {
-            _apiClient = new LastFMClient(APIDetails.EndPointUrl, APIDetails.Key, APIDetails.SharedSecret);
+            if (!afterLogout)
+            {
+                _apiClient = new LastFMClient(APIDetails.EndPointUrl, APIDetails.Key, APIDetails.SharedSecret);
+            }
 
             if (!Core.Settings.UserHasAuthorizedApp)
             {
@@ -116,6 +159,10 @@ namespace DesktopScrobbler
 
                     Core.SaveSettings();
                 }
+                else
+                {
+                    SetStatus("Not Logged In.");
+                }
             }
             else
             {
@@ -126,13 +173,21 @@ namespace DesktopScrobbler
             {
                 // Make an initial connection to get the user profile (to validate there is a connection)
                 DisplayCurrentUser();
+
+                if (afterLogout)
+                {
+                    // Re-initialize the Scrobbling
+                    ScrobbleFactory.ScrobblingEnabled = true;
+                }
             }
         }
 
         public void RefreshOnlineStatus(OnlineState currentState)
         {
             this.Invoke(new MethodInvoker(()  => {
-            
+
+                linkLogIn.Visible = false;
+
                 if (currentState == OnlineState.Online)
                 {
                     if (!string.IsNullOrEmpty(base.CurrentUser?.Name))
@@ -144,6 +199,11 @@ namespace DesktopScrobbler
                 {
                     lblSignInName.Text = $"(Offline) {Core.Settings.Username}";
                 }            
+                else
+                {
+                    linkLogIn.Visible = true;
+                    SetStatus("Not logged in.");
+                }
 
                 linkProfile.Visible = currentState == OnlineState.Online;
                 linkLogOut.Visible = currentState == OnlineState.Online;
@@ -159,16 +219,6 @@ namespace DesktopScrobbler
                 if(!string.IsNullOrEmpty(base.CurrentUser?.Name))
                 {
                     RefreshOnlineStatus(OnlineState.Online);
-
-                    linkProfile.Click += (o, e) => 
-                    {
-                        base.ViewUserProfile();
-                    };
-
-                    linkLogOut.Click += (o, e) =>
-                    {
-                        // Not sure what this is meant to do - clarify with LastFM
-                    };
                 }
                 else if (!string.IsNullOrEmpty(Core.Settings.Username))
                 {
@@ -191,11 +241,15 @@ namespace DesktopScrobbler
         {
             if(Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) > 0 && ScrobbleFactory.ScrobblingEnabled)
             {
-                SetStatus("Waiting to Scrobble...");
+                SetStatus("Scrobbler is starting up...");
             }
             else if (Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) == 0 && ScrobbleFactory.ScrobblingEnabled)
             {
                 SetStatus("Scrobbling Disabled (No Plugins Available / Enabled)...");
+            }
+            else if (!Core.Settings.UserHasAuthorizedApp)
+            {
+                SetStatus("Not logged in.");
             }
             else
             {
@@ -217,11 +271,17 @@ namespace DesktopScrobbler
             _authUi.Reset();
             _authUi.Text = authorizationReason;
 
-            var authenticationCloseResult = _authUi.ShowDialog();
+            this.Enabled = false;
+
+            SetStatus("Waiting for you to authorize the application...");
+
+            var authenticationCloseResult = _authUi.ShowDialog(this);
+
+            this.Enabled = true;
 
             if (_authUi.DialogResult == DialogResult.OK)
             {
-                SetStatus("Starting up... checking connection to LastFM...");
+                SetStatus("Checking your connection to LastFM...");
 
                 // Verify the result by trying to get a SessionToken
                 var returnedSessionToken = await _apiClient.GetSessionToken();

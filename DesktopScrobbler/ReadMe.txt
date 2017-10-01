@@ -51,3 +51,13 @@ The 'WindowsMediaPlayerScrobblePlugin' contains all the code I've (VorTechS) has
 Because of this, the WindowsMediaPlayerScrobblePlugin had to be moved into the 'Desktop Scrobbler' project and the Remoting will always try to start.
 
 Someone who understands COM/Remoting/Apartment Threading better, might be able to fix this so that the code can be moved back out to an external library.
+
+ScrobblerUi
+===========
+
+The ScrobblerUi inherits the 'NotificationThread' Form (used for the tray menu, and receiving updates from the Scrobbler).
+You may find that you are NOT able to load the designer for the ScrobblerUi due to Visual Studio not being able to find the Base class.
+
+If you need to load the designer, first view the code (right click on the designer in the Solution Explorer), and then modify the constructor, switching out ': NotificationThread' for ': Form'.
+
+Make the changes you need to, and then switch the constructor back to inherit from the NotificationThread form.

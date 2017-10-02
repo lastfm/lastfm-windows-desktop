@@ -45,7 +45,7 @@ namespace WindowsMediaPlayerScrobblePlugin
         {
             get
             {
-                return "Windows Media Player";
+                return "Windows Media Player (DO NOT USE)";
             }
         }
 

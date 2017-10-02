@@ -134,7 +134,6 @@ namespace DesktopScrobbler
                 var pluginInstance = pluginItem.PluginInstance as IScrobbleSource;
 
                 ScrobbleFactory.ScrobblePlugins.Add(pluginInstance);
-                ScrobbleFactory.ScrobblePlugins.Add(new WindowsMediaScrobbleSource(_playerForm));
 
                 if (Core.Settings.ScrobblerStatus.Count(item => item.Identifier == pluginInstance.SourceIdentifier) == 0)
                 {
@@ -143,7 +142,10 @@ namespace DesktopScrobbler
                 }
             }
 
-            if(requiresSettingsToBeSaved)
+            // Manually add the embedded version of the Windows Media Plugin #Issue01
+            ScrobbleFactory.ScrobblePlugins.Add(new WindowsMediaScrobbleSource(_playerForm));
+
+            if (requiresSettingsToBeSaved)
             {
                 Core.SaveSettings();
             }

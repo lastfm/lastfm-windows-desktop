@@ -166,7 +166,7 @@ namespace DesktopScrobbler
                                     _onTrackStarted?.Invoke(mediaDetail);
                                     mediaDetail.StartedPlaying = DateTime.Now;
                                 }
-                                else if (_mediaPlayer.Player.playState !=  WMPLib.WMPPlayState.wmppsPlaying)
+                                else if (_mediaPlayer.Player.playState !=  WMPLib.WMPPlayState.wmppsPlaying && _mediaPlayer.Player.playState != WMPLib.WMPPlayState.wmppsPaused)
                                 {
                                     if (_currentMediaPlayTime > 0)
                                     {

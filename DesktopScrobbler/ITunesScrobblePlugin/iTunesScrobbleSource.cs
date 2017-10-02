@@ -166,7 +166,7 @@ namespace ITunesScrobblePlugin
                                     _onTrackStarted?.Invoke(mediaDetail);
                                     mediaDetail.StartedPlaying = DateTime.Now;
                                 }
-                                else if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStatePlaying)
+                                else if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStatePlaying && iTunesApp.PlayerState != ITPlayerState.ITPlayerStateStopped)
                                 {
                                     if (_currentMediaPlayTime > 0)
                                     {

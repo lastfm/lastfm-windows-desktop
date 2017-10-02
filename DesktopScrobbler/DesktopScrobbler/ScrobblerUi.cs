@@ -190,12 +190,6 @@ namespace DesktopScrobbler
             {
                 // Make an initial connection to get the user profile (to validate there is a connection)
                 DisplayCurrentUser();
-
-                //if (afterLogout)
-                //{
-                //    // Re-initialize the Scrobbling
-                //    ScrobbleFactory.ScrobblingEnabled = true;
-                //}
             }
         }
 
@@ -218,6 +212,7 @@ namespace DesktopScrobbler
                 }            
                 else
                 {
+                    lblSignInName.Text = $"{Core.APPLICATION_TITLE}";
                     linkLogIn.Visible = true;
                     SetStatus("Not logged in.");
                 }
@@ -304,12 +299,19 @@ namespace DesktopScrobbler
                 // Verify the result by trying to get a SessionToken
                 var returnedSessionToken = await base.APIClient.GetSessionToken();
 
-                _isApplicationAuthed = !string.IsNullOrEmpty(returnedSessionToken?.Key);
-
-                if(_isApplicationAuthed)
+                if (returnedSessionToken != null)
                 {
-                    Core.Settings.SessionToken = base.APIClient.SessionToken?.Key;
-                    Core.SaveSettings();
+                    _isApplicationAuthed = !string.IsNullOrEmpty(returnedSessionToken?.Key);
+
+                    if (_isApplicationAuthed)
+                    {
+                        Core.Settings.SessionToken = base.APIClient.SessionToken?.Key;
+                        Core.SaveSettings();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, "Failed to retrieve a session token from LastFM, so authorization cannot take place.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 

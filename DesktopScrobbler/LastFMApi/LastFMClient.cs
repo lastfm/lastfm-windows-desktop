@@ -77,7 +77,16 @@ namespace LastFM.ApiClient
 
         private async Task<bool> Authenticate()
         {
-            var authToken = await GetAuthToken();
+            AuthenticationToken authToken = null;
+
+            try
+            {
+                authToken = await GetAuthToken();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             return !string.IsNullOrEmpty(authToken?.Token);
         }
@@ -241,9 +250,16 @@ namespace LastFM.ApiClient
             baseParameters.Add("token", _authToken.Token);
             AddRequiredRequestParams(baseParameters, "auth.getSession", null, true);
 
-            var userSession = await UnauthenticatedGet<Session>("auth.getSession", baseParameters.ToArray());
-
-            _sessionToken = userSession?.SessionToken;
+            try
+            {
+                var userSession = await UnauthenticatedGet<Session>("auth.getSession", baseParameters.ToArray());
+                _sessionToken = userSession?.SessionToken;
+            }
+            catch (Exception e)
+            {
+                _sessionToken = null;
+                Console.WriteLine(e);
+            }
 
             return _sessionToken;
         }

@@ -262,7 +262,7 @@ namespace LastFM.ApiClient
             
             User currentUserInfo = await UnauthenticatedGet<User>("user.getinfo", baseParameters.ToArray());
 
-            return currentUserInfo.UserDetail;
+            return currentUserInfo?.UserDetail;
         }
 
         public void AddRequiredRequestParams(Dictionary<string, string> requestParameters, string methodName, string sessionKey, bool requiresSignature = true)

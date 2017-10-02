@@ -39,7 +39,15 @@ namespace DesktopScrobbler
             _playerForm.ShowInTaskbar = false;
             _playerForm.WindowState = FormWindowState.Minimized;
 
-            _playerForm.Show();
+            try
+            {
+                _playerForm.Show();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+
             _playerForm.Hide();
 
             linkSettings.Click += (o, ev) => 

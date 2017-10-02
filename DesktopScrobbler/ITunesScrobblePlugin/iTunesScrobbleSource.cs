@@ -14,8 +14,6 @@ namespace ITunesScrobblePlugin
 {
     public class iTunesScrobblePlugin : IScrobbleSource
     {
-        private iTunesApp _iTunesApp = null;
-
         private MediaItem _currentMediaItem = null;
         private MediaItem _lastQueuedItem = null;
 
@@ -24,7 +22,7 @@ namespace ITunesScrobblePlugin
         private object _mediaLock = new object();
 
         private int _minimumScrobbleSeconds = 30;
-        private int _playerPosition = 0;
+        private int _currentMediaPlayTime = 0;
 
         private bool _isIntialized = false;
         private bool _isEnabled = false;
@@ -32,6 +30,7 @@ namespace ITunesScrobblePlugin
 
         private TrackStarted _onTrackStarted = null;
         private TrackEnded _onTrackEnded = null;
+        private ScrobbleTrack _onScrobbleTrack = null;
 
         public Guid SourceIdentifier
         {
@@ -99,12 +98,14 @@ namespace ITunesScrobblePlugin
             }
         }
 
-        public void InitializeSource(int minimumScrobbleSeconds, TrackStarted onTrackStartedCallback, TrackEnded onTrackEndedCallback)
+        public void InitializeSource(int minimumScrobbleSeconds, TrackStarted onTrackStartedCallback, TrackEnded onTrackEndedCallback, ScrobbleTrack onScrobbleTrack)
         {
             _minimumScrobbleSeconds = minimumScrobbleSeconds;
 
             _onTrackStarted = onTrackStartedCallback;
             _onTrackEnded = onTrackEndedCallback;
+            _onScrobbleTrack = onScrobbleTrack;
+
             _isIntialized = true;
 
             try
@@ -116,32 +117,43 @@ namespace ITunesScrobblePlugin
                     {
                         _scrobbleTimer.Stop();
 
+                        iTunesApp iTunesApp = null;
+
                         // Check for the iTunes process to ensure it's running.
                         // If we don't check for it, the plugin would end up launching it, which we don't want
                         Process[] iTunesProcesses = Process.GetProcessesByName("iTunes");
 
-                        if (iTunesProcesses.Length > 0 && _iTunesApp == null)
+                        if (iTunesProcesses.Length > 0)
                         {
-                            _iTunesApp = new iTunesApp();
-                            Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
+                            try
+                            {
+                                iTunesApp = new iTunesApp();
+                                Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
+                            }
+                            catch (Exception)
+                            {
+                                // Ignore this, more than likely the application was in the process of closing while we tried to read from it
+                            }
                         }
-                        else if (iTunesProcesses.Length == 0 && _iTunesApp != null)
+                        else if (iTunesProcesses.Length == 0 && _currentMediaItem != null)
                         {
                             _onTrackEnded(null);
-                            _iTunesApp = null;
+                            _currentMediaItem = null;
                             Console.WriteLine("iTunes process not detected.  Waiting for iTunes process to start...");
                         }
 
-                        if (_iTunesApp != null)
+                        if (iTunesApp != null)
                         {
                             Console.WriteLine("iTunes Plugin checking media state...");
 
                             if (_isEnabled)
                             {
-                                MediaItem mediaDetail = await GetMediaDetail();
+                                MediaItem mediaDetail = await GetMediaDetail(iTunesApp);
 
-                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && _playerPosition > 0)
+                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && iTunesApp.PlayerState == ITPlayerState.ITPlayerStatePlaying)
                                 {
+                                    _currentMediaPlayTime = 1;
+
                                     if (_currentMediaItem != null)
                                     {
                                         _onTrackEnded?.Invoke(_currentMediaItem);
@@ -154,13 +166,30 @@ namespace ITunesScrobblePlugin
                                     _onTrackStarted?.Invoke(mediaDetail);
                                     mediaDetail.StartedPlaying = DateTime.Now;
                                 }
+                                else if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStatePlaying)
+                                {
+                                    if (_currentMediaPlayTime > 0)
+                                    {
+                                        _onTrackEnded?.Invoke(_currentMediaItem);
+                                        _currentMediaItem = null;
+                                    }
+                                    _currentMediaPlayTime = 0;
+                                }
+                                else if (iTunesApp.PlayerState == ITPlayerState.ITPlayerStatePlaying && _currentMediaItem?.TrackName == mediaDetail?.TrackName)
+                                {
+                                    if (_currentMediaPlayTime == 0)
+                                    {
+                                        _onTrackStarted?.Invoke(_currentMediaItem);
+                                    }
+                                    _currentMediaPlayTime++;
+                                }
 
                                 if (_currentMediaItem != null)
                                 {
-                                    Console.WriteLine($"Player position {_playerPosition} of {_currentMediaItem.TrackLength}.");
+                                    Console.WriteLine($"Current media playing time: {_currentMediaPlayTime} of {_currentMediaItem.TrackLength}.");
 
                                     if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 && 
-                                        _playerPosition >= _minimumScrobbleSeconds && _playerPosition >= _currentMediaItem.TrackLength / 2 &&
+                                        _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= _currentMediaItem.TrackLength / 2 &&
                                         mediaDetail?.TrackName != _lastQueuedItem?.TrackName)
                                     {
                                         _lastQueuedItem = mediaDetail;
@@ -170,11 +199,23 @@ namespace ITunesScrobblePlugin
                                             _mediaToScrobble.Add(mediaDetail);
                                             Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
                                         }
+
+                                        _onScrobbleTrack?.Invoke(mediaDetail);
                                     }
                                 }
                             }
 
                             Console.WriteLine("iTunes Plugin checking media state complete.");
+                        }
+                        else if (_currentMediaItem != null)
+                        {
+                            _onTrackEnded?.Invoke(_currentMediaItem);
+                            _currentMediaItem = null;
+                        }
+
+                        if (iTunesApp != null)
+                        {
+                            Marshal.ReleaseComObject(iTunesApp);
                         }
 
                         _scrobbleTimer.Start();
@@ -186,22 +227,13 @@ namespace ITunesScrobblePlugin
             }
         }
 
-        private async Task<MediaItem> GetMediaDetail()
+        private async Task<MediaItem> GetMediaDetail(iTunesApp appInstance)
         {
             MediaItem iTunesMediaDetail = null;
 
             try
             {
-                iTunesMediaDetail = new MediaItem() { TrackName = _iTunesApp?.CurrentTrack?.Name, AlbumName = _iTunesApp?.CurrentTrack?.Album, ArtistName = _iTunesApp?.CurrentTrack?.Artist, TrackLength = Convert.ToDouble(_iTunesApp?.CurrentTrack?.Duration) };
-
-                if (iTunesMediaDetail.TrackName != null)
-                {
-                    _playerPosition = Convert.ToInt32(_iTunesApp?.PlayerPosition);
-                }
-                else
-                {
-                    _playerPosition = 0;
-                }
+                iTunesMediaDetail = new MediaItem() { TrackName = appInstance?.CurrentTrack?.Name, AlbumName = appInstance?.CurrentTrack?.Album, ArtistName = appInstance?.CurrentTrack?.Artist, TrackLength = Convert.ToDouble(appInstance?.CurrentTrack?.Duration) };
             }
             catch (Exception ex)
             {
@@ -214,11 +246,6 @@ namespace ITunesScrobblePlugin
         {
             _scrobbleTimer?.Stop();
             _scrobbleTimer?.Dispose();
-
-            if (_iTunesApp != null)
-            {
-                Marshal.ReleaseComObject(_iTunesApp);
-            }
         }
     }
 }

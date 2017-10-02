@@ -21,7 +21,8 @@ namespace DesktopScrobbler
         private object _mediaLock = new object();
 
         private int _minimumScrobbleSeconds = 30;
-        private int _playerPosition = 0;
+        private int _currentMediaPlayTime = 0;
+
         private WMPLib.WMPPlayState _currentPlaystate = WMPLib.WMPPlayState.wmppsWaiting;
 
         private bool _isIntialized = false;
@@ -30,6 +31,7 @@ namespace DesktopScrobbler
 
         private TrackStarted _onTrackStarted = null;
         private TrackEnded _onTrackEnded = null;
+        private ScrobbleTrack _onScrobbleTrack = null;
 
         private WindowsMediaPlayer _mediaPlayer = null;
 
@@ -107,12 +109,14 @@ namespace DesktopScrobbler
             }
         }
 
-        public void InitializeSource(int minimumScrobbleSeconds, TrackStarted onTrackStartedCallback, TrackEnded onTrackEndedCallback)
+        public void InitializeSource(int minimumScrobbleSeconds, TrackStarted onTrackStartedCallback, TrackEnded onTrackEndedCallback, ScrobbleTrack onScrobbleTrack)
         {
             _minimumScrobbleSeconds = minimumScrobbleSeconds;
 
             _onTrackStarted = onTrackStartedCallback;
             _onTrackEnded = onTrackEndedCallback;
+            _onScrobbleTrack = onScrobbleTrack;
+
             _isIntialized = true;
 
             try
@@ -144,10 +148,12 @@ namespace DesktopScrobbler
 
                             if (_isEnabled)
                             {
-                                MediaItem mediaDetail = await GetMediaDetail();                               
+                                MediaItem mediaDetail = await GetMediaDetail();
 
-                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && _playerPosition > 0 && _currentPlaystate == WMPLib.WMPPlayState.wmppsPlaying)
+                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && _mediaPlayer.Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
                                 {
+                                    _currentMediaPlayTime = 1;
+
                                     if (_currentMediaItem != null)
                                     {
                                         _onTrackEnded?.Invoke(_currentMediaItem);
@@ -159,15 +165,30 @@ namespace DesktopScrobbler
 
                                     _onTrackStarted?.Invoke(mediaDetail);
                                     mediaDetail.StartedPlaying = DateTime.Now;
-
+                                }
+                                else if (_mediaPlayer.Player.playState !=  WMPLib.WMPPlayState.wmppsPlaying)
+                                {
+                                    if (_currentMediaPlayTime > 0)
+                                    {
+                                        _onTrackEnded.Invoke(mediaDetail);
+                                    }
+                                    _currentMediaPlayTime = 0;
+                                }
+                                else if (_mediaPlayer.Player.playState == WMPLib.WMPPlayState.wmppsPlaying && _currentMediaItem?.TrackName == mediaDetail?.TrackName)
+                                {
+                                    if (_currentMediaPlayTime == 0)
+                                    {
+                                        _onTrackStarted?.Invoke(_currentMediaItem);
+                                    }
+                                    _currentMediaPlayTime++;
                                 }
 
                                 if (_currentMediaItem != null)
                                 {
-                                    Console.WriteLine($"Player position {_playerPosition} of {_currentMediaItem.TrackLength}.");
+                                    Console.WriteLine($"Current media playing time: {_currentMediaPlayTime} of {_currentMediaItem.TrackLength}.");
 
-                                    if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 && 
-                                        _playerPosition >= _minimumScrobbleSeconds && _playerPosition >= _currentMediaItem.TrackLength / 2 &&
+                                    if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 &&
+                                        _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= _currentMediaItem.TrackLength / 2 &&
                                         mediaDetail?.TrackName != _lastQueuedItem?.TrackName)
                                     {
                                         _lastQueuedItem = mediaDetail;
@@ -177,11 +198,18 @@ namespace DesktopScrobbler
                                             _mediaToScrobble.Add(mediaDetail);
                                             Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
                                         }
+
+                                        _onScrobbleTrack?.Invoke(mediaDetail);
                                     }
                                 }
                             }
 
                             Console.WriteLine("Windows Media Plugin checking media state complete.");
+                        }
+                        else if (_currentMediaItem != null)
+                        {
+                            _onTrackEnded?.Invoke(_currentMediaItem);
+                            _currentMediaItem = null;
                         }
 
                         _scrobbleTimer.Start();
@@ -207,15 +235,6 @@ namespace DesktopScrobbler
                 if (currentMedia != null)
                 {
                     playerMedia = new MediaItem() { TrackName = currentMedia?.getItemInfo("Title"), AlbumName = currentMedia?.getItemInfo("Album"), ArtistName = currentMedia?.getItemInfo("Artist"), TrackLength = Convert.ToDouble(currentMedia?.duration), AlbumArtist = currentMedia?.getItemInfo("AlbumArtist") };
-
-                    if (playerMedia.TrackName != null)
-                    {
-                        _playerPosition = Convert.ToInt32(_mediaPlayer?.Player?.Ctlcontrols?.currentPosition);
-                    }
-                }
-                else
-                {
-                    _playerPosition = 0;
                 }
             }
             catch (Exception ex)

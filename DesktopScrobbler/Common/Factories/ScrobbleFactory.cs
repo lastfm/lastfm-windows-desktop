@@ -21,8 +21,8 @@ namespace LastFM.Common.Factories
         }
 
         private static LastFMClient _lastFMClient = null;
-        private static Timer _scrobbleTimer = null;
-        private static int _scrobbleTimerSeconds = 0;
+        //private static Timer _scrobbleTimer = null;
+        //private static int _scrobbleTimerSeconds = 0;
 
         private static bool _scrobblingActive = false;
         private static bool _isInitialized = false;
@@ -31,6 +31,7 @@ namespace LastFM.Common.Factories
 
         public delegate void TrackStarted(MediaItem mediaItem);
         public delegate void TrackEnded(MediaItem mediaItem);
+        public delegate void ScrobbleTrack(MediaItem mediaItem);
 
         public delegate void OnlineStatusUpdate(OnlineState currentState, UserInfo latestUserInfo);
 
@@ -53,8 +54,6 @@ namespace LastFM.Common.Factories
 
                 if(_scrobblingActive && _isInitialized)
                 {
-                    _scrobbleTimer.Start();
-
                     foreach (IScrobbleSource scrobbler in ScrobblePlugins)
                     {
                         if (Convert.ToBoolean(Core.Settings.ScrobblerStatus.FirstOrDefault(plugin => plugin.Identifier == scrobbler.SourceIdentifier)?.IsEnabled))
@@ -65,8 +64,6 @@ namespace LastFM.Common.Factories
                 }
                 else if (_isInitialized)
                 {
-                    _scrobbleTimer.Stop();
-
                     foreach(IScrobbleSource plugin in ScrobblePlugins)
                     {
                         plugin.IsEnabled = false;
@@ -80,16 +77,21 @@ namespace LastFM.Common.Factories
             _uiThread = uiThread;
             _lastFMClient = lastFMClient;
 
-            // Get the plugins
+            // Perform any cached scrobbles as soon as the scrobbler starts
+            await CheckScrobbleState();
+
+            // Initialize the plugins, irrespective of enabled state
             foreach (IScrobbleSource source in ScrobblePlugins)
             {
-                source.InitializeSource(MinimumScrobbleSeconds, ScrobbleSource_OnTrackStarted, ScrobbleSource_OnTrackEnded);
+                source.InitializeSource(MinimumScrobbleSeconds, ScrobbleSource_OnTrackStarted, ScrobbleSource_OnTrackEnded, ScrobbleSource_OnScrobbleTrack);
             }
 
-            _scrobbleTimer = new Timer(1000);
-            _scrobbleTimer.Elapsed += ScrobbleTimer_Elapsed;
-
             _isInitialized = true;
+        }
+
+        private static void ScrobbleSource_OnScrobbleTrack(MediaItem mediaItem)
+        {
+            CheckScrobbleState();
         }
 
         private static async void ScrobbleSource_OnTrackStarted(MediaItem mediaItem)
@@ -112,29 +114,6 @@ namespace LastFM.Common.Factories
         {
             _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StoppedListening);
             _uiThread.TrackChanged(null);
-        }
-
-        private static async void ScrobbleTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            _scrobbleTimer.Stop();
-
-            if(_scrobblingActive)
-            {
-                _scrobbleTimerSeconds++;
-
-                if (_scrobbleTimerSeconds >= MinimumScrobbleSeconds)
-                {
-                    _scrobbleTimerSeconds = 0;
-                    await CheckScrobbleState();
-                }
-            }
-
-            //_uiThread?.SetStatus($"Next Scrobble check in {MinimumScrobbleSeconds - _scrobbleTimerSeconds} second(s)");
-
-            if (_scrobblingActive)
-            {
-                _scrobbleTimer.Start();
-            }
         }
 
         private static async Task CheckScrobbleState()
@@ -383,9 +362,6 @@ namespace LastFM.Common.Factories
 
         public static async void Dispose()
         {
-            _scrobbleTimer?.Stop();
-            _scrobbleTimer = null;
-
             // Get the unscrobbled media
             List<MediaItem> sourceMedia = new List<MediaItem>();
 

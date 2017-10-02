@@ -257,7 +257,7 @@ namespace LastFM.Common.Classes
 
             if (_currentMediaItem != null)
             {
-                SetStatus($"Current track: '{trackName}' by '{artistName}'");
+                SetStatus($"Current track: '{trackName}' by '{artistName}'", false);
             }
             else
             {
@@ -265,7 +265,7 @@ namespace LastFM.Common.Classes
             }
         }
 
-        public void SetStatus(string newStatus)
+        public void SetStatus(string newStatus, bool setTrayText=true)
         {
             if (!this.IsDisposed && !this.Disposing)
             {
@@ -276,7 +276,10 @@ namespace LastFM.Common.Classes
                         stripStatus.Text = newStatus;
                     }
 
-                    trayIcon.Text = newStatus;
+                    if (setTrayText)
+                    {
+                        trayIcon.Text = newStatus;
+                    }
                 }));
             }
         }
@@ -335,21 +338,19 @@ namespace LastFM.Common.Classes
 
             ShowCurrentItem();
 
-            string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
-            string artistName = _currentMediaItem?.ArtistName ?? "<unknown>";
-
-            if (Core.Settings.ShowTrackChanges)
+            if (_currentMediaItem != null)
             {
-                string balloonText = $"The track '{trackName}' by '{artistName}' just started playing...";
-                DoBallonTip(ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+                string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
+                string artistName = _currentMediaItem?.ArtistName ?? "<unknown>";
+
+                if (Core.Settings.ShowTrackChanges)
+                {
+                    string balloonText = $"The track '{trackName}' by '{artistName}' just started playing...";
+                    DoBallonTip(ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+                }
             }
 
             ResetLoveTrackState(LoveStatus.Love);
-
-            this.Invoke(new MethodInvoker(() =>
-            {
-                stripLoveTrack.Enabled = true;
-            }));
         }
 
         public void ExitApplication()

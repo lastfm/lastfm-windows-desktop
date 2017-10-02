@@ -11,7 +11,7 @@ namespace LastFM.Common
 
         string SourceDescription { get; }
 
-        void InitializeSource(int minimumScrobbleSeconds, TrackStarted onTrackStartedCallback, TrackEnded onTrackEndedCallback);
+        void InitializeSource(int minimumScrobbleSeconds, TrackStarted onTrackStartedCallback, TrackEnded onTrackEndedCallback, ScrobbleTrack onScrobbleTrack);
 
         bool IsEnabled { get; set; }
 

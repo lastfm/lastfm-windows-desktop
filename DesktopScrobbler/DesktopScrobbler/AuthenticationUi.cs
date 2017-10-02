@@ -13,6 +13,8 @@ namespace DesktopScrobbler
         internal LastFMClient ApiClient = null;
         internal SessionToken ApiSessionToken = null;
 
+        private Timer _authCheckTimer = null;
+
         public AuthenticationUi()
         {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace DesktopScrobbler
             if (await this.ApiClient.GetAuthorisationToken())
             {
                 await ProcessHelper.LaunchUrl(string.Format(APIDetails.UserAuthorizationEndPointUrl, APIDetails.Key, this.ApiClient.AuthenticationToken));
-                btnVerify.Enabled = true;
+                StartAuthCheckTimer();
             }
             else
             {
@@ -37,9 +39,42 @@ namespace DesktopScrobbler
             }
         }
 
+        private void StartAuthCheckTimer()
+        {
+            _authCheckTimer = new Timer();
+            _authCheckTimer.Interval = 1000;
+            _authCheckTimer.Tick += _authCheckTimer_Tick;
+            _authCheckTimer.Start();
+        }
+
+        private async void _authCheckTimer_Tick(object sender, EventArgs e)
+        {
+            _authCheckTimer.Stop();
+
+            var sessionToken = await this.ApiClient.GetSessionToken();
+
+            if (sessionToken != null)
+            {
+                this.ApiSessionToken = sessionToken;
+
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                _authCheckTimer.Start();
+            }
+        }
+
+        private  void ClearVerificationTimer()
+        {
+            _authCheckTimer?.Stop();
+            _authCheckTimer = null;
+        }
+
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Abort;
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
@@ -48,8 +83,6 @@ namespace DesktopScrobbler
             this.Text = string.Empty;
 
             btnAuthorize.Enabled = true;
-            btnVerify.Enabled = false;
-
         }
 
         private void btnVerify_Click(object sender, EventArgs e)

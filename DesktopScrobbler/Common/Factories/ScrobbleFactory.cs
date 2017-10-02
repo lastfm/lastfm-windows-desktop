@@ -111,6 +111,7 @@ namespace LastFM.Common.Factories
         private static void ScrobbleSource_OnTrackEnded(MediaItem mediaItem)
         {
             _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StoppedListening);
+            _uiThread.TrackChanged(null);
         }
 
         private static async void ScrobbleTimer_Elapsed(object sender, ElapsedEventArgs e)

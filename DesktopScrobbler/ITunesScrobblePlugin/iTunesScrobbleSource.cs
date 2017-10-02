@@ -127,6 +127,7 @@ namespace ITunesScrobblePlugin
                         }
                         else if (iTunesProcesses.Length == 0 && _iTunesApp != null)
                         {
+                            _onTrackEnded(null);
                             _iTunesApp = null;
                             Console.WriteLine("iTunes process not detected.  Waiting for iTunes process to start...");
                         }

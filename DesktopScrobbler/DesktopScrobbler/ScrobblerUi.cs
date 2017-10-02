@@ -302,26 +302,17 @@ namespace DesktopScrobbler
                 SetStatus("Checking your connection to LastFM...");
 
                 // Verify the result by trying to get a SessionToken
-                var returnedSessionToken = await base.APIClient.GetSessionToken();
+                _isApplicationAuthed = !string.IsNullOrEmpty(_authUi?.ApiSessionToken.Key);
 
-                if (returnedSessionToken != null)
+                if (_isApplicationAuthed)
                 {
-                    _isApplicationAuthed = !string.IsNullOrEmpty(returnedSessionToken?.Key);
-
-                    if (_isApplicationAuthed)
-                    {
-                        Core.Settings.SessionToken = base.APIClient.SessionToken?.Key;
-                        Core.SaveSettings();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, "Failed to retrieve a session token from LastFM, so authorization cannot take place.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Core.Settings.SessionToken = base.APIClient.SessionToken?.Key;
+                    Core.SaveSettings();
                 }
             }
-            else if (_authUi.DialogResult == DialogResult.Abort)
+            else if (_authUi.DialogResult == DialogResult.Cancel)
             {
-                MessageBox.Show(this, "A valid user account is required for the Desktop Scrobbler to work, so the application will now close.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, "A valid user account is required for the Desktop Scrobbler to operate correctly, so the application will now close.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 base.ExitApplication();
             }
 

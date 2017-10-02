@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AuthenticationUi));
             this.lblInstructions = new System.Windows.Forms.Label();
             this.btnAuthorize = new System.Windows.Forms.Button();
-            this.btnVerify = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
@@ -41,7 +40,7 @@
             // 
             this.lblInstructions.Location = new System.Drawing.Point(117, 9);
             this.lblInstructions.Name = "lblInstructions";
-            this.lblInstructions.Size = new System.Drawing.Size(249, 94);
+            this.lblInstructions.Size = new System.Drawing.Size(249, 84);
             this.lblInstructions.TabIndex = 0;
             this.lblInstructions.Text = resources.GetString("lblInstructions.Text");
             // 
@@ -55,18 +54,6 @@
             this.btnAuthorize.Text = "Authorize";
             this.btnAuthorize.UseVisualStyleBackColor = true;
             this.btnAuthorize.Click += new System.EventHandler(this.btnAuthorize_Click);
-            // 
-            // btnVerify
-            // 
-            this.btnVerify.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnVerify.Enabled = false;
-            this.btnVerify.Location = new System.Drawing.Point(117, 122);
-            this.btnVerify.Name = "btnVerify";
-            this.btnVerify.Size = new System.Drawing.Size(96, 33);
-            this.btnVerify.TabIndex = 2;
-            this.btnVerify.Text = "Verify";
-            this.btnVerify.UseVisualStyleBackColor = true;
-            this.btnVerify.Click += new System.EventHandler(this.btnVerify_Click);
             // 
             // btnClose
             // 
@@ -96,7 +83,6 @@
             this.ClientSize = new System.Drawing.Size(375, 167);
             this.Controls.Add(this.pbLogo);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnVerify);
             this.Controls.Add(this.btnAuthorize);
             this.Controls.Add(this.lblInstructions);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -113,7 +99,6 @@
 
         private System.Windows.Forms.Label lblInstructions;
         private System.Windows.Forms.Button btnAuthorize;
-        private System.Windows.Forms.Button btnVerify;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.PictureBox pbLogo;
     }

@@ -75,7 +75,7 @@ namespace LastFM.ApiClient
 
             HttpClientHandler handler = new HttpClientHandler()
             {
-            };
+            };            
 
             System.Net.Http.HttpClient client = new System.Net.Http.HttpClient(handler);
             client.DefaultRequestHeaders.Add("User-Agent", $"{_userAgentString}{GetApplicationVersionNumber()}");
@@ -100,7 +100,7 @@ namespace LastFM.ApiClient
                     break;
                 }
             }
-
+            
             if (responseMessage != null)
             {
                 var responseString = await responseMessage.Content.ReadAsStringAsync();

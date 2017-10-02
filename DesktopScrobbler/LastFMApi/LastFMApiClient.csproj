@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\ReasonCodes.cs" />
+    <Compile Include="Helpers\HttpCertificateValidationHelper.cs" />
     <Compile Include="Helpers\UnixTimeStampHelper.cs" />
     <Compile Include="HttpClient.cs" />
     <Compile Include="MD5.cs" />

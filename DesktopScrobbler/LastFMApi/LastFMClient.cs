@@ -8,6 +8,8 @@ using LastFM.ApiClient.Models;
 using LastFM.Common.Helpers;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Net;
+using LastFM.ApiClient.Helpers;
 
 namespace LastFM.ApiClient
 {
@@ -55,6 +57,8 @@ namespace LastFM.ApiClient
             }
 
             _baseUrl = lastFmBaseUrl;
+
+            ServicePointManager.ServerCertificateValidationCallback += HttpCertificateValidationHelper.ValidateServerCertificate;
 
             base.HttpResponsePreProcessing = (responseString) =>
             {

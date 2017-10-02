@@ -62,25 +62,25 @@ namespace ITunesScrobblePlugin
 
                 if(_isEnabled)
                 {
-                    _scrobbleTimer.Start();
+                    _scrobbleTimer?.Start();
                 }
                 else
                 {
-                    _scrobbleTimer.Stop();
+                    _scrobbleTimer?.Stop();
                 }
             }
         }
 
         public void ClearQueuedMedia()
         {
-            _scrobbleTimer.Stop();
+            _scrobbleTimer?.Stop();
 
             lock (_mediaLock)
             {
-                _mediaToScrobble.Clear();
+                _mediaToScrobble?.Clear();
             }
 
-            _scrobbleTimer.Start();
+            _scrobbleTimer?.Start();
         }
 
         public List<MediaItem> MediaToScrobble

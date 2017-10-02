@@ -131,7 +131,6 @@ namespace LastFM.Common.Classes
             this.trayIcon.ContextMenuStrip = this.trayMenu;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
             this.trayIcon.Text = "Starting up...";
-            this.trayIcon.Visible = true;
             // 
             // statusStrip1
             // 
@@ -156,7 +155,7 @@ namespace LastFM.Common.Classes
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(222, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(253, 17);
             this.toolStripStatusLabel1.Spring = true;
             // 
             // stripLoveTrack

@@ -42,7 +42,6 @@ namespace LastFM.Common.Classes
 
         private async void NotificationThread_Load(object sender, System.EventArgs e)
         {
-            trayIcon.Visible = true;
             trayIcon.DoubleClick += TrayIcon_DoubleClick;
             trayIcon.BalloonTipClosed += ClearBallonTip;
             trayIcon.MouseClick += (o, ev) =>
@@ -84,8 +83,7 @@ namespace LastFM.Common.Classes
             
             mnuExit.Click += (o, ev) =>
             {
-                _userExiting = true;
-                this.Close();
+                ExitApplication();
             };
 
             mnuLoveThisTrack.Click += (o, ev) =>
@@ -199,6 +197,11 @@ namespace LastFM.Common.Classes
             mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);            
         }
 
+        public void ShowTrayIcon()
+        {
+            trayIcon.Visible = true;
+        }
+
         private void TrayIcon_DoubleClick(object sender, EventArgs e)
         {
             ShowForm();
@@ -303,6 +306,11 @@ namespace LastFM.Common.Classes
             }
         }
 
+        public void HideTrayIcon()
+        {
+            trayIcon.Visible = false;
+        }
+
         private void SettingsUi_FormClosing(object sender, FormClosingEventArgs e)
         {
             _settingsUI = null;
@@ -342,6 +350,12 @@ namespace LastFM.Common.Classes
             {
                 stripLoveTrack.Enabled = true;
             }));
+        }
+
+        public void ExitApplication()
+        {
+            _userExiting = true;
+            this.Close();
         }
     }
 }

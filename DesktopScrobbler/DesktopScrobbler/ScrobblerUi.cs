@@ -84,6 +84,7 @@ namespace DesktopScrobbler
 
                 RefreshOnlineStatus(OnlineState.Offline);
 
+                VerifyAuthorization("Authentication Required");
             }
         }
 
@@ -188,6 +189,8 @@ namespace DesktopScrobbler
 
             if(Core.Settings.UserHasAuthorizedApp)
             {
+                base.ShowTrayIcon();
+
                 // Make an initial connection to get the user profile (to validate there is a connection)
                 DisplayCurrentUser();
             }
@@ -272,6 +275,8 @@ namespace DesktopScrobbler
 
         private async Task<bool> VerifyAuthorization(string authorizationReason)
         {
+            base.HideTrayIcon();
+
             bool _isApplicationAuthed = false;
 
             if (_authUi == null)
@@ -313,6 +318,11 @@ namespace DesktopScrobbler
                 {
                     MessageBox.Show(this, "Failed to retrieve a session token from LastFM, so authorization cannot take place.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+            else if (_authUi.DialogResult == DialogResult.Abort)
+            {
+                MessageBox.Show(this, "A valid user account is required for the Desktop Scrobbler to work, so the application will now close.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                base.ExitApplication();
             }
 
             return _isApplicationAuthed;

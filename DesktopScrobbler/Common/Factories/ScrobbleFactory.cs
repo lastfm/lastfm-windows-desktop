@@ -128,7 +128,7 @@ namespace LastFM.Common.Factories
                 }
             }
 
-            _uiThread?.SetStatus($"Next Scrobble check in {MinimumScrobbleSeconds - _scrobbleTimerSeconds} second(s)");
+            //_uiThread?.SetStatus($"Next Scrobble check in {MinimumScrobbleSeconds - _scrobbleTimerSeconds} second(s)");
 
             if (_scrobblingActive)
             {
@@ -203,6 +203,8 @@ namespace LastFM.Common.Factories
                     // The API wasn't available.  Cache the media so we can try again.
                     CacheOfflineItems(sourceMedia);
                 }
+
+                _uiThread?.ShowCurrentItem();
             }
         }
 
@@ -396,7 +398,15 @@ namespace LastFM.Common.Factories
                 plugin.ClearQueuedMedia();
 
                 plugin.IsEnabled = false;
-                plugin.Dispose();
+
+                try
+                {
+                    plugin.Dispose();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
             CacheOfflineItems(sourceMedia);

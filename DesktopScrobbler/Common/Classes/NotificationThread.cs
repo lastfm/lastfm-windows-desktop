@@ -6,6 +6,7 @@ using LastFM.Common.Helpers;
 using LastFM.Common.Static_Classes;
 using System;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Windows.Forms;
 using static LastFM.ApiClient.LastFMClient;
 
@@ -44,6 +45,14 @@ namespace LastFM.Common.Classes
             trayIcon.Visible = true;
             trayIcon.DoubleClick += TrayIcon_DoubleClick;
             trayIcon.BalloonTipClosed += ClearBallonTip;
+            trayIcon.MouseClick += (o, ev) =>
+            {
+                if ((ev.Button & MouseButtons.Left) != 0)
+                {
+                    MethodInfo methodInfo = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+                    methodInfo?.Invoke(trayIcon, null);
+                }
+            };
 
             stripVersionLabel.Text = $"v{ApplicationUtility.GetApplicationVersionNumber()}";
 
@@ -75,9 +84,6 @@ namespace LastFM.Common.Classes
             
             mnuExit.Click += (o, ev) =>
             {
-                ScrobbleFactory.ScrobblingEnabled = false;
-                ScrobbleFactory.Dispose();
-
                 _userExiting = true;
                 this.Close();
             };
@@ -115,7 +121,7 @@ namespace LastFM.Common.Classes
                 stripLoveTrack.Text = string.Empty;
                 stripLoveTrack.Tag = newState;
 
-                stripLoveTrack.Enabled = _currentUser != null;
+                stripLoveTrack.Enabled = _currentUser != null && _currentMediaItem != null;
 
                 switch(newState)
                 {
@@ -190,7 +196,7 @@ namespace LastFM.Common.Classes
             }
 
             mnuPauseScrobbling.Checked = !ScrobbleFactory.ScrobblingEnabled;
-            mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);
+            mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);            
         }
 
         private void TrayIcon_DoubleClick(object sender, EventArgs e)
@@ -210,6 +216,11 @@ namespace LastFM.Common.Classes
         {
             if ((e.CloseReason == CloseReason.UserClosing && !Core.Settings.CloseToTray) || _userExiting)
             {
+                ScrobbleFactory.ScrobblingEnabled = false;
+                ScrobbleFactory.Dispose();
+
+                _settingsUI?.Close();
+
                 trayIcon.Visible = false;
                 trayIcon.Dispose();
             }
@@ -236,6 +247,21 @@ namespace LastFM.Common.Classes
             this.TopMost = false;
         }
 
+        internal void ShowCurrentItem()
+        {
+            string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
+            string artistName = _currentMediaItem?.ArtistName ?? "<unknown>";
+
+            if (_currentMediaItem != null)
+            {
+                SetStatus($"Current track: '{trackName}' by '{artistName}'");
+            }
+            else
+            {
+                SetStatus("Waiting to Scrobble...");
+            }
+        }
+
         public void SetStatus(string newStatus)
         {
             if (!this.IsDisposed && !this.Disposing)
@@ -254,20 +280,27 @@ namespace LastFM.Common.Classes
 
         protected void ShowSettings()
         {
-            if (_settingsUI == null)
+            bool isAlreadyLoaded = _settingsUI != null;
+
+            if (!isAlreadyLoaded)
             {
                 _settingsUI = new SettingsUi();
                 _settingsUI.FormClosing += SettingsUi_FormClosing;
                 _settingsUI.StartPosition = (this.WindowState == FormWindowState.Normal) ? FormStartPosition.CenterParent : FormStartPosition.CenterScreen;
+
+
+                bool previousScrobbleState = ScrobbleFactory.ScrobblingEnabled;
+
+                ScrobbleFactory.ScrobblingEnabled = false;
+
+                _settingsUI.ShowDialog(this);
+
+                ScrobbleFactory.ScrobblingEnabled = previousScrobbleState;
             }
-
-            bool previousScrobbleState = ScrobbleFactory.ScrobblingEnabled;
-
-            ScrobbleFactory.ScrobblingEnabled = false;
-
-            _settingsUI.ShowDialog(this);
-
-            ScrobbleFactory.ScrobblingEnabled = previousScrobbleState;
+            else
+            {
+                _settingsUI.BringToFront();
+            }
         }
 
         private void SettingsUi_FormClosing(object sender, FormClosingEventArgs e)
@@ -292,6 +325,8 @@ namespace LastFM.Common.Classes
         {
             _currentMediaItem = mediaItem;
 
+            ShowCurrentItem();
+
             string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
             string artistName = _currentMediaItem?.ArtistName ?? "<unknown>";
 
@@ -300,7 +335,6 @@ namespace LastFM.Common.Classes
                 string balloonText = $"The track '{trackName}' by '{artistName}' just started playing...";
                 DoBallonTip(ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
             }
-
 
             ResetLoveTrackState(LoveStatus.Love);
 

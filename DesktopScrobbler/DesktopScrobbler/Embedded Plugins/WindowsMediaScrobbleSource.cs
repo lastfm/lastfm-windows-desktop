@@ -232,7 +232,8 @@ namespace DesktopScrobbler
 
             if (_mediaPlayer != null)
             {
-                Marshal.ReleaseComObject(_mediaPlayer);
+                _mediaPlayer.Close();
+                _mediaPlayer = null;
             }
         }
     }

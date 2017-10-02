@@ -251,7 +251,7 @@ namespace DesktopScrobbler
         {
             if(Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) > 0 && ScrobbleFactory.ScrobblingEnabled)
             {
-                SetStatus("Scrobbler is starting up...");
+                SetStatus("Waiting to Scrobble...");
             }
             else if (Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) == 0 && ScrobbleFactory.ScrobblingEnabled)
             {

@@ -160,17 +160,25 @@ namespace WindowsMediaPlayerScrobblePlugin
         {
             get
             {
+                WMPLib.IWMPControls controls = null;
+
                 // Check if the Remoted OCX has been initialized, and sited
                 if (_oleObject == null || !_isControlLoaded || !_isControlSited)
                 {
                     DoInterfaceAttachment();
                 }
 
-                if ((_oleObject == null))
+                if (_oleObject != null)
                 {
-                    throw new System.Windows.Forms.AxHost.InvalidActiveXStateException("Ctlcontrols", System.Windows.Forms.AxHost.ActiveXInvokeKind.PropertyGet);
+                    try
+                    {
+                        controls = ((WMPLib.IWMPPlayer4)_oleObject).controls;
+                    }
+                    catch (COMException ex)
+                    {
+                    }
                 }
-                return ((WMPLib.IWMPPlayer4)_oleObject).controls;
+                return controls;
             }
         }
 
@@ -180,11 +188,20 @@ namespace WindowsMediaPlayerScrobblePlugin
         {
             get
             {
-                if ((_controlOcx == null))
+                WMPLib.WMPPlayState playState = WMPLib.WMPPlayState.wmppsUndefined;
+
+                if (_controlOcx != null)
                 {
-                    throw new System.Windows.Forms.AxHost.InvalidActiveXStateException("playState", System.Windows.Forms.AxHost.ActiveXInvokeKind.PropertyGet);
+                    try
+                    {
+                        playState = _controlOcx.playState;
+                    }
+                    catch (COMException ex)
+                    {
+                    }
                 }
-                return _controlOcx.playState;
+
+                return playState;
             }
         }
     }   

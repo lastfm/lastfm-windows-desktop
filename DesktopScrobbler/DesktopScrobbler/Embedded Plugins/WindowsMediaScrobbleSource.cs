@@ -22,6 +22,7 @@ namespace DesktopScrobbler
 
         private int _minimumScrobbleSeconds = 30;
         private int _currentMediaPlayTime = 0;
+        private bool _lastStatePaused = false;
 
         private WMPLib.WMPPlayState _currentPlaystate = WMPLib.WMPPlayState.wmppsWaiting;
 
@@ -160,25 +161,35 @@ namespace DesktopScrobbler
                                     }
 
                                     _currentMediaItem = mediaDetail;
+                                    _lastStatePaused = false;
 
                                     Console.WriteLine("Raising Track Change Method.");
 
-                                    _onTrackStarted?.Invoke(mediaDetail);
+                                    _onTrackStarted?.Invoke(mediaDetail, false);
                                     mediaDetail.StartedPlaying = DateTime.Now;
                                 }
-                                else if (_mediaPlayer.Player.playState !=  WMPLib.WMPPlayState.wmppsPlaying && _mediaPlayer.Player.playState != WMPLib.WMPPlayState.wmppsPaused)
+                                else if (_mediaPlayer.Player.playState !=  WMPLib.WMPPlayState.wmppsPlaying)
                                 {
                                     if (_currentMediaPlayTime > 0)
                                     {
                                         _onTrackEnded.Invoke(mediaDetail);
                                     }
-                                    _currentMediaPlayTime = 0;
+
+                                    if (_mediaPlayer.Player.playState != WMPLib.WMPPlayState.wmppsPaused)
+                                    {
+                                        _lastStatePaused = false;
+                                        _currentMediaPlayTime = 0;
+                                    }
+                                    else
+                                    {
+                                        _lastStatePaused = true;
+                                    }
                                 }
                                 else if (_mediaPlayer.Player.playState == WMPLib.WMPPlayState.wmppsPlaying && _currentMediaItem?.TrackName == mediaDetail?.TrackName)
                                 {
-                                    if (_currentMediaPlayTime == 0)
+                                    if (_currentMediaPlayTime == 0 || _lastStatePaused)
                                     {
-                                        _onTrackStarted?.Invoke(_currentMediaItem);
+                                        _onTrackStarted?.Invoke(_currentMediaItem, _lastStatePaused);
                                     }
                                     _currentMediaPlayTime++;
                                 }

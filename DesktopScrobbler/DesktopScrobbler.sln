@@ -16,11 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes and scrawls", "Notes 
 		ReadMe.txt = ReadMe.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITunesScrobblePlugin", "ITunesScrobblePlugin\ITunesScrobblePlugin.csproj", "{670CCD89-8EE5-4637-9185-9299FA1B3019}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginSupport", "PluginSupport\PluginSupport.csproj", "{119A1E78-2110-48B3-A76B-F419A288D8B5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerScrobblePlugin", "WindowsMediaPlayerScrobblePlugin\WindowsMediaPlayerScrobblePlugin.csproj", "{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,18 +40,10 @@ Global
 		{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{670CCD89-8EE5-4637-9185-9299FA1B3019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{670CCD89-8EE5-4637-9185-9299FA1B3019}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{670CCD89-8EE5-4637-9185-9299FA1B3019}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{670CCD89-8EE5-4637-9185-9299FA1B3019}.Release|Any CPU.Build.0 = Release|Any CPU
 		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{119A1E78-2110-48B3-A76B-F419A288D8B5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FAD210C5-8362-4395-BCD2-CAEA70BD6FDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

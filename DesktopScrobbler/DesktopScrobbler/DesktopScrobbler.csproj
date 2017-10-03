@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.iTunesLib">
+      <HintPath>..\Packages\InterOpLibraries\Interop.iTunesLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,6 +57,7 @@
       <DependentUpon>AuthenticationUi.cs</DependentUpon>
     </Compile>
     <Compile Include="COM Interfaces.cs" />
+    <Compile Include="Embedded Plugins\iTunesScrobbleSource.cs" />
     <Compile Include="RemotedWindowsMediaPlayer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -135,10 +140,16 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\heart-empty.png">
+    <Content Include="Resources\love_off_64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\heart-full.png">
+    <Content Include="Resources\love_off_hover_64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\love_on_64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\love_on_hover_64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

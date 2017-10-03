@@ -5,6 +5,7 @@ using LastFM.Common.Factories;
 using LastFM.Common.Helpers;
 using LastFM.Common.Static_Classes;
 using System;
+using System.Drawing;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Windows.Forms;
@@ -20,6 +21,12 @@ namespace LastFM.Common.Classes
 
         private ApiClient.LastFMClient _apiClient = null;
         private MediaItem _currentMediaItem = null;
+
+        private Icon _normalTrayIcon = null;
+        private Icon _greyScaleIcon = null;
+
+        public delegate void ScrobbleStateChanged(bool scrobblingEnabled);
+        public ScrobbleStateChanged OnScrobbleStateChanged { get; set; }
 
         protected UserInfo CurrentUser
         {
@@ -65,10 +72,11 @@ namespace LastFM.Common.Classes
                 ShowForm();
             };
 
-            mnuPauseScrobbling.Click += (o, ev) => 
+            mnuPauseScrobbling.Click += (o, ev) =>
             {
-                mnuPauseScrobbling.Checked = !mnuPauseScrobbling.Checked;
-                ScrobbleFactory.ScrobblingEnabled = !mnuPauseScrobbling.Checked;
+                mnuPauseScrobbling.Checked = !mnuPauseScrobbling.Checked;                
+
+                ScrobbleStateChanging(!mnuPauseScrobbling.Checked);
             };
 
             mnuShowSettings.Click += (o, ev) =>
@@ -104,6 +112,28 @@ namespace LastFM.Common.Classes
             {
                 statusStrip1.Cursor = Cursors.Default;
             };
+
+            _normalTrayIcon = trayIcon.Icon;
+            _greyScaleIcon = await ImageHelper.GreyScaleIcon(_normalTrayIcon);
+
+        }
+
+        protected void ScrobbleStateChanging(bool scrobblingEnabled)
+        {
+            ScrobbleFactory.ScrobblingEnabled = scrobblingEnabled;
+
+            if (!scrobblingEnabled)
+            {
+                trayIcon.Icon = _greyScaleIcon;
+            }
+            else
+            {
+                trayIcon.Icon = _normalTrayIcon;
+            }
+
+            ShowScrobbleState();
+
+            this.OnScrobbleStateChanged?.Invoke(scrobblingEnabled);
         }
 
         public void RefreshLoveTrackState()
@@ -125,12 +155,12 @@ namespace LastFM.Common.Classes
                 {
                     case LoveStatus.Love:
                     {
-                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\heart-empty.png");
+                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_64.png");
                         break;
                     }
                     case LoveStatus.Unlove:
                     {
-                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\heart-full.png");
+                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_64.png");
                         break;
                     }
                 }
@@ -250,18 +280,15 @@ namespace LastFM.Common.Classes
             this.TopMost = false;
         }
 
-        internal void ShowCurrentItem()
+        internal void ShowScrobbleState()
         {
-            string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
-            string artistName = _currentMediaItem?.ArtistName ?? "<unknown>";
-
-            if (_currentMediaItem != null)
+            if (ScrobbleFactory.ScrobblingEnabled)
             {
-                SetStatus($"Current track: '{trackName}' by '{artistName}'", false);
+                SetStatus("Waiting to Scrobble...");
             }
             else
             {
-                SetStatus("Waiting to Scrobble...");
+                SetStatus("Scrobbling is paused.");
             }
         }
 
@@ -332,13 +359,13 @@ namespace LastFM.Common.Classes
             trayIcon.ShowBalloonTip(3000);
         }
 
-        internal void TrackChanged(MediaItem mediaItem)
+        public virtual void TrackChanged(MediaItem mediaItem, bool wasResumed)
         {
             _currentMediaItem = mediaItem;
 
-            ShowCurrentItem();
+            ShowScrobbleState();
 
-            if (_currentMediaItem != null)
+            if (_currentMediaItem != null && !wasResumed)
             {
                 string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
                 string artistName = _currentMediaItem?.ArtistName ?? "<unknown>";

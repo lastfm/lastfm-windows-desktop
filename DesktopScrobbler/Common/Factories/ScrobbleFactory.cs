@@ -29,7 +29,7 @@ namespace LastFM.Common.Factories
 
         private static NotificationThread _uiThread = null;
 
-        public delegate void TrackStarted(MediaItem mediaItem);
+        public delegate void TrackStarted(MediaItem mediaItem, bool wasResumed);
         public delegate void TrackEnded(MediaItem mediaItem);
         public delegate void ScrobbleTrack(MediaItem mediaItem);
 
@@ -94,11 +94,11 @@ namespace LastFM.Common.Factories
             CheckScrobbleState();
         }
 
-        private static async void ScrobbleSource_OnTrackStarted(MediaItem mediaItem)
+        private static async void ScrobbleSource_OnTrackStarted(MediaItem mediaItem, bool wasResumed)
         {
             mediaItem.StartedPlaying = DateTime.Now;
 
-            _uiThread.TrackChanged(mediaItem);
+            _uiThread.TrackChanged(mediaItem, wasResumed);
 
             try
             {
@@ -113,7 +113,7 @@ namespace LastFM.Common.Factories
         private static void ScrobbleSource_OnTrackEnded(MediaItem mediaItem)
         {
             _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StoppedListening);
-            _uiThread.TrackChanged(null);
+            _uiThread.TrackChanged(null, false);
         }
 
         private static async Task CheckScrobbleState()
@@ -184,7 +184,7 @@ namespace LastFM.Common.Factories
                     CacheOfflineItems(sourceMedia);
                 }
 
-                _uiThread?.ShowCurrentItem();
+                _uiThread?.ShowScrobbleState();
             }
         }
 
@@ -202,14 +202,15 @@ namespace LastFM.Common.Factories
         {
             if (Core.Settings.ShowScrobbleNotifications)
             {
-                int successfulScrobbleCount = scrobbleResult.Scrobbles.AcceptedResult.Accepted;
-                int ignoredScrobbles = scrobbleResult.Scrobbles.AcceptedResult.Ignored;
+                //int successfulScrobbleCount = scrobbleResult.Scrobbles.AcceptedResult.Accepted;
+                //int ignoredScrobbles = scrobbleResult.Scrobbles.AcceptedResult.Ignored;
 
-                string resultText = (successfulScrobbleCount > 0) ? $"Accepted: {successfulScrobbleCount}" : "";
-                resultText += !string.IsNullOrEmpty(resultText) && ignoredScrobbles > 0 ? ", " : "";
-                resultText += (ignoredScrobbles > 0) ? $"Ignored: {ignoredScrobbles}" : "";
+                //string resultText = (successfulScrobbleCount > 0) ? $"Accepted: {successfulScrobbleCount}" : "";
+                //resultText += !string.IsNullOrEmpty(resultText) && ignoredScrobbles > 0 ? ", " : "";
+                //resultText += (ignoredScrobbles > 0) ? $"Ignored: {ignoredScrobbles}" : "";
 
-                string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).\r\n{resultText}";
+                //string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).\r\n{resultText}";
+                string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).";
 
                 _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
             }

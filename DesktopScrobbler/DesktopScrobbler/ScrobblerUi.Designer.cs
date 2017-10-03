@@ -37,6 +37,7 @@
             this.linkLogOut = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLogIn = new System.Windows.Forms.LinkLabel();
+            this.lblTrackName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -64,7 +65,7 @@
             this.lblSignInName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSignInName.Location = new System.Drawing.Point(115, 12);
             this.lblSignInName.Name = "lblSignInName";
-            this.lblSignInName.Size = new System.Drawing.Size(184, 23);
+            this.lblSignInName.Size = new System.Drawing.Size(332, 23);
             this.lblSignInName.TabIndex = 3;
             this.lblSignInName.Text = "LastFM Desktop Scrobbler";
             this.lblSignInName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -73,7 +74,7 @@
             // 
             this.linkProfile.Location = new System.Drawing.Point(112, 35);
             this.linkProfile.Name = "linkProfile";
-            this.linkProfile.Size = new System.Drawing.Size(187, 23);
+            this.linkProfile.Size = new System.Drawing.Size(335, 23);
             this.linkProfile.TabIndex = 4;
             this.linkProfile.TabStop = true;
             this.linkProfile.Text = "Click here to view your profile...";
@@ -107,7 +108,7 @@
             this.flowLayoutPanel1.Controls.Add(this.linkLogIn);
             this.flowLayoutPanel1.Controls.Add(this.linkLogOut);
             this.flowLayoutPanel1.Controls.Add(this.linkSettings);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(327, 12);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(462, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(72, 84);
             this.flowLayoutPanel1.TabIndex = 7;
@@ -122,11 +123,22 @@
             this.linkLogIn.Text = "Log In...";
             this.linkLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblTrackName
+            // 
+            this.lblTrackName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTrackName.Location = new System.Drawing.Point(112, 58);
+            this.lblTrackName.Name = "lblTrackName";
+            this.lblTrackName.Size = new System.Drawing.Size(335, 39);
+            this.lblTrackName.TabIndex = 8;
+            this.lblTrackName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTrackName.UseMnemonic = false;
+            // 
             // ScrobblerUi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 132);
+            this.ClientSize = new System.Drawing.Size(546, 131);
+            this.Controls.Add(this.lblTrackName);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.linkProfile);
             this.Controls.Add(this.lblSignInName);
@@ -152,6 +164,7 @@
         private System.Windows.Forms.LinkLabel linkLogOut;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.LinkLabel linkLogIn;
+        private System.Windows.Forms.Label lblTrackName;
     }
 }
 

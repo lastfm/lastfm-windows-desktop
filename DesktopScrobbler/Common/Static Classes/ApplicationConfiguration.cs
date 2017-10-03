@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using LastFM.Common.Classes;
+using LastFM.Common.Factories;
 using Newtonsoft.Json;
 
 namespace LastFM.Common
@@ -23,6 +26,19 @@ namespace LastFM.Common
             {
                 // Not much we can do if we can't read the settings file....
                 Settings = new Settings();
+
+                CheckPluginDefaultStatus();
+            }
+        }
+
+        public static void CheckPluginDefaultStatus()
+        {
+            foreach (IScrobbleSource plugin in ScrobbleFactory.ScrobblePlugins)
+            {
+                if (Settings.ScrobblerStatus.FirstOrDefault(settingsPlugin => settingsPlugin.Identifier == plugin.SourceIdentifier) == null)
+                {
+                    Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = plugin.SourceIdentifier, IsEnabled=true});
+                }
             }
         }
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ITunesScrobblePlugin;
 using LastFM.ApiClient;
 using LastFM.ApiClient.Models;
 using LastFM.Common;
@@ -10,6 +12,7 @@ using LastFM.Common.Static_Classes;
 using LastFM.Common.Factories;
 using PluginSupport;
 using LastFM.Common.Classes;
+using LastFM.Common.Helpers;
 using static LastFM.Common.Factories.ScrobbleFactory;
 
 namespace DesktopScrobbler
@@ -24,16 +27,40 @@ namespace DesktopScrobbler
     {
         private AuthenticationUi _authUi = null;
         private WindowsMediaPlayer _playerForm = null;
+        private Image _normalStateLogo = null;
+        private Image _greyStateLogo = null;
 
         public ScrobblerUi()
         {
             InitializeComponent();
 
             this.Load += ScrobblerUi_Load;
-
         }
 
-        private void ScrobblerUi_Load(object sender, System.EventArgs e)
+        public override void TrackChanged(MediaItem mediaItem, bool wasResumed)
+        {
+            if (mediaItem != null)
+            {
+                string trackName = mediaItem?.TrackName ?? "<unknown>";
+                string artistName = mediaItem?.ArtistName ?? "<unknown>";
+
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    lblTrackName.Text = $"Current track: '{trackName}' by '{artistName}'";
+                }));
+            }
+            else
+            {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    lblTrackName.Text = string.Empty;
+                }));
+            }
+
+            base.TrackChanged(mediaItem, wasResumed);
+        }
+
+        private async void ScrobblerUi_Load(object sender, System.EventArgs e)
         {
             _playerForm = new WindowsMediaPlayer();
             _playerForm.ShowInTaskbar = false;
@@ -60,7 +87,37 @@ namespace DesktopScrobbler
             linkLogOut.Click += LogoutUser;
             linkLogIn.Click += LogInUser;
 
+            base.OnScrobbleStateChanged += UpdateScrobbleState;
+
+            _normalStateLogo = pbLogo.Image;
+            _greyStateLogo = await ImageHelper.GreyScaleImage(_normalStateLogo);
+
+            pbLogo.MouseEnter += (o, ev) =>
+            {
+                if (!string.IsNullOrEmpty(base.APIClient.SessionToken?.Key))
+                {
+                    pbLogo.Cursor = Cursors.Hand;
+                }
+                else
+                {
+                    pbLogo.Cursor = DefaultCursor;
+                }                
+            };
+
+            pbLogo.Click += (o, ev) =>
+            {
+                if (!string.IsNullOrEmpty(base.APIClient.SessionToken?.Key))
+                {
+                    base.ScrobbleStateChanging(!ScrobbleFactory.ScrobblingEnabled);
+                }
+            };
+
             Startup();
+        }
+
+        private void UpdateScrobbleState(bool scrobblingEnabled)
+        {
+            pbLogo.Image = (scrobblingEnabled) ? _normalStateLogo : _greyStateLogo;
         }
 
         private void LogInUser(object sender, EventArgs e)
@@ -118,6 +175,8 @@ namespace DesktopScrobbler
 
             await ScrobbleFactory.Initialize(base.APIClient, this);
 
+            ApplicationConfiguration.CheckPluginDefaultStatus();
+
             ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
 
             ScrobbleFactory.OnlineStatusUpdated += OnlineStatusUpdated;
@@ -152,6 +211,7 @@ namespace DesktopScrobbler
             }
 
             // Manually add the embedded version of the Windows Media Plugin #Issue01
+            ScrobbleFactory.ScrobblePlugins.Add(new iTunesScrobblePlugin());
             ScrobbleFactory.ScrobblePlugins.Add(new WindowsMediaScrobbleSource(_playerForm));
 
             if (requiresSettingsToBeSaved)

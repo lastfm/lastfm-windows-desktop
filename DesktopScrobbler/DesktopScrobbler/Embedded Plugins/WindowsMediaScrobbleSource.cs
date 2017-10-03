@@ -158,7 +158,8 @@ namespace DesktopScrobbler
                                     if (_currentMediaItem != null)
                                     {
                                         _onTrackEnded?.Invoke(_currentMediaItem);
-                                        _onScrobbleTrack?.Invoke(mediaDetail);
+
+                                        _onScrobbleTrack?.Invoke(_currentMediaItem);
                                     }
 
                                     _currentMediaItem = mediaDetail;
@@ -207,7 +208,7 @@ namespace DesktopScrobbler
 
                                         lock (_mediaLock)
                                         {
-                                            _mediaToScrobble.Add(mediaDetail);
+                                            _mediaToScrobble.Add(_currentMediaItem);
                                             Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
                                         }
                                     }

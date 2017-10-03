@@ -35,7 +35,7 @@ namespace DesktopScrobbler
             }
             else
             {
-                MessageBox.Show(this, "Failed to retrieve an authentication token from LastFM, so authorization cannot take place.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, "Failed to retrieve an authentication token from Last.fm, so authorization cannot take place.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

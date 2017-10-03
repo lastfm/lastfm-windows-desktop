@@ -26,6 +26,7 @@ namespace LastFM.Common.Classes
         private Icon _greyScaleIcon = null;
 
         public delegate void ScrobbleStateChanged(bool scrobblingEnabled);
+
         public ScrobbleStateChanged OnScrobbleStateChanged { get; set; }
 
         protected UserInfo CurrentUser
@@ -72,11 +73,11 @@ namespace LastFM.Common.Classes
                 ShowForm();
             };
 
-            mnuPauseScrobbling.Click += (o, ev) =>
+            mnuEnableScrobbling.Click += (o, ev) =>
             {
-                mnuPauseScrobbling.Checked = !mnuPauseScrobbling.Checked;                
+                mnuEnableScrobbling.Checked = !mnuEnableScrobbling.Checked;                
 
-                ScrobbleStateChanging(!mnuPauseScrobbling.Checked);
+                ScrobbleStateChanging(mnuEnableScrobbling.Checked);
             };
 
             mnuShowSettings.Click += (o, ev) =>
@@ -129,6 +130,11 @@ namespace LastFM.Common.Classes
             else
             {
                 trayIcon.Icon = _normalTrayIcon;
+            }
+
+            if (!scrobblingEnabled)
+            {
+                TrackChanged(null, false);
             }
 
             ShowScrobbleState();
@@ -203,7 +209,7 @@ namespace LastFM.Common.Classes
         {
             string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
 
-            mnuShow.Enabled = this.Visible;
+            mnuShow.Enabled = this.WindowState == FormWindowState.Minimized;
 
             mnuLoveThisTrack.Enabled = _currentMediaItem != null && _currentUser != null;
 
@@ -223,7 +229,7 @@ namespace LastFM.Common.Classes
                 mnuLoveThisTrack.Text = "&Love this Track";
             }
 
-            mnuPauseScrobbling.Checked = !ScrobbleFactory.ScrobblingEnabled;
+            mnuEnableScrobbling.Checked = ScrobbleFactory.ScrobblingEnabled;
             mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);            
         }
 
@@ -372,7 +378,7 @@ namespace LastFM.Common.Classes
 
                 if (Core.Settings.ShowTrackChanges)
                 {
-                    string balloonText = $"The track '{trackName}' by '{artistName}' just started playing...";
+                    string balloonText = $"The track '{trackName}' by '{artistName}' is now playing...";
                     DoBallonTip(ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
                 }
             }

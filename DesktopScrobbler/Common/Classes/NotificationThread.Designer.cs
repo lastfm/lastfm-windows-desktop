@@ -10,7 +10,7 @@ namespace LastFM.Common.Classes
         private System.ComponentModel.IContainer components;
         private ToolStripMenuItem mnuShow;
         private ToolStripSeparator toolStripSeparator1;
-        private ToolStripMenuItem mnuPauseScrobbling;
+        private ToolStripMenuItem mnuEnableScrobbling;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem mnuExit;
         private NotifyIcon trayIcon;
@@ -31,7 +31,7 @@ namespace LastFM.Common.Classes
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuShow = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuPauseScrobbling = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuEnableScrobbling = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuShowSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -55,7 +55,7 @@ namespace LastFM.Common.Classes
             this.toolStripSeparator5,
             this.mnuShow,
             this.toolStripSeparator1,
-            this.mnuPauseScrobbling,
+            this.mnuEnableScrobbling,
             this.toolStripSeparator3,
             this.mnuShowSettings,
             this.toolStripSeparator4,
@@ -87,11 +87,13 @@ namespace LastFM.Common.Classes
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(201, 6);
             // 
-            // mnuPauseScrobbling
+            // mnuEnableScrobbling
             // 
-            this.mnuPauseScrobbling.Name = "mnuPauseScrobbling";
-            this.mnuPauseScrobbling.Size = new System.Drawing.Size(204, 22);
-            this.mnuPauseScrobbling.Text = "&Pause";
+            this.mnuEnableScrobbling.Checked = true;
+            this.mnuEnableScrobbling.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mnuEnableScrobbling.Name = "mnuEnableScrobbling";
+            this.mnuEnableScrobbling.Size = new System.Drawing.Size(204, 22);
+            this.mnuEnableScrobbling.Text = "&Enable Scrobbling";
             // 
             // toolStripSeparator3
             // 
@@ -113,7 +115,7 @@ namespace LastFM.Common.Classes
             // 
             this.mnuViewUserProfile.Name = "mnuViewUserProfile";
             this.mnuViewUserProfile.Size = new System.Drawing.Size(204, 22);
-            this.mnuViewUserProfile.Text = "&View your LastFM Profile";
+            this.mnuViewUserProfile.Text = "&View your Last.fm Profile";
             // 
             // toolStripSeparator2
             // 

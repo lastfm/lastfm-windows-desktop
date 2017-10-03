@@ -120,18 +120,95 @@ namespace ITunesScrobblePlugin
                     {
                         _scrobbleTimer.Stop();
 
-                        iTunesApp iTunesApp = null;
-
                         // Check for the iTunes process to ensure it's running.
                         // If we don't check for it, the plugin would end up launching it, which we don't want
                         Process[] iTunesProcesses = Process.GetProcessesByName("iTunes");
 
                         if (iTunesProcesses.Length > 0)
                         {
+                            iTunesApp iTunesApp = null;
+
                             try
                             {
                                 iTunesApp = new iTunesApp();
                                 Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
+
+                                Console.WriteLine("iTunes Plugin checking media state...");
+
+                                if (_isEnabled)
+                                {
+                                    MediaItem mediaDetail = await GetMediaDetail(iTunesApp);
+
+                                    if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && iTunesApp.PlayerState == ITPlayerState.ITPlayerStatePlaying)
+                                    {
+                                        _currentMediaPlayTime = 1;
+
+                                        if (_currentMediaItem != null)
+                                        {
+                                            _onTrackEnded?.Invoke(_currentMediaItem);
+                                            _onScrobbleTrack?.Invoke(mediaDetail);
+                                        }
+
+                                        _currentMediaItem = mediaDetail;
+                                        _lastStatePaused = false;
+
+                                        Console.WriteLine("Raising Track Change Method.");
+
+                                        _onTrackStarted?.Invoke(mediaDetail, false);
+                                        mediaDetail.StartedPlaying = DateTime.Now;
+                                    }
+                                    else if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStatePlaying)
+                                    {
+                                        if (_currentMediaPlayTime > 0)
+                                        {
+                                            _onTrackEnded?.Invoke(_currentMediaItem);
+                                            _currentMediaItem = null;
+                                        }
+
+                                        if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStateStopped)
+                                        {
+                                            _lastStatePaused = false;
+                                            _currentMediaPlayTime = 0;
+                                        }
+                                    }
+                                    else if (iTunesApp.PlayerState == ITPlayerState.ITPlayerStatePlaying && _currentMediaItem?.TrackName == mediaDetail?.TrackName)
+                                    {
+                                        if (_currentMediaPlayTime == 0 || _lastStatePaused)
+                                        {
+                                            _onTrackStarted?.Invoke(_currentMediaItem, _lastStatePaused);
+                                        }
+                                        _currentMediaPlayTime++;
+                                    }
+
+                                    if (_currentMediaItem != null)
+                                    {
+                                        Console.WriteLine($"Current media playing time: {_currentMediaPlayTime} of {_currentMediaItem.TrackLength}.");
+
+                                        if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 &&
+                                            _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 5 * 60) &&
+                                            mediaDetail?.TrackName != _lastQueuedItem?.TrackName)
+                                        {
+                                            _lastQueuedItem = mediaDetail;
+
+                                            lock (_mediaLock)
+                                            {
+                                                _mediaToScrobble.Add(mediaDetail);
+                                                Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (iTunesApp != null)
+                                {
+                                    Marshal.ReleaseComObject(iTunesApp);
+                                }
+
+                                Console.WriteLine("iTunes Plugin checking media state complete.");
+                            }
+                            catch (COMException cEx)
+                            {
+                                
                             }
                             catch (Exception)
                             {
@@ -140,91 +217,9 @@ namespace ITunesScrobblePlugin
                         }
                         else if (iTunesProcesses.Length == 0 && _currentMediaItem != null)
                         {
-                            _onTrackEnded(null);
-                            _currentMediaItem = null;
-                            Console.WriteLine("iTunes process not detected.  Waiting for iTunes process to start...");
-                        }
-
-                        if (iTunesApp != null)
-                        {
-                            Console.WriteLine("iTunes Plugin checking media state...");
-
-                            if (_isEnabled)
-                            {
-                                MediaItem mediaDetail = await GetMediaDetail(iTunesApp);
-
-                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && iTunesApp.PlayerState == ITPlayerState.ITPlayerStatePlaying)
-                                {
-                                    _currentMediaPlayTime = 1;
-
-                                    if (_currentMediaItem != null)
-                                    {
-                                        _onTrackEnded?.Invoke(_currentMediaItem);
-                                    }
-
-                                    _currentMediaItem = mediaDetail;
-                                    _lastStatePaused = false;
-
-                                    Console.WriteLine("Raising Track Change Method.");
-
-                                    _onTrackStarted?.Invoke(mediaDetail, false);
-                                    mediaDetail.StartedPlaying = DateTime.Now;
-                                }
-                                else if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStatePlaying)
-                                {
-                                    if (_currentMediaPlayTime > 0)
-                                    {
-                                        _onTrackEnded?.Invoke(_currentMediaItem);
-                                        _currentMediaItem = null;
-                                    }
-
-                                    if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStateStopped)
-                                    {
-                                        _lastStatePaused = false;
-                                        _currentMediaPlayTime = 0;
-                                    }
-                                }
-                                else if (iTunesApp.PlayerState == ITPlayerState.ITPlayerStatePlaying && _currentMediaItem?.TrackName == mediaDetail?.TrackName)
-                                {
-                                    if (_currentMediaPlayTime == 0 || _lastStatePaused)
-                                    {
-                                        _onTrackStarted?.Invoke(_currentMediaItem, _lastStatePaused);
-                                    }
-                                    _currentMediaPlayTime++;
-                                }
-
-                                if (_currentMediaItem != null)
-                                {
-                                    Console.WriteLine($"Current media playing time: {_currentMediaPlayTime} of {_currentMediaItem.TrackLength}.");
-
-                                    if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 && 
-                                        _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 5*60) &&
-                                        mediaDetail?.TrackName != _lastQueuedItem?.TrackName)
-                                    {
-                                        _lastQueuedItem = mediaDetail;
-
-                                        lock (_mediaLock)
-                                        {
-                                            _mediaToScrobble.Add(mediaDetail);
-                                            Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
-                                        }
-
-                                        _onScrobbleTrack?.Invoke(mediaDetail);
-                                    }
-                                }
-                            }
-
-                            Console.WriteLine("iTunes Plugin checking media state complete.");
-                        }
-                        else if (_currentMediaItem != null)
-                        {
                             _onTrackEnded?.Invoke(_currentMediaItem);
                             _currentMediaItem = null;
-                        }
-
-                        if (iTunesApp != null)
-                        {
-                            Marshal.ReleaseComObject(iTunesApp);
+                            Console.WriteLine("iTunes process not detected.  Waiting for iTunes process to start...");
                         }
 
                         _scrobbleTimer.Start();

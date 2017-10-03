@@ -25,7 +25,7 @@ namespace LastFM.ApiClient
 
         internal Func<string, string> HttpResponsePreProcessing { get; set; }
 
-        private const string _userAgentString = "LastFM Desktop Scrobbler v";
+        private const string _userAgentString = "Last.fm Desktop Scrobbler v";
 
         public string GetApplicationVersionNumber()
         {

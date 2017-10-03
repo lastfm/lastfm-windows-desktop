@@ -158,6 +158,7 @@ namespace DesktopScrobbler
                                     if (_currentMediaItem != null)
                                     {
                                         _onTrackEnded?.Invoke(_currentMediaItem);
+                                        _onScrobbleTrack?.Invoke(mediaDetail);
                                     }
 
                                     _currentMediaItem = mediaDetail;
@@ -209,8 +210,6 @@ namespace DesktopScrobbler
                                             _mediaToScrobble.Add(mediaDetail);
                                             Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
                                         }
-
-                                        _onScrobbleTrack?.Invoke(mediaDetail);
                                     }
                                 }
                             }

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblInstructions.Text" xml:space="preserve">
-    <value>Before you can start Scrobbling to LastFM the Desktop Scrobbler needs your permission to submit information on your behalf.  
+    <value>Before you can start Scrobbling to Last.fm the Desktop Scrobbler needs your permission to submit information on your behalf.  
 
 Click on 'Authorize' to start this process, then click on 'Authorize' in the browser window that follows.
 </value>

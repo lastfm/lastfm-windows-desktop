@@ -67,7 +67,7 @@
             this.lblSignInName.Name = "lblSignInName";
             this.lblSignInName.Size = new System.Drawing.Size(332, 23);
             this.lblSignInName.TabIndex = 3;
-            this.lblSignInName.Text = "LastFM Desktop Scrobbler";
+            this.lblSignInName.Text = "Last.fm Desktop Scrobbler";
             this.lblSignInName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkProfile
@@ -147,7 +147,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "ScrobblerUi";
-            this.Text = "LastFM Desktop Scrobbler";
+            this.Text = "Last.fm Desktop Scrobbler";
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

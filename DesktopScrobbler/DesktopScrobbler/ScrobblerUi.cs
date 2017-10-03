@@ -170,7 +170,7 @@ namespace DesktopScrobbler
                 ScrobbleFactory.OnlineStatusUpdated -= OnlineStatusUpdated;
             }
 
-            SetStatus("Checking connection to LastFM...");
+            SetStatus("Checking connection to Last.fm...");
             await ConnectToLastFM(afterLogOut);
 
             await ScrobbleFactory.Initialize(base.APIClient, this);
@@ -305,7 +305,7 @@ namespace DesktopScrobbler
             catch (Exception)
             {
                 RefreshOnlineStatus(OnlineState.Offline);
-                SetStatus("A connection to LastFM is not available.");
+                SetStatus("A connection to Last.fm is not available.");
             }
             finally
             {
@@ -359,7 +359,7 @@ namespace DesktopScrobbler
 
             if (_authUi.DialogResult == DialogResult.OK)
             {
-                SetStatus("Checking your connection to LastFM...");
+                SetStatus("Checking your connection to Last.fm...");
 
                 // Verify the result by trying to get a SessionToken
                 _isApplicationAuthed = !string.IsNullOrEmpty(_authUi?.ApiSessionToken.Key);

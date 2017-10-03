@@ -125,10 +125,18 @@ namespace LastFM.ApiClient
             {
                 var baseParameters = new Dictionary<string, string>();
 
-                baseParameters.Add("artist", mediaItem.ArtistName);
-                baseParameters.Add("album", mediaItem.AlbumName);
                 baseParameters.Add("track", mediaItem.TrackName);
-                baseParameters.Add("duration", mediaItem.TrackLength.ToString());
+                baseParameters.Add("artist", mediaItem.ArtistName);
+
+                if (!string.IsNullOrEmpty(mediaItem.AlbumName))
+                {
+                    baseParameters.Add("album", mediaItem.AlbumName);
+                }
+
+                if (mediaItem.TrackLength > 0)
+                {
+                    baseParameters.Add("duration", mediaItem.TrackLength.ToString());
+                }
 
                 AddRequiredRequestParams(baseParameters, updateMethod, _sessionToken.Key);
 

@@ -202,7 +202,7 @@ namespace LastFM.Common.Factories
         {
             if (Core.Settings.ShowScrobbleNotifications)
             {
-                //int successfulScrobbleCount = scrobbleResult.Scrobbles.AcceptedResult.Accepted;
+                int successfulScrobbleCount = scrobbleResult.Scrobbles.AcceptedResult.Accepted;
                 //int ignoredScrobbles = scrobbleResult.Scrobbles.AcceptedResult.Ignored;
 
                 //string resultText = (successfulScrobbleCount > 0) ? $"Accepted: {successfulScrobbleCount}" : "";
@@ -210,9 +210,13 @@ namespace LastFM.Common.Factories
                 //resultText += (ignoredScrobbles > 0) ? $"Ignored: {ignoredScrobbles}" : "";
 
                 //string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).\r\n{resultText}";
-                string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).";
 
-                _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+                if (successfulScrobbleCount > 0)
+                {
+                    string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).";
+
+                    _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+                }
             }
         }
 

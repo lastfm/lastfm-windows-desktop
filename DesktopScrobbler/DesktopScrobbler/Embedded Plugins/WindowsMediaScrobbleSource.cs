@@ -201,7 +201,7 @@ namespace DesktopScrobbler
                                     Console.WriteLine($"Current media playing time: {_currentMediaPlayTime} of {_currentMediaItem.TrackLength}.");
 
                                     if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 &&
-                                        _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 5 * 60) &&
+                                        _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 4 * 60) &&
                                         mediaDetail?.TrackName != _lastQueuedItem?.TrackName)
                                     {
                                         _lastQueuedItem = mediaDetail;

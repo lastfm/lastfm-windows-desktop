@@ -5,6 +5,7 @@ using LastFM.Common.Factories;
 using LastFM.Common.Helpers;
 using LastFM.Common.Static_Classes;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Net.NetworkInformation;
 using System.Reflection;
@@ -24,6 +25,8 @@ namespace LastFM.Common.Classes
 
         private Icon _normalTrayIcon = null;
         private Icon _greyScaleIcon = null;
+
+        private List<PopupNotificationUi> _notifications = new List<PopupNotificationUi>();
 
         public delegate void ScrobbleStateChanged(bool scrobblingEnabled);
 
@@ -357,12 +360,9 @@ namespace LastFM.Common.Classes
             ProcessHelper.LaunchUrl(_currentUser.Url);
         }
 
-        internal void DoBallonTip(ToolTipIcon icon, string title, string text)
-        {            
-            trayIcon.BalloonTipText = text;
-            trayIcon.BalloonTipTitle = title;
-            trayIcon.BalloonTipIcon = icon;
-            trayIcon.ShowBalloonTip(3000);
+        internal void ShowNotification(string title, string text)
+        {
+            NotificationHelper.ShowNotification(this, title, text);
         }
 
         public virtual void TrackChanged(MediaItem mediaItem, bool wasResumed)
@@ -379,7 +379,7 @@ namespace LastFM.Common.Classes
                 if (Core.Settings.ShowTrackChanges)
                 {
                     string balloonText = $"The track '{trackName}' by '{artistName}' is now playing...";
-                    DoBallonTip(ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+                    ShowNotification(Core.APPLICATION_TITLE, balloonText);
                 }
             }
 
@@ -391,5 +391,6 @@ namespace LastFM.Common.Classes
             _userExiting = true;
             this.Close();
         }
+
     }
 }

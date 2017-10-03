@@ -194,7 +194,7 @@ namespace LastFM.Common.Factories
             {
                 string balloonText = $"Failed to scrobble {sourceMedia.Count()} track(s).";
 
-                _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Warning, Core.APPLICATION_TITLE, balloonText);
+                _uiThread.ShowNotification(Core.APPLICATION_TITLE, balloonText);
             }
         }
 
@@ -215,7 +215,7 @@ namespace LastFM.Common.Factories
                 {
                     string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).";
 
-                    _uiThread.DoBallonTip(System.Windows.Forms.ToolTipIcon.Info, Core.APPLICATION_TITLE, balloonText);
+                    _uiThread.ShowNotification(Core.APPLICATION_TITLE, balloonText);
                 }
             }
         }

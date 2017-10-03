@@ -126,52 +126,66 @@ namespace ITunesScrobblePlugin
 
                         if (iTunesProcesses.Length > 0)
                         {
-                            iTunesApp iTunesApp = null;
-
                             try
                             {
-                                iTunesApp = new iTunesApp();
-                                Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
-
-                                Console.WriteLine("iTunes Plugin checking media state...");
 
                                 if (_isEnabled)
                                 {
+                                    iTunesApp iTunesApp = new iTunesApp();
+                                    Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
+
+                                    Console.WriteLine("iTunes Plugin checking media state...");
                                     MediaItem mediaDetail = await GetMediaDetail(iTunesApp);
 
-                                    if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && iTunesApp.PlayerState == ITPlayerState.ITPlayerStatePlaying)
+                                    ITPlayerState playerState = iTunesApp.PlayerState;
+                                    double playerPosition = iTunesApp.PlayerPosition;
+
+                                    bool hasMedia = mediaDetail != null;
+                                    bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail.TrackLength;
+                                    bool hasTrackChanged = _currentMediaItem?.TrackName != mediaDetail?.TrackName;
+                                    bool isNotAlreadyQueued = _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0;
+                                    bool isPlaying = playerState == ITPlayerState.ITPlayerStatePlaying;
+                                    bool isPaused = playerState == ITPlayerState.ITPlayerStateStopped;
+
+                                    bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 4 * 60);
+                                    bool isNotLastQueuedItem = mediaDetail?.TrackName != _lastQueuedItem?.TrackName;
+
+                                    Console.WriteLine($"Windows Media Player Plugin: Position {playerPosition} of { mediaDetail.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
+
+                                    if ((isPlaying && hasMedia && isNotAlreadyQueued && hasTrackChanged) || hasReachedTrackEnd)
                                     {
+                                        _lastStatePaused = false;
                                         _currentMediaPlayTime = 1;
 
                                         if (_currentMediaItem != null)
                                         {
                                             _onTrackEnded?.Invoke(_currentMediaItem);
-                                            _onScrobbleTrack?.Invoke(mediaDetail);
-                                        }
 
-                                        _currentMediaItem = mediaDetail;
-                                        _lastStatePaused = false;
+                                            _onScrobbleTrack?.Invoke(_currentMediaItem);
+                                        }
 
                                         Console.WriteLine("Raising Track Change Method.");
 
-                                        _onTrackStarted?.Invoke(mediaDetail, false);
-                                        mediaDetail.StartedPlaying = DateTime.Now;
-                                    }
-                                    else if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStatePlaying)
-                                    {
-                                        if (_currentMediaPlayTime > 0)
+                                        if (mediaDetail?.TrackName != _currentMediaItem?.TrackName)
                                         {
-                                            _onTrackEnded?.Invoke(_currentMediaItem);
-                                            _currentMediaItem = null;
+                                            _currentMediaItem = mediaDetail;
+                                            _onTrackStarted?.Invoke(mediaDetail, false);
+                                            mediaDetail.StartedPlaying = DateTime.Now;
+                                        }
+                                    }
+                                    else if (isPlaying && hasMedia && isNotAlreadyQueued && isNotLastQueuedItem && canScrobble)
+                                    {
+                                        _lastQueuedItem = mediaDetail;
+
+                                        lock (_mediaLock)
+                                        {
+                                            _mediaToScrobble.Add(_currentMediaItem);
                                         }
 
-                                        if (iTunesApp.PlayerState != ITPlayerState.ITPlayerStateStopped)
-                                        {
-                                            _lastStatePaused = false;
-                                            _currentMediaPlayTime = 0;
-                                        }
+                                        Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
                                     }
-                                    else if (iTunesApp.PlayerState == ITPlayerState.ITPlayerStatePlaying && _currentMediaItem?.TrackName == mediaDetail?.TrackName)
+                                    // The media player is playing, and is still playing the same track
+                                    else if (isPlaying && !hasTrackChanged)
                                     {
                                         if (_currentMediaPlayTime == 0 || _lastStatePaused)
                                         {
@@ -179,40 +193,42 @@ namespace ITunesScrobblePlugin
                                         }
                                         _currentMediaPlayTime++;
                                     }
-
-                                    if (_currentMediaItem != null)
+                                    // The media player is not playing
+                                    else if (!isPlaying)
                                     {
-                                        Console.WriteLine($"Current media playing time: {_currentMediaPlayTime} of {_currentMediaItem.TrackLength}.");
-
-                                        if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 &&
-                                            _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 4 * 60) &&
-                                            mediaDetail?.TrackName != _lastQueuedItem?.TrackName)
+                                        // If we had been playing, invoke the Track Ended callback
+                                        if (_currentMediaPlayTime > 0)
                                         {
-                                            _lastQueuedItem = mediaDetail;
+                                            _onTrackEnded.Invoke(mediaDetail);
+                                        }
 
-                                            lock (_mediaLock)
-                                            {
-                                                _mediaToScrobble.Add(mediaDetail);
-                                                Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
-                                            }
+                                        // Set the persisted pause state
+                                        _lastStatePaused = isPaused;
+
+                                        // If we're not paused (FF, Rewind)
+                                        if (!isPaused)
+                                        {
+                                            // Reset the state tracking how long we played this track for
+                                            _lastStatePaused = false;
+                                            _currentMediaPlayTime = 0;
                                         }
                                     }
-                                }
-
-                                if (iTunesApp != null)
-                                {
-                                    Marshal.ReleaseComObject(iTunesApp);
+                                
+                                    if (iTunesApp != null)
+                                    {
+                                        Marshal.ReleaseComObject(iTunesApp);
+                                    }
                                 }
 
                                 Console.WriteLine("iTunes Plugin checking media state complete.");
                             }
                             catch (COMException cEx)
                             {
-                                
+                                // Ignore the COM exception, the library is probably just tearing down.
                             }
                             catch (Exception)
                             {
-                                // Ignore this, more than likely the application was in the process of closing while we tried to read from it
+                                // Some other exception occured, at some point consider logging it...?
                             }
                         }
                         else if (iTunesProcesses.Length == 0 && _currentMediaItem != null)

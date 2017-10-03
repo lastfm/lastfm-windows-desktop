@@ -8,6 +8,7 @@ using static LastFM.Common.Factories.ScrobbleFactory;
 using LastFM.ApiClient.Models;
 using System.Diagnostics;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace DesktopScrobbler
 {
@@ -151,8 +152,25 @@ namespace DesktopScrobbler
                             {
                                 MediaItem mediaDetail = await GetMediaDetail();
 
-                                if (mediaDetail != null && _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0 && _currentMediaItem?.TrackName != mediaDetail?.TrackName && _mediaPlayer.Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
+                                WMPPlayState playerState = _mediaPlayer.Player.playState;
+                                double playerPosition = _mediaPlayer.Player.Ctlcontrols.currentPosition;
+
+                                bool hasMedia = mediaDetail != null;
+                                bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail.TrackLength;
+                                bool hasTrackChanged = _currentMediaItem?.TrackName != mediaDetail?.TrackName;
+                                bool isNotAlreadyQueued = _mediaToScrobble.Count(mediaItem => mediaItem.TrackName == mediaDetail?.TrackName) == 0;
+                                bool isPlaying = playerState == WMPPlayState.wmppsPlaying;
+                                bool isPaused = playerState == WMPPlayState.wmppsPaused;
+
+                                bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 4 * 60);
+                                bool isNotLastQueuedItem = mediaDetail?.TrackName != _lastQueuedItem?.TrackName;
+
+
+                                Console.WriteLine($"Windows Media Player Plugin: Position {playerPosition} of { mediaDetail.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
+
+                                if ((isPlaying && hasMedia && isNotAlreadyQueued && hasTrackChanged) || hasReachedTrackEnd)
                                 {
+                                    _lastStatePaused = false;
                                     _currentMediaPlayTime = 1;
 
                                     if (_currentMediaItem != null)
@@ -162,32 +180,28 @@ namespace DesktopScrobbler
                                         _onScrobbleTrack?.Invoke(_currentMediaItem);
                                     }
 
-                                    _currentMediaItem = mediaDetail;
-                                    _lastStatePaused = false;
-
                                     Console.WriteLine("Raising Track Change Method.");
 
-                                    _onTrackStarted?.Invoke(mediaDetail, false);
-                                    mediaDetail.StartedPlaying = DateTime.Now;
-                                }
-                                else if (_mediaPlayer.Player.playState !=  WMPLib.WMPPlayState.wmppsPlaying)
-                                {
-                                    if (_currentMediaPlayTime > 0)
+                                    if(mediaDetail?.TrackName != _currentMediaItem?.TrackName)
                                     {
-                                        _onTrackEnded.Invoke(mediaDetail);
+                                        _currentMediaItem = mediaDetail;
+                                        _onTrackStarted?.Invoke(mediaDetail, false);
+                                        mediaDetail.StartedPlaying = DateTime.Now;
+                                    }
+                                }
+                                else if (isPlaying && hasMedia && isNotAlreadyQueued && isNotLastQueuedItem && canScrobble)
+                                {
+                                    _lastQueuedItem = mediaDetail;
+
+                                    lock (_mediaLock)
+                                    {
+                                        _mediaToScrobble.Add(_currentMediaItem);
                                     }
 
-                                    if (_mediaPlayer.Player.playState != WMPLib.WMPPlayState.wmppsPaused)
-                                    {
-                                        _lastStatePaused = false;
-                                        _currentMediaPlayTime = 0;
-                                    }
-                                    else
-                                    {
-                                        _lastStatePaused = true;
-                                    }
+                                    Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
                                 }
-                                else if (_mediaPlayer.Player.playState == WMPLib.WMPPlayState.wmppsPlaying && _currentMediaItem?.TrackName == mediaDetail?.TrackName)
+                                // The media player is playing, and is still playing the same track
+                                else if (isPlaying && !hasTrackChanged)
                                 {
                                     if (_currentMediaPlayTime == 0 || _lastStatePaused)
                                     {
@@ -195,22 +209,24 @@ namespace DesktopScrobbler
                                     }
                                     _currentMediaPlayTime++;
                                 }
-
-                                if (_currentMediaItem != null)
+                                // The media player is not playing
+                                else if (!isPlaying)
                                 {
-                                    Console.WriteLine($"Current media playing time: {_currentMediaPlayTime} of {_currentMediaItem.TrackLength}.");
-
-                                    if (mediaDetail != null && _mediaToScrobble.Count(item => item.TrackName == mediaDetail?.TrackName) == 0 &&
-                                        _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 4 * 60) &&
-                                        mediaDetail?.TrackName != _lastQueuedItem?.TrackName)
+                                    // If we had been playing, invoke the Track Ended callback
+                                    if (_currentMediaPlayTime > 0)
                                     {
-                                        _lastQueuedItem = mediaDetail;
+                                        _onTrackEnded.Invoke(mediaDetail);
+                                    }
 
-                                        lock (_mediaLock)
-                                        {
-                                            _mediaToScrobble.Add(_currentMediaItem);
-                                            Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
-                                        }
+                                    // Set the persisted pause state
+                                    _lastStatePaused = isPaused;
+
+                                    // If we're not paused (FF, Rewind)
+                                    if (!isPaused)
+                                    {
+                                        // Reset the state tracking how long we played this track for
+                                        _lastStatePaused = false;
+                                        _currentMediaPlayTime = 0;
                                     }
                                 }
                             }

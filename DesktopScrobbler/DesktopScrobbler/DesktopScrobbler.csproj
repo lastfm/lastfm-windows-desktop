@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.iTunesLib">
       <HintPath>..\Packages\InterOpLibraries\Interop.iTunesLib.dll</HintPath>
@@ -98,6 +101,7 @@
     <EmbeddedResource Include="WindowsMediaPlayer.resx">
       <DependentUpon>WindowsMediaPlayer.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

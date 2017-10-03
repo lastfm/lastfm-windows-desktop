@@ -63,69 +63,69 @@ namespace LastFM.Common.Classes
             this.toolStripSeparator2,
             this.mnuExit});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(205, 166);
+            this.trayMenu.Size = new System.Drawing.Size(206, 166);
             // 
             // mnuLoveThisTrack
             // 
             this.mnuLoveThisTrack.Name = "mnuLoveThisTrack";
-            this.mnuLoveThisTrack.Size = new System.Drawing.Size(204, 22);
+            this.mnuLoveThisTrack.Size = new System.Drawing.Size(205, 22);
             this.mnuLoveThisTrack.Text = "&Love this Track";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(202, 6);
             // 
             // mnuShow
             // 
             this.mnuShow.Name = "mnuShow";
-            this.mnuShow.Size = new System.Drawing.Size(204, 22);
+            this.mnuShow.Size = new System.Drawing.Size(205, 22);
             this.mnuShow.Text = "&Show";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(202, 6);
             // 
             // mnuEnableScrobbling
             // 
             this.mnuEnableScrobbling.Checked = true;
             this.mnuEnableScrobbling.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mnuEnableScrobbling.Name = "mnuEnableScrobbling";
-            this.mnuEnableScrobbling.Size = new System.Drawing.Size(204, 22);
+            this.mnuEnableScrobbling.Size = new System.Drawing.Size(205, 22);
             this.mnuEnableScrobbling.Text = "&Enable Scrobbling";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(202, 6);
             // 
             // mnuShowSettings
             // 
             this.mnuShowSettings.Name = "mnuShowSettings";
-            this.mnuShowSettings.Size = new System.Drawing.Size(204, 22);
+            this.mnuShowSettings.Size = new System.Drawing.Size(205, 22);
             this.mnuShowSettings.Text = "Show Se&ttings";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(202, 6);
             // 
             // mnuViewUserProfile
             // 
             this.mnuViewUserProfile.Name = "mnuViewUserProfile";
-            this.mnuViewUserProfile.Size = new System.Drawing.Size(204, 22);
+            this.mnuViewUserProfile.Size = new System.Drawing.Size(205, 22);
             this.mnuViewUserProfile.Text = "&View your Last.fm Profile";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(202, 6);
             // 
             // mnuExit
             // 
             this.mnuExit.Name = "mnuExit";
-            this.mnuExit.Size = new System.Drawing.Size(204, 22);
+            this.mnuExit.Size = new System.Drawing.Size(205, 22);
             this.mnuExit.Text = "E&xit";
             // 
             // trayIcon
@@ -141,7 +141,7 @@ namespace LastFM.Common.Classes
             this.toolStripStatusLabel1,
             this.stripLoveTrack,
             this.stripVersionLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 143);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 105);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(444, 22);
             this.statusStrip1.SizingGrip = false;
@@ -178,7 +178,7 @@ namespace LastFM.Common.Classes
             // 
             // NotificationThread
             // 
-            this.ClientSize = new System.Drawing.Size(444, 165);
+            this.ClientSize = new System.Drawing.Size(444, 127);
             this.Controls.Add(this.statusStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "NotificationThread";

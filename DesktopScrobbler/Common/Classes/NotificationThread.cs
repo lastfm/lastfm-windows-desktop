@@ -256,8 +256,12 @@ namespace LastFM.Common.Classes
 
         private void NotificationThread_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((e.CloseReason == CloseReason.UserClosing && !Core.Settings.CloseToTray) || _userExiting)
+            bool canCloseApp = (e.CloseReason == CloseReason.UserClosing && !Core.Settings.CloseToTray) || _userExiting || e.CloseReason != CloseReason.UserClosing;
+
+            if (canCloseApp)
             {
+                NotificationHelper.ClearNotifications();
+
                 ScrobbleFactory.ScrobblingEnabled = false;
                 ScrobbleFactory.Dispose();
 

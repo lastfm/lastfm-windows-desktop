@@ -137,8 +137,8 @@ namespace ITunesScrobblePlugin
                                     Console.WriteLine("iTunes Plugin checking media state...");
                                     MediaItem mediaDetail = await GetMediaDetail(iTunesApp);
 
-                                    ITPlayerState playerState = iTunesApp.PlayerState;
-                                    double playerPosition = iTunesApp.PlayerPosition;
+                                    ITPlayerState playerState = iTunesApp?.PlayerState ?? ITPlayerState.ITPlayerStateStopped;
+                                    double playerPosition = iTunesApp?.PlayerPosition ?? 0;
 
                                     bool hasMedia = mediaDetail != null;
                                     bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail.TrackLength;
@@ -146,9 +146,9 @@ namespace ITunesScrobblePlugin
                                     bool isPlaying = playerState == ITPlayerState.ITPlayerStatePlaying;
                                     bool isPaused = playerState == ITPlayerState.ITPlayerStateStopped;
 
-                                    bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(_currentMediaItem.TrackLength / 2, 4 * 60);
+                                    bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60);
 
-                                    Console.WriteLine($"iTunes Media Player Plugin: Position {playerPosition} of { mediaDetail.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
+                                    Console.WriteLine($"iTunes Media Player Plugin: Position {playerPosition} of { mediaDetail?.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
 
                                     if ((isPlaying && hasMedia && hasTrackChanged) || hasReachedTrackEnd)
                                     {
@@ -202,7 +202,7 @@ namespace ITunesScrobblePlugin
                                         // If we had been playing, invoke the Track Ended callback
                                         if (_currentMediaPlayTime > 0)
                                         {
-                                            _onTrackEnded.Invoke(mediaDetail);
+                                            _onTrackEnded?.Invoke(mediaDetail);
                                         }
 
                                         // Set the persisted pause state
@@ -241,12 +241,19 @@ namespace ITunesScrobblePlugin
                             Console.WriteLine("iTunes process not detected.  Waiting for iTunes process to start...");
                         }
 
-                        _scrobbleTimer.Start();
+                        _scrobbleTimer?.Start();
                     };                
             }
             catch (Exception ex)
             {
-                _scrobbleTimer.Start();
+                try
+                {
+                    _scrobbleTimer?.Start();
+                }
+                catch (Exception exception)
+                {
+                    // Can occur if you close the application as it's starting up
+                }
             }
         }
 

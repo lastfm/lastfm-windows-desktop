@@ -57,6 +57,7 @@
             this.lblText.Size = new System.Drawing.Size(206, 55);
             this.lblText.TabIndex = 8;
             this.lblText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblText.UseMnemonic = false;
             // 
             // pbLogo
             // 
@@ -77,6 +78,7 @@
             this.lblTitle.TabIndex = 7;
             this.lblTitle.Text = "Last.fm Desktop Scrobbler";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitle.UseMnemonic = false;
             // 
             // PopupNotificationUi
             // 

@@ -13,6 +13,8 @@ namespace LastFM.Common
         public static string UserSettingsPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\LastFM\\Desktop Scrobbler\\v3\\Settings\\";
         public static string UserCachePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\LastFM\\Desktop Scrobbler\\v3\\Cache\\";
 
+        public static bool ApplicationIsShuttingDown = false;
+
         public static Settings Settings => ApplicationConfiguration.Settings;
 
         public static void InitializeSettings()

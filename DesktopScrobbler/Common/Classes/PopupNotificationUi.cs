@@ -19,6 +19,12 @@ namespace LastFM.Common.Classes
         public PopupNotificationUi()
         {
             InitializeComponent();
+            this.FormClosing += OnFormClosing;
+        }
+
+        private void OnFormClosing(object sender, FormClosingEventArgs formClosingEventArgs)
+        {
+            
         }
 
         public PopupNotificationUi(string title, string text)

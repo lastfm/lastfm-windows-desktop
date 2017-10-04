@@ -240,12 +240,19 @@ namespace DesktopScrobbler
                             _currentMediaItem = null;
                         }
 
-                        _scrobbleTimer.Start();
+                        _scrobbleTimer?.Start();
                     };                
             }
             catch (Exception ex)
             {
-                _scrobbleTimer.Start();
+                try
+                {
+                    _scrobbleTimer?.Start();
+                }
+                catch (Exception exception)
+                {
+                    // Can occur if you close the application as it's starting up
+                }
             }
         }
 
@@ -279,9 +286,9 @@ namespace DesktopScrobbler
             {
                 try
                 {
-                    _mediaPlayer.BeginInvoke(new MethodInvoker(() =>
+                    _mediaPlayer?.BeginInvoke(new MethodInvoker(() =>
                     {
-                        _mediaPlayer.Close();
+                        _mediaPlayer?.Close();
                     }));
                 }
                 catch (Exception e)

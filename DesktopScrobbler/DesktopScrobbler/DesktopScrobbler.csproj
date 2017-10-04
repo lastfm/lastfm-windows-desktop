@@ -35,6 +35,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>audioscrobbler.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.iTunesLib">
       <HintPath>..\Packages\InterOpLibraries\Interop.iTunesLib.dll</HintPath>
@@ -144,6 +147,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\audioscrobbler.ico" />
+    <Content Include="audioscrobbler.ico" />
     <Content Include="Resources\love_off_64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

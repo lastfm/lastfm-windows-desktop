@@ -2,8 +2,11 @@ Pre-Requisits
 =============
 
 This project must be built using Visual Studio 2015, Update 3 or above.
-You must have .NET 4.6.2 installed (https://www.microsoft.com/en-us/download/details.aspx?id=53321)
-You must have the Visual Studio Installer template installed
+You must have .NET 4.6.2 installed: (https://www.microsoft.com/en-us/download/details.aspx?id=53321)
+You must have the Visual Studio Installer template installed: 
+
+Visual Studio 2015: (https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.MicrosoftVisualStudio2015InstallerProjects)
+Visual Studio 2017: https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.MicrosoftVisualStudio2017InstallerProjects
 
 The entry point (startup project) is 'Desktop Scrobbler' (right-click on the project and choose 'Set as StartUp project').
 

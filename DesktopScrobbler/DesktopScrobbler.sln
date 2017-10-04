@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginSupport", "PluginSupp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transitions", "Transitions\Transitions.csproj", "{95CDE461-0720-4C3B-B5E1-D188391FB7C0}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "LastFM Desktop Scrobbler Installer", "LastFM Desktop Scrobbler Installer\LastFM Desktop Scrobbler Installer.vdproj", "{D86A80ED-3CFE-4016-9F2D-9862A246661E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,8 @@ Global
 		{95CDE461-0720-4C3B-B5E1-D188391FB7C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95CDE461-0720-4C3B-B5E1-D188391FB7C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95CDE461-0720-4C3B-B5E1-D188391FB7C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86A80ED-3CFE-4016-9F2D-9862A246661E}.Debug|Any CPU.ActiveCfg = Debug
+		{D86A80ED-3CFE-4016-9F2D-9862A246661E}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

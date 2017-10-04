@@ -25,7 +25,7 @@ namespace DesktopScrobbler
         private int _currentMediaPlayTime = 0;
         private bool _lastStatePaused = false;
 
-        private WMPLib.WMPPlayState _currentPlaystate = WMPLib.WMPPlayState.wmppsWaiting;
+        //private WMPLib.WMPPlayState _currentPlaystate = WMPLib.WMPPlayState.wmppsWaiting;
 
         private bool _isIntialized = false;
         private bool _isEnabled = false;
@@ -152,8 +152,8 @@ namespace DesktopScrobbler
                             {
                                 MediaItem mediaDetail = await GetMediaDetail();
 
-                                WMPPlayState playerState = _mediaPlayer.Player.playState;
-                                double playerPosition = _mediaPlayer.Player.Ctlcontrols.currentPosition;
+                                WMPPlayState playerState = _mediaPlayer?.Player?.playState ?? WMPPlayState.wmppsStopped;
+                                double playerPosition = _mediaPlayer?.Player?.Ctlcontrols?.currentPosition ?? 0;
 
                                 bool hasMedia = mediaDetail != null;
                                 bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail.TrackLength;
@@ -259,8 +259,6 @@ namespace DesktopScrobbler
             {
                 var currentMedia = _mediaPlayer?.Player?.Ctlcontrols?.currentItem;
 
-                _currentPlaystate = _mediaPlayer?.Player?.playState != null ? (WMPLib.WMPPlayState)_mediaPlayer?.Player?.playState : WMPLib.WMPPlayState.wmppsWaiting;
-
                 if (currentMedia != null)
                 {
                     playerMedia = new MediaItem() { TrackName = currentMedia?.getItemInfo("Title"), AlbumName = currentMedia?.getItemInfo("Album"), ArtistName = currentMedia?.getItemInfo("Artist"), TrackLength = Convert.ToDouble(currentMedia?.duration), AlbumArtist = currentMedia?.getItemInfo("AlbumArtist") };
@@ -280,7 +278,18 @@ namespace DesktopScrobbler
 
             if (_mediaPlayer != null)
             {
-                _mediaPlayer.Close();
+                try
+                {
+                    _mediaPlayer.BeginInvoke(new MethodInvoker(() =>
+                    {
+                        _mediaPlayer.Close();
+                    }));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
                 _mediaPlayer = null;
             }
         }

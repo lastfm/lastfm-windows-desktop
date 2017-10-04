@@ -212,7 +212,7 @@ namespace LastFM.Common.Classes
         {
             string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
 
-            mnuShow.Enabled = this.WindowState == FormWindowState.Minimized;
+            mnuShow.Enabled = this.WindowState == FormWindowState.Minimized || this.Visible == false;
 
             mnuLoveThisTrack.Enabled = _currentMediaItem != null && _currentUser != null;
 
@@ -378,8 +378,19 @@ namespace LastFM.Common.Classes
 
                 if (Core.Settings.ShowTrackChanges)
                 {
-                    string balloonText = $"The track '{trackName}' by '{artistName}' is now playing...";
-                    ShowNotification(Core.APPLICATION_TITLE, balloonText);
+                    string initialText = $"Now playing: '{trackName}' by '{artistName}'";
+
+                    if (initialText.Length > 120)
+                    {
+                        initialText = $"Now playing: '{trackName}'";
+                    }
+
+                    if (initialText.Length > 120)
+                    {
+                        initialText = $"{initialText.Substring(0, 117)} ...";
+                    }
+
+                    ShowNotification(Core.APPLICATION_TITLE, initialText);
                 }
             }
 

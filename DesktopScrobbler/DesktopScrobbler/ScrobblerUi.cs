@@ -182,7 +182,6 @@ namespace DesktopScrobbler
             ScrobbleFactory.OnlineStatusUpdated += OnlineStatusUpdated;
 
             linkSettings.Visible = true;
-
         }
 
         private void OnlineStatusUpdated(OnlineState currentState, UserInfo latestUserInfo)

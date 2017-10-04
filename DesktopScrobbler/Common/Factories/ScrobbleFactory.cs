@@ -61,6 +61,8 @@ namespace LastFM.Common.Factories
                             scrobbler.IsEnabled = true;
                         }
                     }
+
+                    CheckScrobbleState();
                 }
                 else if (_isInitialized)
                 {
@@ -76,9 +78,6 @@ namespace LastFM.Common.Factories
         {
             _uiThread = uiThread;
             _lastFMClient = lastFMClient;
-
-            // Perform any cached scrobbles as soon as the scrobbler starts
-            await CheckScrobbleState();
 
             // Initialize the plugins, irrespective of enabled state
             foreach (IScrobbleSource source in ScrobblePlugins)

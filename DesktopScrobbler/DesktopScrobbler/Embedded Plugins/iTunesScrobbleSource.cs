@@ -145,7 +145,7 @@ namespace ITunesScrobblePlugin
                                     bool isPlaying = playerState == ITPlayerState.ITPlayerStatePlaying;
                                     bool isPaused = playerState == ITPlayerState.ITPlayerStateStopped;
 
-                                    bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime >= Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60);
+                                    bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime == Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60);
 
                                     Console.WriteLine($"iTunes Media Player Plugin: Position {playerPosition} of { mediaDetail?.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
 

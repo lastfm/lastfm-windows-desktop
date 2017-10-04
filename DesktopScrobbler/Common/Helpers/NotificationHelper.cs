@@ -42,6 +42,7 @@ namespace LastFM.Common.Helpers
             if (!Core.ApplicationIsShuttingDown)
             {
                 PopupNotificationUi notificationWindow = new PopupNotificationUi(title, notificationText);
+                notificationWindow.TopMost = true;
 
                 owner.Invoke(new MethodInvoker(() =>
                 {

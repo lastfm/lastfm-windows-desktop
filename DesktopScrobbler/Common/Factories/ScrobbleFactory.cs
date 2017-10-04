@@ -143,6 +143,8 @@ namespace LastFM.Common.Factories
 
                         try
                         {
+                            ScrobbleResponse overallScrobbleResult = new ScrobbleResponse() { Scrobbles = new Scrobbles() { AcceptedResult = new AcceptedResult(), ScrobbleItems =  new Scrobble[] {}}};
+
                             do
                             {
                                 // Ensure the media is split up into groups of 50
@@ -157,12 +159,19 @@ namespace LastFM.Common.Factories
                                 CacheFailedItems(scrobbleResult.Scrobbles.ScrobbleItems.ToList());
 
                                 // Show the result of the scrobble
-                                ShowScrobbleResult(scrobbleResult);
-                            }
+                                overallScrobbleResult.Scrobbles.AcceptedResult.Accepted = scrobbleResult.Scrobbles.AcceptedResult.Accepted;
+                                overallScrobbleResult.Scrobbles.AcceptedResult.Ignored = scrobbleResult.Scrobbles.AcceptedResult.Ignored;
 
+                                List<Scrobble> scrobbledItems = overallScrobbleResult.Scrobbles.ScrobbleItems.ToList();
+                                scrobbledItems.AddRange(scrobbleResult.Scrobbles.ScrobbleItems.ToList());
+
+                                overallScrobbleResult.Scrobbles.ScrobbleItems = scrobbledItems.ToArray();
+                            }
                             while (sourceMedia.Count > 0);
+
+                            ShowScrobbleResult(overallScrobbleResult);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             // The API wasn't available.  Cache the media so we can try again.
                             CacheOfflineItems(sourceMedia);
@@ -189,7 +198,7 @@ namespace LastFM.Common.Factories
 
         private static void ShowScrobbleResult(List<MediaItem> sourceMedia)
         {
-            if (Core.Settings.ShowScrobbleNotifications)
+            if (Core.Settings.ShowScrobbleNotifications && sourceMedia != null && sourceMedia.Count > 0)
             {
                 string balloonText = $"Failed to scrobble {sourceMedia.Count()} track(s).";
 
@@ -264,6 +273,11 @@ namespace LastFM.Common.Factories
                             TrackName = failedScrobble.Track.CorrectedText
                         };
 
+                        if (mediaItems == null)
+                        {
+                            mediaItems = new List<MediaItem>();
+                        }
+
                         mediaItems.Add(psuedoItem);
                     }
                 }
@@ -292,7 +306,16 @@ namespace LastFM.Common.Factories
                     string serializedScrobbles = File.ReadAllText(availableFile);
                     File.Delete(availableFile);
 
-                    mediaItems = JsonConvert.DeserializeObject<List<MediaItem>>(serializedScrobbles);
+                    var loadedItems = JsonConvert.DeserializeObject<List<MediaItem>>(serializedScrobbles);
+                    if (loadedItems != null && loadedItems.Any())
+                    {
+                        if (mediaItems == null)
+                        {
+                            mediaItems = new List<MediaItem>();
+                        }
+
+                        mediaItems.AddRange(loadedItems);
+                    }
                 }
                 catch (Exception ex)
                 {

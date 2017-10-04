@@ -216,11 +216,13 @@ namespace ITunesScrobblePlugin
                                             _currentMediaPlayTime = 0;
                                         }
                                     }
-
+                                    
                                     if (iTunesApp != null)
                                     {
                                         Marshal.ReleaseComObject(iTunesApp);
+                                        iTunesApp = null;
                                     }
+                                    System.GC.Collect();
                                 }
 
                                 Console.WriteLine("iTunes Plugin checking media state complete.");

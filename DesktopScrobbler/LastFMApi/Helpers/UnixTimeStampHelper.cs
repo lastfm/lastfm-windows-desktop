@@ -20,7 +20,7 @@ namespace LastFM.Common.Helpers
 
         public static Int32 GetUnixTimeStampFromDateTime(DateTime timeToconvert)
         {
-            return (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            return (Int32)(timeToconvert.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
     }
 }

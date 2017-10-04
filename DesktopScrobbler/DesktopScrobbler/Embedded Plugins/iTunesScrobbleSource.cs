@@ -140,7 +140,7 @@ namespace ITunesScrobblePlugin
                                     double playerPosition = iTunesApp?.PlayerPosition ?? 0;
 
                                     bool hasMedia = mediaDetail != null;
-                                    bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail.TrackLength;
+                                    bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail?.TrackLength && mediaDetail?.TrackLength > 0;
                                     bool hasTrackChanged = _currentMediaItem?.TrackName != mediaDetail?.TrackName;
                                     bool isPlaying = playerState == ITPlayerState.ITPlayerStatePlaying;
                                     bool isPaused = playerState == ITPlayerState.ITPlayerStateStopped;

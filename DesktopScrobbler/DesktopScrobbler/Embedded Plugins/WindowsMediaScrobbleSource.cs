@@ -15,7 +15,7 @@ namespace DesktopScrobbler
     public class WindowsMediaScrobbleSource : IScrobbleSource
     {
         private MediaItem _currentMediaItem = null;
-        private MediaItem _lastQueuedItem = null;
+        //private MediaItem _lastQueuedItem = null;
 
         private List<MediaItem> _mediaToScrobble = new List<MediaItem>();
 
@@ -156,14 +156,14 @@ namespace DesktopScrobbler
                                 double playerPosition = _mediaPlayer?.Player?.Ctlcontrols?.currentPosition ?? 0;
 
                                 bool hasMedia = mediaDetail != null;
-                                bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail.TrackLength;
+                                bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail?.TrackLength;
                                 bool hasTrackChanged = _currentMediaItem?.TrackName != mediaDetail?.TrackName;
                                 bool isPaused = playerState == WMPPlayState.wmppsPaused;
                                 bool isPlaying = playerState == WMPPlayState.wmppsPlaying;
   
-                                bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime == Math.Min((int)_currentMediaItem.TrackLength / 2, 4 * 60);
+                                bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime == Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60);
 
-                                Console.WriteLine($"Windows Media Player Plugin: Position {playerPosition} of { mediaDetail.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
+                                Console.WriteLine($"Windows Media Player Plugin: Position {playerPosition} of { mediaDetail?.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
 
                                 if ((isPlaying && hasMedia && hasTrackChanged) || hasReachedTrackEnd)
                                 {
@@ -181,9 +181,10 @@ namespace DesktopScrobbler
 
                                     if(hasTrackChanged)
                                     {
+                                         mediaDetail.StartedPlaying = DateTime.Now;
+
                                         _currentMediaItem = mediaDetail;
                                         _onTrackStarted?.Invoke(mediaDetail, false);
-                                        mediaDetail.StartedPlaying = DateTime.Now;
                                     }
                                     else if (hasReachedTrackEnd)
                                     {
@@ -192,8 +193,6 @@ namespace DesktopScrobbler
                                 }
                                 else if (isPlaying && hasMedia && canScrobble)
                                 {
-                                    _lastQueuedItem = mediaDetail;
-
                                     lock (_mediaLock)
                                     {
                                         _mediaToScrobble.Add(_currentMediaItem);
@@ -217,7 +216,7 @@ namespace DesktopScrobbler
                                     // If we had been playing, invoke the Track Ended callback
                                     if (_currentMediaPlayTime > 0)
                                     {
-                                        _onTrackEnded.Invoke(mediaDetail);
+                                        _onTrackEnded?.Invoke(mediaDetail);
                                     }
 
                                     // Set the persisted pause state

@@ -20,6 +20,8 @@ namespace LastFM.ApiClient.Models
         [JsonProperty("albumArtist")]
         public string AlbumArtist { get; set; }
 
+        //public string UnixTimeStamp { get; set; }
+
         public DateTime StartedPlaying { get; set; }
     }
 }

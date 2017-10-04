@@ -18,9 +18,12 @@ namespace LastFM.Common.Helpers
             return convertedDate;
         }
 
-        public static Int32 GetUnixTimeStampFromDateTime(DateTime timeToconvert)
+        public static long GetUnixTimeStampFromDateTime(DateTime dateTime)
         {
-            return (Int32)(timeToconvert.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            DateTime epochDate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan elapsedTime = dateTime.ToUniversalTime() - epochDate;
+
+            return (long)elapsedTime.TotalSeconds;
         }
     }
 }

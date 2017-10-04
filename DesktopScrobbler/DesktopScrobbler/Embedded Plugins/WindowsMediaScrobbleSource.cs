@@ -181,7 +181,7 @@ namespace DesktopScrobbler
 
                                     if(hasTrackChanged)
                                     {
-                                         mediaDetail.StartedPlaying = DateTime.Now;
+                                        mediaDetail.StartedPlaying = DateTime.Now;
 
                                         _currentMediaItem = mediaDetail;
                                         _onTrackStarted?.Invoke(mediaDetail, false);

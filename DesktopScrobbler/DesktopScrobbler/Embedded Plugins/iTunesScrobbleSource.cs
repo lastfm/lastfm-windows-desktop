@@ -9,7 +9,6 @@ using System.Runtime.InteropServices;
 using static LastFM.Common.Factories.ScrobbleFactory;
 using LastFM.ApiClient.Models;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace ITunesScrobblePlugin
 {

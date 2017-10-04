@@ -196,6 +196,7 @@ namespace LastFM.ApiClient
                 baseParameters.Add($"track[{mediaItemCount}]", mediaItem.TrackName);
                 baseParameters.Add($"duration[{mediaItemCount}]", mediaItem.TrackLength.ToString());
                 baseParameters.Add($"timestamp[{mediaItemCount}]", UnixTimeStampHelper.GetUnixTimeStampFromDateTime(mediaItem.StartedPlaying).ToString("#0"));
+                //baseParameters.Add($"timestamp[{mediaItemCount}]", mediaItem.UnixTimeStamp);
 
                 ++mediaItemCount;
             }

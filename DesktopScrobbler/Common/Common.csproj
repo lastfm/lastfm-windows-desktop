@@ -81,7 +81,6 @@
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\ProcessHelper.cs" />
-    <Compile Include="Helpers\UnixTimeStampHelper.cs" />
     <Compile Include="Interfaces\IScrobbleSource.cs" />
     <Compile Include="Static Classes\APIDetails.cs" />
     <Compile Include="Static Classes\ApplicationUtility.cs" />

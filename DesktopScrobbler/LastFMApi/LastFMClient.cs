@@ -110,20 +110,13 @@ namespace LastFM.ApiClient
         public async Task<Scrobble> SendPlayStatusChanged(MediaItem mediaItem, PlayStatus newPlayStatus)
         {
             string updateMethod = string.Empty;
+            var baseParameters = new Dictionary<string, string>();
+
             PlayStatusResponse response = null;
 
             if (newPlayStatus == PlayStatus.StartedListening)
             {
                 updateMethod = "track.updateNowPlaying";
-            }
-            else if (newPlayStatus == PlayStatus.StoppedListening)
-            {
-                //updateMethod = "track.removeNowPlaying";
-            }
-
-            if (!string.IsNullOrEmpty(updateMethod))
-            {
-                var baseParameters = new Dictionary<string, string>();
 
                 baseParameters.Add("track", mediaItem.TrackName);
                 baseParameters.Add("artist", mediaItem.ArtistName);
@@ -137,7 +130,14 @@ namespace LastFM.ApiClient
                 {
                     baseParameters.Add("duration", mediaItem.TrackLength.ToString());
                 }
+            }
+            else if (newPlayStatus == PlayStatus.StoppedListening)
+            {
+                updateMethod = "track.removeNowPlaying";
+            }
 
+            if (!string.IsNullOrEmpty(updateMethod))
+            {
                 AddRequiredRequestParams(baseParameters, updateMethod, _sessionToken.Key);
 
                 FormUrlEncodedContent postContent = new FormUrlEncodedContent(baseParameters);
@@ -147,6 +147,7 @@ namespace LastFM.ApiClient
 
             return response?.NowPlaying;
         }
+
 
         public async Task LoveTrack(LoveStatus loveStatus, MediaItem mediaItem)
         {

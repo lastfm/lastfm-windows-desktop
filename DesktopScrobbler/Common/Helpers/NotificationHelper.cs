@@ -53,7 +53,9 @@ namespace LastFM.Common.Helpers
                     var totalDisplayWindowHeight = (notificationWindow.Height * _notifications.Count) + (5 * _notifications.Count);
 
                     var newWindowTopPoint = (workingArea.Height - totalDisplayWindowHeight) - (notificationWindow.Height + 5);
-                    var newWindowLeftpoint = workingArea.Width;
+                    var newWindowLeftpoint = workingArea.Width - (notificationWindow.Width + 11); //workingArea.Width;
+
+                    notificationWindow.Width = 0;
 
                     // Display the window with no  focus
                     ShowWindow(notificationWindow.Handle, SW_SHOWNOACTIVATE);
@@ -64,7 +66,7 @@ namespace LastFM.Common.Helpers
                     // Add this to the queue
                     _notifications.Add(notificationWindow);
 
-                    Transition showingAnimation = new Transition(new TransitionType_Acceleration(1000));
+                    Transition showingAnimation = new Transition(new TransitionType_Deceleration(1000));
                     showingAnimation.Tag = notificationWindow;
 
                     showingAnimation.TransitionCompletedEvent += async (o, ev) =>
@@ -79,7 +81,8 @@ namespace LastFM.Common.Helpers
 
                     _runningTransitions.Add(showingAnimation);
 
-                    showingAnimation.add(notificationWindow, "Left", newWindowLeftpoint - (notificationWindow.Width + 11));
+                    //showingAnimation.add(notificationWindow, "Left", newWindowLeftpoint - (notificationWindow.Width + 11));
+                    showingAnimation.add(notificationWindow, "Width", 284);
                     showingAnimation.run();
                 }));
             }
@@ -94,7 +97,9 @@ namespace LastFM.Common.Helpers
                 Transition hidingTransition = new Transition(new TransitionType_Acceleration(1000));
 
                 hidingTransition.Tag = notificationWindow;
-                hidingTransition.add(notificationWindow, "Left", notificationWindow.Left + (notificationWindow.Width + 11));
+                //hidingTransition.add(notificationWindow, "Left", notificationWindow.Left + (notificationWindow.Width + 11));
+                hidingTransition.add(notificationWindow, "Width", 0);
+
                 _runningTransitions.Add(hidingTransition);
 
                 hidingTransition.TransitionCompletedEvent += async (o, ev) =>

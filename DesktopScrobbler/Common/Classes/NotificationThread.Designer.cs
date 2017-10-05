@@ -17,8 +17,6 @@ namespace LastFM.Common.Classes
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel stripStatus;
         private ToolStripSeparator toolStripSeparator3;
-        private ToolStripMenuItem mnuShowSettings;
-        private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem mnuViewUserProfile;
         private ToolStripStatusLabel stripVersionLabel;
 
@@ -27,14 +25,14 @@ namespace LastFM.Common.Classes
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotificationThread));
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuNewVersion = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuNewVersionSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.mnuLoveThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuShow = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuEnableScrobbling = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuShowSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuViewUserProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,8 +43,6 @@ namespace LastFM.Common.Classes
             this.stripLoveTrack = new System.Windows.Forms.ToolStripStatusLabel();
             this.stripVersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.stripNewVersion = new System.Windows.Forms.ToolStripStatusLabel();
-            this.mnuNewVersion = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuNewVersionSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.stripUpdateProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.trayMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -63,13 +59,24 @@ namespace LastFM.Common.Classes
             this.toolStripSeparator1,
             this.mnuEnableScrobbling,
             this.toolStripSeparator3,
-            this.mnuShowSettings,
-            this.toolStripSeparator4,
             this.mnuViewUserProfile,
             this.toolStripSeparator2,
             this.mnuExit});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(206, 194);
+            this.trayMenu.Size = new System.Drawing.Size(206, 166);
+            // 
+            // mnuNewVersion
+            // 
+            this.mnuNewVersion.Name = "mnuNewVersion";
+            this.mnuNewVersion.Size = new System.Drawing.Size(205, 22);
+            this.mnuNewVersion.Text = "New Version Available";
+            this.mnuNewVersion.Visible = false;
+            // 
+            // mnuNewVersionSeparator
+            // 
+            this.mnuNewVersionSeparator.Name = "mnuNewVersionSeparator";
+            this.mnuNewVersionSeparator.Size = new System.Drawing.Size(202, 6);
+            this.mnuNewVersionSeparator.Visible = false;
             // 
             // mnuLoveThisTrack
             // 
@@ -105,17 +112,6 @@ namespace LastFM.Common.Classes
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(202, 6);
-            // 
-            // mnuShowSettings
-            // 
-            this.mnuShowSettings.Name = "mnuShowSettings";
-            this.mnuShowSettings.Size = new System.Drawing.Size(205, 22);
-            this.mnuShowSettings.Text = "Show Se&ttings";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(202, 6);
             // 
             // mnuViewUserProfile
             // 
@@ -193,19 +189,6 @@ namespace LastFM.Common.Classes
             this.stripNewVersion.Size = new System.Drawing.Size(24, 17);
             this.stripNewVersion.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.stripNewVersion.Visible = false;
-            // 
-            // mnuNewVersion
-            // 
-            this.mnuNewVersion.Name = "mnuNewVersion";
-            this.mnuNewVersion.Size = new System.Drawing.Size(205, 22);
-            this.mnuNewVersion.Text = "New Version Available";
-            this.mnuNewVersion.Visible = false;
-            // 
-            // mnuNewVersionSeparator
-            // 
-            this.mnuNewVersionSeparator.Name = "mnuNewVersionSeparator";
-            this.mnuNewVersionSeparator.Size = new System.Drawing.Size(202, 6);
-            this.mnuNewVersionSeparator.Visible = false;
             // 
             // stripUpdateProgress
             // 

@@ -74,6 +74,7 @@ namespace DesktopScrobbler
 
                 if(_isEnabled)
                 {
+                    _scrobbleTimer?.Stop();
                     _scrobbleTimer?.Start();
                 }
                 else

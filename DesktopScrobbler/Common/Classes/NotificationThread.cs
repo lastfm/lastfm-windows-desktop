@@ -91,11 +91,6 @@ namespace LastFM.Common.Classes
                 ScrobbleStateChanging(mnuEnableScrobbling.Checked);
             };
 
-            mnuShowSettings.Click += (o, ev) =>
-            {
-                ShowSettings();
-            };
-
             mnuViewUserProfile.Click += (o, ev) =>
             {
                 ViewUserProfile();
@@ -388,27 +383,15 @@ namespace LastFM.Common.Classes
 
         protected void ShowSettings()
         {
-            bool isAlreadyLoaded = _settingsUI != null;
-
-            if (!isAlreadyLoaded)
+            if (this.Height == 164)
             {
-                _settingsUI = new SettingsUi();
-                _settingsUI.FormClosing += SettingsUi_FormClosing;
-                _settingsUI.StartPosition = (this.WindowState == FormWindowState.Normal) ? FormStartPosition.CenterParent : FormStartPosition.CenterScreen;
-
-
-                bool previousScrobbleState = ScrobbleFactory.ScrobblingEnabled;
-
-                ScrobbleFactory.ScrobblingEnabled = false;
-
-                _settingsUI.ShowDialog(this);
-
-                ScrobbleFactory.ScrobblingEnabled = previousScrobbleState;
+                this.Height = 316;
             }
             else
             {
-                _settingsUI.BringToFront();
+                this.Height = 164;
             }
+
         }
 
         public void HideTrayIcon()
@@ -606,5 +589,6 @@ namespace LastFM.Common.Classes
             _userExiting = true;
             this.Close();
         }
+       
     }
 }

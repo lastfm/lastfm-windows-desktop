@@ -38,6 +38,15 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLogIn = new System.Windows.Forms.LinkLabel();
             this.lblTrackName = new System.Windows.Forms.Label();
+            this.chkShowtrackChanges = new System.Windows.Forms.CheckBox();
+            this.chkShowScrobbleNotifications = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
+            this.chkStartMinimized = new System.Windows.Forms.CheckBox();
+            this.lblGeneralSettingsTitle = new System.Windows.Forms.Label();
+            this.lblPlugins = new System.Windows.Forms.Label();
+            this.checkedPluginList = new System.Windows.Forms.CheckedListBox();
+            this.linkTerms = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -108,9 +117,9 @@
             this.flowLayoutPanel1.Controls.Add(this.linkLogIn);
             this.flowLayoutPanel1.Controls.Add(this.linkLogOut);
             this.flowLayoutPanel1.Controls.Add(this.linkSettings);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(462, 12);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(456, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(72, 84);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(83, 66);
             this.flowLayoutPanel1.TabIndex = 7;
             // 
             // linkLogIn
@@ -133,11 +142,104 @@
             this.lblTrackName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTrackName.UseMnemonic = false;
             // 
+            // chkShowtrackChanges
+            // 
+            this.chkShowtrackChanges.AutoSize = true;
+            this.chkShowtrackChanges.Location = new System.Drawing.Point(12, 203);
+            this.chkShowtrackChanges.Name = "chkShowtrackChanges";
+            this.chkShowtrackChanges.Size = new System.Drawing.Size(129, 17);
+            this.chkShowtrackChanges.TabIndex = 12;
+            this.chkShowtrackChanges.Text = "Show Track Changes";
+            this.chkShowtrackChanges.UseVisualStyleBackColor = true;
+            // 
+            // chkShowScrobbleNotifications
+            // 
+            this.chkShowScrobbleNotifications.AutoSize = true;
+            this.chkShowScrobbleNotifications.Location = new System.Drawing.Point(12, 226);
+            this.chkShowScrobbleNotifications.Name = "chkShowScrobbleNotifications";
+            this.chkShowScrobbleNotifications.Size = new System.Drawing.Size(159, 17);
+            this.chkShowScrobbleNotifications.TabIndex = 14;
+            this.chkShowScrobbleNotifications.Text = "Show Scrobble Notifications";
+            this.chkShowScrobbleNotifications.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(274, 124);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(200, 17);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Scrobbler Plugins";
+            // 
+            // chkMinimizeToTray
+            // 
+            this.chkMinimizeToTray.AutoSize = true;
+            this.chkMinimizeToTray.Location = new System.Drawing.Point(12, 157);
+            this.chkMinimizeToTray.Name = "chkMinimizeToTray";
+            this.chkMinimizeToTray.Size = new System.Drawing.Size(139, 17);
+            this.chkMinimizeToTray.TabIndex = 9;
+            this.chkMinimizeToTray.Text = "Close / Minimize to Tray";
+            this.chkMinimizeToTray.UseVisualStyleBackColor = true;
+            // 
+            // chkStartMinimized
+            // 
+            this.chkStartMinimized.AutoSize = true;
+            this.chkStartMinimized.Location = new System.Drawing.Point(12, 180);
+            this.chkStartMinimized.Name = "chkStartMinimized";
+            this.chkStartMinimized.Size = new System.Drawing.Size(97, 17);
+            this.chkStartMinimized.TabIndex = 10;
+            this.chkStartMinimized.Text = "Start Minimized";
+            this.chkStartMinimized.UseVisualStyleBackColor = true;
+            // 
+            // lblGeneralSettingsTitle
+            // 
+            this.lblGeneralSettingsTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGeneralSettingsTitle.Location = new System.Drawing.Point(9, 124);
+            this.lblGeneralSettingsTitle.Name = "lblGeneralSettingsTitle";
+            this.lblGeneralSettingsTitle.Size = new System.Drawing.Size(200, 17);
+            this.lblGeneralSettingsTitle.TabIndex = 13;
+            this.lblGeneralSettingsTitle.Text = "General Settings";
+            // 
+            // lblPlugins
+            // 
+            this.lblPlugins.Location = new System.Drawing.Point(274, 157);
+            this.lblPlugins.Name = "lblPlugins";
+            this.lblPlugins.Size = new System.Drawing.Size(200, 13);
+            this.lblPlugins.TabIndex = 11;
+            this.lblPlugins.Text = "Select the Scrobbler Plugins to Enable:";
+            // 
+            // checkedPluginList
+            // 
+            this.checkedPluginList.FormattingEnabled = true;
+            this.checkedPluginList.Location = new System.Drawing.Point(277, 180);
+            this.checkedPluginList.Name = "checkedPluginList";
+            this.checkedPluginList.Size = new System.Drawing.Size(250, 64);
+            this.checkedPluginList.TabIndex = 15;
+            // 
+            // linkTerms
+            // 
+            this.linkTerms.Location = new System.Drawing.Point(459, 66);
+            this.linkTerms.Name = "linkTerms";
+            this.linkTerms.Size = new System.Drawing.Size(81, 23);
+            this.linkTerms.TabIndex = 17;
+            this.linkTerms.TabStop = true;
+            this.linkTerms.Text = "Terms of use...";
+            this.linkTerms.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // ScrobblerUi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(546, 131);
+            this.ClientSize = new System.Drawing.Size(546, 125);
+            this.Controls.Add(this.linkTerms);
+            this.Controls.Add(this.chkShowtrackChanges);
+            this.Controls.Add(this.chkShowScrobbleNotifications);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.chkMinimizeToTray);
+            this.Controls.Add(this.chkStartMinimized);
+            this.Controls.Add(this.lblGeneralSettingsTitle);
+            this.Controls.Add(this.lblPlugins);
+            this.Controls.Add(this.checkedPluginList);
             this.Controls.Add(this.lblTrackName);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.linkProfile);
@@ -165,6 +267,15 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.LinkLabel linkLogIn;
         private System.Windows.Forms.Label lblTrackName;
+        private System.Windows.Forms.CheckBox chkShowtrackChanges;
+        private System.Windows.Forms.CheckBox chkShowScrobbleNotifications;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox chkMinimizeToTray;
+        private System.Windows.Forms.CheckBox chkStartMinimized;
+        private System.Windows.Forms.Label lblGeneralSettingsTitle;
+        private System.Windows.Forms.Label lblPlugins;
+        private System.Windows.Forms.CheckedListBox checkedPluginList;
+        private System.Windows.Forms.LinkLabel linkTerms;
     }
 }
 

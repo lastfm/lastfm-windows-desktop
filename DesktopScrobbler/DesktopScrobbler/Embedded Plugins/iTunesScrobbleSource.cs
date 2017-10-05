@@ -63,6 +63,7 @@ namespace ITunesScrobblePlugin
 
                 if(_isEnabled)
                 {
+                    _scrobbleTimer?.Stop();
                     _scrobbleTimer?.Start();
                 }
                 else

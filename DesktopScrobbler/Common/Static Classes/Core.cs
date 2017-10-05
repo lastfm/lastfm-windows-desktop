@@ -16,6 +16,8 @@ namespace LastFM.Common
 
         public const string UpdateUrl = "http://twitterinanapp.com/last-fm-updates-page/";
 
+        public const string TermsUrl = "https://www.last.fm/legal/terms";
+
         public static bool ApplicationIsShuttingDown = false;
 
         public static Settings Settings => ApplicationConfiguration.Settings;

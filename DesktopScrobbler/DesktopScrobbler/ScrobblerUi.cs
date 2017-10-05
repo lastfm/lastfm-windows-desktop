@@ -16,6 +16,7 @@ using LastFM.Common.Helpers;
 using static LastFM.Common.Factories.ScrobbleFactory;
 using System.IO;
 
+
 namespace DesktopScrobbler
 {
     // Comment in this line of code when you need to view / make changes using the UI designer
@@ -80,10 +81,20 @@ namespace DesktopScrobbler
             linkSettings.Click += (o, ev) =>
             {
                 base.ShowSettings();
-                ShowIdleStatus();
+
+                if (this.Height == 164)
+                {
+                    linkSettings.Text = "Settings...";
+                }
+                else
+                {
+                    linkSettings.Text = "Settings <<";
+                }
             };
 
             linkProfile.Click += linkProfile_Click;
+            linkTerms.Click += (o, ev) => { ProcessHelper.LaunchUrl(Core.TermsUrl); };
+
             linkLogOut.Click += LogoutUser;
             linkLogIn.Click += LogInUser;
 
@@ -176,6 +187,8 @@ namespace DesktopScrobbler
             await ScrobbleFactory.Initialize(base.APIClient, this).ConfigureAwait(false);
 
             ApplicationConfiguration.CheckPluginDefaultStatus();
+
+            DisplaySettings();
 
             ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
 
@@ -391,6 +404,52 @@ namespace DesktopScrobbler
             {
                 base.HasNewVersion(result);
             }
+        }
+
+        private void DisplaySettings()
+        {
+            checkedPluginList.BorderStyle = BorderStyle.None;
+            checkedPluginList.BackColor = this.BackColor;
+
+            chkMinimizeToTray.Checked = Core.Settings.CloseToTray;
+            chkStartMinimized.Checked = Core.Settings.StartMinimized;
+            chkShowScrobbleNotifications.Checked = Core.Settings.ShowScrobbleNotifications;
+            chkShowtrackChanges.Checked = Core.Settings.ShowTrackChanges;
+
+            foreach (IScrobbleSource plugin in ScrobbleFactory.ScrobblePlugins)
+            {
+                checkedPluginList.Items.Add(plugin.SourceDescription, Core.Settings.ScrobblerStatus.Count(pluginItem => pluginItem.Identifier == plugin.SourceIdentifier && Convert.ToBoolean(pluginItem.IsEnabled == true)) > 0);
+            }
+
+            chkShowScrobbleNotifications.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
+            chkShowtrackChanges.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
+            chkMinimizeToTray.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
+            chkStartMinimized.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
+            checkedPluginList.ItemCheck += (o, ev) => { this.BeginInvoke(new MethodInvoker(SettingItem_Changed)); };
+        }
+
+        private void SettingItem_Changed()
+        {
+            Core.Settings.CloseToTray = chkMinimizeToTray.Checked;
+            Core.Settings.StartMinimized = chkStartMinimized.Checked;
+            Core.Settings.ShowScrobbleNotifications = chkShowScrobbleNotifications.Checked;
+            Core.Settings.ShowTrackChanges = chkShowtrackChanges.Checked;
+
+            Core.Settings.ScrobblerStatus.Clear();
+
+            foreach (var checkedItem in checkedPluginList.Items)
+            {
+                IScrobbleSource plugin = ScrobbleFactory.ScrobblePlugins?.FirstOrDefault(item => item.SourceDescription == checkedItem);
+
+                ScrobblerSourceStatus newStatus = new ScrobblerSourceStatus() { Identifier = plugin.SourceIdentifier, IsEnabled = checkedPluginList.CheckedItems.Contains(checkedItem) };
+                Core.Settings.ScrobblerStatus.Add(newStatus);
+            }
+
+            ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
+
+            Core.SaveSettings();
+
+            ShowIdleStatus();
         }
     }
 }

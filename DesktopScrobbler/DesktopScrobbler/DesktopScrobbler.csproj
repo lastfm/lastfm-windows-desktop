@@ -44,7 +44,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,6 +66,12 @@
     </Compile>
     <Compile Include="COM Interfaces.cs" />
     <Compile Include="Embedded Plugins\iTunesScrobbleSource.cs" />
+    <Compile Include="Installer Class\ScrobblerInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Installer Class\ScrobblerInstaller.Designer.cs">
+      <DependentUpon>ScrobblerInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="RemotedWindowsMediaPlayer.cs">
       <SubType>Component</SubType>
     </Compile>

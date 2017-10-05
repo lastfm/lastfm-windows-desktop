@@ -122,7 +122,7 @@ namespace LastFM.Common.Classes
             stripNewVersion.MouseLeave += Common_MouseLeave;
 
             _normalTrayIcon = trayIcon.Icon;
-            _greyScaleIcon = await ImageHelper.GreyScaleIcon(_normalTrayIcon);
+            _greyScaleIcon = await ImageHelper.GreyScaleIcon(_normalTrayIcon).ConfigureAwait(false);
 
         }
 
@@ -140,12 +140,12 @@ namespace LastFM.Common.Classes
                     {
                         case LoveStatus.Love:
                         {
-                            stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_hover_64.png");
+                            stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_hover_64.png").ConfigureAwait(false);
                             break;
                         }
                         case LoveStatus.Unlove:
                         {
-                            stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_hover_64.png");
+                            stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_hover_64.png").ConfigureAwait(false);
                             break;
                         }
                     }
@@ -167,12 +167,12 @@ namespace LastFM.Common.Classes
                     {
                         case LoveStatus.Love:
                             {
-                                stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_64.png");
+                                stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_64.png").ConfigureAwait(false);
                                 break;
                             }
                         case LoveStatus.Unlove:
                             {
-                                stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_64.png");
+                                stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_64.png").ConfigureAwait(false);
                                 break;
                             }
                     }
@@ -222,12 +222,12 @@ namespace LastFM.Common.Classes
                 {
                     case LoveStatus.Love:
                     {
-                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_64.png");
+                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_64.png").ConfigureAwait(false);
                         break;
                     }
                     case LoveStatus.Unlove:
                     {
-                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_64.png");
+                        stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_64.png").ConfigureAwait(false);
                         break;
                     }
                 }
@@ -245,7 +245,7 @@ namespace LastFM.Common.Classes
 
             try
             {
-                await _apiClient.LoveTrack(statusToSend, _currentMediaItem);
+                await _apiClient.LoveTrack(statusToSend, _currentMediaItem).ConfigureAwait(false);
                 ResetLoveTrackState((statusToSend == LoveStatus.Love) ? LoveStatus.Unlove : LoveStatus.Love);
             }
             catch (Exception)
@@ -323,7 +323,7 @@ namespace LastFM.Common.Classes
                 ScrobbleFactory.ScrobblingEnabled = false;
 
                 // Give the scrobblers a chance to stop running cleanly
-                await Task.Delay(2000);
+                await Task.Delay(2000).ConfigureAwait(false);
 
                 ScrobbleFactory.Dispose();
 
@@ -491,7 +491,7 @@ namespace LastFM.Common.Classes
             stripUpdateProgress.Visible = true;
             stripUpdateProgress.AutoSize = true;
 
-            await VersionChecker.DownloadUpdate(stripNewVersion.Tag as VersionChecker.VersionState, Core.UserDownloadsPath, DownloadProgressUpdated, DownloadComplete);
+            await VersionChecker.DownloadUpdate(stripNewVersion.Tag as VersionChecker.VersionState, Core.UserDownloadsPath, DownloadProgressUpdated, DownloadComplete).ConfigureAwait(false);
         }
 
         private void DownloadComplete(object sender, AsyncCompletedEventArgs e)

@@ -85,7 +85,7 @@ namespace LastFM.ApiClient
 
             try
             {
-                authToken = await GetAuthToken();
+                authToken = await GetAuthToken().ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -102,7 +102,7 @@ namespace LastFM.ApiClient
             //baseParameters.Add(new KeyValuePair<string, string>("api_sig", GetMethodSignature("auth.gettoken", false, baseParameters)));
             AddRequiredRequestParams(baseParameters, "auth.gettoken", null, false);
 
-            _authToken = await UnauthenticatedGet<AuthenticationToken>("auth.gettoken", baseParameters.ToArray());
+            _authToken = await UnauthenticatedGet<AuthenticationToken>("auth.gettoken", baseParameters.ToArray()).ConfigureAwait(false);
 
             return _authToken;
         }
@@ -142,12 +142,37 @@ namespace LastFM.ApiClient
 
                 FormUrlEncodedContent postContent = new FormUrlEncodedContent(baseParameters);
 
-                response = await Post<PlayStatusResponse>(updateMethod, postContent, baseParameters.ToArray());
+                response = await Post<PlayStatusResponse>(updateMethod, postContent, baseParameters.ToArray()).ConfigureAwait(false);
+
+                Console.WriteLine($"Sent Playing Status request ({updateMethod}), response:\r\n {response}");
             }
 
             return response?.NowPlaying;
         }
 
+        public async Task<Track> GetLoveStatus(MediaItem mediaItem)
+        {
+            var baseParameters = new Dictionary<string, string>();
+            string updateMethod = "track.getInfo";
+
+            Track responseData = null;
+
+            baseParameters.Add("artist", mediaItem.ArtistName);
+            baseParameters.Add("track", mediaItem.TrackName);
+
+            AddRequiredRequestParams(baseParameters, updateMethod, _sessionToken.Key);
+
+            if (!string.IsNullOrEmpty(updateMethod))
+            {
+                FormUrlEncodedContent postContent = new FormUrlEncodedContent(baseParameters);
+
+                responseData = await Post<Track>(updateMethod, postContent, baseParameters.ToArray()).ConfigureAwait(false);
+
+                Console.WriteLine($"Sent Get love status request ({updateMethod}), response:\r\n {responseData}");
+            }
+
+            return responseData;
+        }
 
         public async Task LoveTrack(LoveStatus loveStatus, MediaItem mediaItem)
         {
@@ -172,7 +197,9 @@ namespace LastFM.ApiClient
             {
                 FormUrlEncodedContent postContent = new FormUrlEncodedContent(baseParameters);
 
-                var rawResponse = await Post<JObject>(updateMethod, postContent, baseParameters.ToArray());
+                var rawResponse = await Post<JObject>(updateMethod, postContent, baseParameters.ToArray()).ConfigureAwait(false);
+
+                Console.WriteLine($"Sent Love/Unlove track request ({updateMethod}), response:\r\n {rawResponse}");
             }
         }
 
@@ -205,7 +232,9 @@ namespace LastFM.ApiClient
 
             FormUrlEncodedContent postContent = new FormUrlEncodedContent(baseParameters);
 
-            var rawResponse = await Post<JObject>("track.scrobble", postContent, baseParameters.ToArray());
+            var rawResponse = await Post<JObject>("track.scrobble", postContent, baseParameters.ToArray()).ConfigureAwait(false);
+
+            Console.WriteLine($"Sent Scrobble request, response:\r\n {rawResponse}");
 
             return GetScrobbleResponseFromScrobble(rawResponse);
         }
@@ -266,7 +295,7 @@ namespace LastFM.ApiClient
 
             try
             {
-                var userSession = await UnauthenticatedGet<Session>("auth.getSession", baseParameters.ToArray());
+                var userSession = await UnauthenticatedGet<Session>("auth.getSession", baseParameters.ToArray()).ConfigureAwait(false);
                 _sessionToken = userSession?.SessionToken;
             }
             catch (Exception e)
@@ -290,7 +319,7 @@ namespace LastFM.ApiClient
             baseParameters.Add("user", currentUser);
             AddRequiredRequestParams(baseParameters, "user.getinfo", _sessionToken.Key, false);
             
-            User currentUserInfo = await UnauthenticatedGet<User>("user.getinfo", baseParameters.ToArray());
+            User currentUserInfo = await UnauthenticatedGet<User>("user.getinfo", baseParameters.ToArray()).ConfigureAwait(false);
 
             return currentUserInfo?.UserDetail;
         }
@@ -345,7 +374,7 @@ namespace LastFM.ApiClient
 
         public async Task<T> UnauthenticatedGet<T>(string method, params KeyValuePair<string, string>[] parameters) where T : class
         {
-            return await base.SendRequest<T>(HttpRequestType.Get, $"{_baseUrl}{_apiPath}", method, parameters);
+            return await base.SendRequest<T>(HttpRequestType.Get, $"{_baseUrl}{_apiPath}", method, parameters).ConfigureAwait(false);
         }
 
         public async Task<T> Post<T>(string method, HttpContent bodyContent, params KeyValuePair<string, string>[] parameters) where T : class
@@ -354,7 +383,7 @@ namespace LastFM.ApiClient
            
             if (!string.IsNullOrEmpty(_sessionToken?.Key))
             {
-                instance = await base.SendRequest<T>(HttpRequestType.Post, $"{_baseUrl}{_apiPath}", method, bodyContent, parameters);
+                instance = await base.SendRequest<T>(HttpRequestType.Post, $"{_baseUrl}{_apiPath}", method, bodyContent, parameters).ConfigureAwait(false);
             }
 
             return instance;

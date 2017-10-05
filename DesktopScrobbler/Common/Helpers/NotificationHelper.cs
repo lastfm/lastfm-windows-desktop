@@ -88,11 +88,11 @@ namespace LastFM.Common.Helpers
             }
         }
 
-        internal static async void Notification_OnShownComplete(PopupNotificationUi notificationWindow)
+        internal static async Task Notification_OnShownComplete(PopupNotificationUi notificationWindow)
         {
             if (!Core.ApplicationIsShuttingDown)
             {
-                await Task.Delay(3000);
+                await Task.Delay(3000).ConfigureAwait(false);
 
                 Transition hidingTransition = new Transition(new TransitionType_Acceleration(1000));
 

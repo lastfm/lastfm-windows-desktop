@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json;
@@ -101,12 +102,31 @@ namespace LastFM.Common.Factories
 
             try
             {
-                await _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StartedListening);
+                _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StartedListening).ConfigureAwait(false);
             }
             catch (Exception)
             {
                 // No connection available...
             }
+
+            var loveStatus = await GetLoveStatus(mediaItem).ConfigureAwait(false);
+        }
+
+        private static async Task<Track> GetLoveStatus(MediaItem mediaItem)
+        {
+            Track responseObject = null;
+
+            try
+            {
+                responseObject = await _lastFMClient.GetLoveStatus(mediaItem).ConfigureAwait(false);
+
+                _uiThread.ResetLoveTrackState(Convert.ToBoolean(responseObject?.Info?.UserLoved) ? LastFMClient.LoveStatus.Unlove : LastFMClient.LoveStatus.Love);
+            }
+            catch (Exception e)
+            {
+            }
+
+            return responseObject;
         }
 
         private static void ScrobbleSource_OnTrackEnded(MediaItem mediaItem)
@@ -125,7 +145,7 @@ namespace LastFM.Common.Factories
 
                 List<MediaItem> sourceMedia = new List<MediaItem>();
 
-                sourceMedia = await LoadCachedScrobbles();
+                sourceMedia = await LoadCachedScrobbles().ConfigureAwait(false);
 
                 foreach (IScrobbleSource source in ScrobblePlugins?.Where(plugin => plugin.IsEnabled).ToList())
                 {
@@ -135,10 +155,12 @@ namespace LastFM.Common.Factories
                     source.ClearQueuedMedia();
                 }
 
-                if (await CanScrobble())
+                if (await CanScrobble().ConfigureAwait(false))
                 {
                     if (sourceMedia != null && sourceMedia.Any())
                     {
+                        Console.WriteLine($"Scrobbling {sourceMedia.Count} item(s)....");
+
                         _uiThread.SetStatus($"Scrobbling {sourceMedia.Count} item(s)....");
 
                         try
@@ -149,7 +171,7 @@ namespace LastFM.Common.Factories
                             {
                                 // Ensure the media is split up into groups of 50
                                 List<MediaItem> scrobbleBatch = sourceMedia.Take(50).ToList();
-                                ScrobbleResponse scrobbleResult = await _lastFMClient.SendScrobbles(scrobbleBatch);
+                                ScrobbleResponse scrobbleResult = await _lastFMClient.SendScrobbles(scrobbleBatch).ConfigureAwait(false);
 
                                 // Only remove the items in the batch AFTER a successful scrobble request is sent
                                 // so that we can cache the full media list without manipulating the lists again.
@@ -232,8 +254,8 @@ namespace LastFM.Common.Factories
         {
             List<MediaItem> failedMedia = new List<MediaItem>();
 
-            List<MediaItem> offlineScrobbleMedia = await LoadOfflineScrobbles();
-            List<MediaItem> failedScrobbleMedia = await LoadFailedScrobbles();
+            List<MediaItem> offlineScrobbleMedia = await LoadOfflineScrobbles().ConfigureAwait(false);
+            List<MediaItem> failedScrobbleMedia = await LoadFailedScrobbles().ConfigureAwait(false);
 
             if(offlineScrobbleMedia != null  && offlineScrobbleMedia.Any())
             {
@@ -374,7 +396,7 @@ namespace LastFM.Common.Factories
 
             try
             {
-                currentUser = await _lastFMClient.GetUserInfo(Core.Settings.Username);
+                currentUser = await _lastFMClient.GetUserInfo(Core.Settings.Username).ConfigureAwait(false);
                 canScrobble = !string.IsNullOrEmpty(currentUser?.Name);
             }
             catch (Exception ex)
@@ -392,7 +414,7 @@ namespace LastFM.Common.Factories
             // Get the unscrobbled media
             List<MediaItem> sourceMedia = new List<MediaItem>();
 
-            sourceMedia = await LoadCachedScrobbles();
+            sourceMedia = await LoadCachedScrobbles().ConfigureAwait(false);
 
             foreach (IScrobbleSource plugin in ScrobblePlugins)
             {

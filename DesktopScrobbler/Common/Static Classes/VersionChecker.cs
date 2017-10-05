@@ -22,19 +22,19 @@ namespace LastFM.Common.Static_Classes
 
         public static async Task<VersionState> CheckVersion(string versionURL)
         {
-            byte[] numArray = await LoadPage(versionURL);
+            byte[] numArray = await LoadPage(versionURL).ConfigureAwait(false);
             byte[] versionPageBytes = numArray;
 
             string versionPageSource = Encoding.UTF8.GetString(versionPageBytes);
 
-            VersionState versionFromSource = await GetVersionFromSource(versionPageSource);
+            VersionState versionFromSource = await GetVersionFromSource(versionPageSource).ConfigureAwait(false);
 
             return versionFromSource;
         }
 
         private static async Task<byte[]> LoadPage(string versionURL)
         {
-            byte[] numArray = await LoadPageAsync(versionURL);
+            byte[] numArray = await LoadPageAsync(versionURL).ConfigureAwait(false);
             return numArray;
         }
 

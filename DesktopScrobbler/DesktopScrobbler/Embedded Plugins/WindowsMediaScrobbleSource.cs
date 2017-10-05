@@ -146,11 +146,13 @@ namespace DesktopScrobbler
 
                         if (_mediaPlayer != null)
                         {
-                            Console.WriteLine("Windows Media Player Plugin checking media state...");
+                            #if DebugWMPScrobbler
+                                Console.WriteLine("Windows Media Player Plugin checking media state...");
+                            #endif
 
                             if (_isEnabled)
                             {
-                                MediaItem mediaDetail = await GetMediaDetail();
+                                MediaItem mediaDetail = await GetMediaDetail().ConfigureAwait(false);
 
                                 WMPPlayState playerState = _mediaPlayer?.Player?.playState ?? WMPPlayState.wmppsStopped;
                                 double playerPosition = _mediaPlayer?.Player?.Ctlcontrols?.currentPosition ?? 0;
@@ -163,7 +165,9 @@ namespace DesktopScrobbler
   
                                 bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime == Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60);
 
-                                Console.WriteLine($"Windows Media Player Plugin: Position {playerPosition} of { mediaDetail?.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
+#if DebugWMPScrobbler
+                                    Console.WriteLine($"Windows Media Player Plugin: Position {playerPosition} of { mediaDetail?.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
+#endif
 
                                 if ((isPlaying && hasMedia && hasTrackChanged) || hasReachedTrackEnd)
                                 {
@@ -177,7 +181,7 @@ namespace DesktopScrobbler
                                         _onScrobbleTrack?.Invoke(_currentMediaItem);
                                     }
 
-                                    Console.WriteLine("Raising Track Change Method.");
+                                    Console.WriteLine("Windows Media Player: Raising Track Change Method.");
 
                                     if(hasTrackChanged)
                                     {
@@ -199,7 +203,7 @@ namespace DesktopScrobbler
                                     }
                                     _currentMediaPlayTime++;
 
-                                    Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
+                                    Console.WriteLine($"Windows Media Player: Track {mediaDetail.TrackName} queued for Scrobbling.");
                                 }
                                 // The media player is playing, and is still playing the same track
                                 else if (isPlaying && !hasTrackChanged)
@@ -233,7 +237,9 @@ namespace DesktopScrobbler
                                 }
                             }
 
-                            Console.WriteLine("Windows Media Plugin checking media state complete.");
+                            #if DebugWMPScrobbler
+                                Console.WriteLine("Windows Media Plugin checking media state complete.");
+                            #endif
                         }
                         else if (_currentMediaItem != null)
                         {

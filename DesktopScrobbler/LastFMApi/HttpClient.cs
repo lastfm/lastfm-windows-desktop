@@ -86,24 +86,24 @@ namespace LastFM.ApiClient
             {
                 case HttpRequestType.Delete:
                 {
-                    responseMessage = await client.DeleteAsync($"{requestUrl}{queryStringOrBody}");
+                    responseMessage = await client.DeleteAsync($"{requestUrl}{queryStringOrBody}").ConfigureAwait(false);
                     break;
                 }
                 case HttpRequestType.Post:
                 {
-                    responseMessage = await client.PostAsync($"{requestUrl}", new StringContent(queryStringOrBody));
+                    responseMessage = await client.PostAsync($"{requestUrl}", new StringContent(queryStringOrBody)).ConfigureAwait(false);
                     break;
                 }
                 default:
                 {
-                    responseMessage = await client.GetAsync($"{requestUrl}{queryStringOrBody}");
+                    responseMessage = await client.GetAsync($"{requestUrl}{queryStringOrBody}").ConfigureAwait(false);
                     break;
                 }
             }
             
             if (responseMessage != null)
             {
-                var responseString = await responseMessage.Content.ReadAsStringAsync();
+                var responseString = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (HttpResponsePreProcessing != null)
                 {
@@ -140,18 +140,18 @@ namespace LastFM.ApiClient
             {
                 case HttpRequestType.Delete:
                     {
-                        responseMessage = await client.DeleteAsync($"{requestUrl}{bodyContent}");
+                        responseMessage = await client.DeleteAsync($"{requestUrl}{bodyContent}").ConfigureAwait(false);
                         break;
                     }
                 case HttpRequestType.Post:
                     {
-                        responseMessage = await client.PostAsync($"{requestUrl}{queryString}", bodyContent);
+                        responseMessage = await client.PostAsync($"{requestUrl}{queryString}", bodyContent).ConfigureAwait(false);
                         break;
                     }
 
                 default:
                     {
-                        responseMessage = await client.GetAsync($"{requestUrl}{bodyContent}");
+                        responseMessage = await client.GetAsync($"{requestUrl}{bodyContent}").ConfigureAwait(false);
                         break;
                     }
             }
@@ -192,7 +192,7 @@ namespace LastFM.ApiClient
                 string requestUrl = $"{requestPath}?method={method}";                
                 string queryString = GetQueryString(requestParameters);
 
-                instance = await PerformRequest<T>(requestType, requestUrl, queryString);
+                instance = await PerformRequest<T>(requestType, requestUrl, queryString).ConfigureAwait(false);
             }
 
             return instance;
@@ -211,7 +211,7 @@ namespace LastFM.ApiClient
 
                 //string queryString = GetQueryString(requestParameters);
 
-                instance = await PerformRequest<T>(requestType, requestUrl, null, bodyContent);
+                instance = await PerformRequest<T>(requestType, requestUrl, null, bodyContent).ConfigureAwait(false);
             }
 
             return instance;

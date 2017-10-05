@@ -28,9 +28,9 @@ namespace DesktopScrobbler
         {
             btnAuthorize.Enabled = false;
 
-            if (await this.ApiClient.GetAuthorisationToken())
+            if (await this.ApiClient.GetAuthorisationToken().ConfigureAwait(false))
             {
-                await ProcessHelper.LaunchUrl(string.Format(APIDetails.UserAuthorizationEndPointUrl, APIDetails.Key, this.ApiClient.AuthenticationToken));
+                await ProcessHelper.LaunchUrl(string.Format(APIDetails.UserAuthorizationEndPointUrl, APIDetails.Key, this.ApiClient.AuthenticationToken)).ConfigureAwait(false);
                 StartAuthCheckTimer();
             }
             else
@@ -51,7 +51,7 @@ namespace DesktopScrobbler
         {
             _authCheckTimer.Stop();
 
-            var sessionToken = await this.ApiClient.GetSessionToken();
+            var sessionToken = await this.ApiClient.GetSessionToken().ConfigureAwait(false);
 
             if (sessionToken != null)
             {

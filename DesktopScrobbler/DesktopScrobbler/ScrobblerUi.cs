@@ -90,7 +90,7 @@ namespace DesktopScrobbler
             base.OnScrobbleStateChanged += UpdateScrobbleState;
 
             _normalStateLogo = pbLogo.Image;
-            _greyStateLogo = await ImageHelper.GreyScaleImage(_normalStateLogo);
+            _greyStateLogo = await ImageHelper.GreyScaleImage(_normalStateLogo).ConfigureAwait(false);
 
             pbLogo.MouseEnter += (o, ev) =>
             {
@@ -163,7 +163,7 @@ namespace DesktopScrobbler
                 }
 
                 SetStatus("Loading plugins...");
-                await GetPlugins();
+                await GetPlugins().ConfigureAwait(false);
             }
             else
             {
@@ -171,9 +171,9 @@ namespace DesktopScrobbler
             }
 
             SetStatus("Checking connection to Last.fm...");
-            await ConnectToLastFM(afterLogOut);
+            await ConnectToLastFM(afterLogOut).ConfigureAwait(false);
 
-            await ScrobbleFactory.Initialize(base.APIClient, this);
+            await ScrobbleFactory.Initialize(base.APIClient, this).ConfigureAwait(false);
 
             ApplicationConfiguration.CheckPluginDefaultStatus();
 
@@ -192,7 +192,7 @@ namespace DesktopScrobbler
 
         private async Task GetPlugins()
         {
-            List<Plugin> typedPlugins = await PluginFactory.GetPluginsOfType(ApplicationUtility.ApplicationPath(), typeof(IScrobbleSource));
+            List<Plugin> typedPlugins = await PluginFactory.GetPluginsOfType(ApplicationUtility.ApplicationPath(), typeof(IScrobbleSource)).ConfigureAwait(false);
             ScrobbleFactory.ScrobblePlugins = new List<IScrobbleSource>();
             bool requiresSettingsToBeSaved = false;
 
@@ -228,7 +228,7 @@ namespace DesktopScrobbler
 
             if (!Core.Settings.UserHasAuthorizedApp)
             {
-                if (await VerifyAuthorization("Authentication Required"))
+                if (await VerifyAuthorization("Authentication Required").ConfigureAwait(false))
                 {
                     Core.Settings.SessionToken = base.APIClient.SessionToken.Key;
                     Core.Settings.UserHasAuthorizedApp = true;
@@ -291,7 +291,7 @@ namespace DesktopScrobbler
         {
             try
             {
-                base.CurrentUser = await base.APIClient.GetUserInfo(Core.Settings.Username);
+                base.CurrentUser = await base.APIClient.GetUserInfo(Core.Settings.Username).ConfigureAwait(false);
 
                 if (!string.IsNullOrEmpty(base.CurrentUser?.Name))
                 {
@@ -385,7 +385,7 @@ namespace DesktopScrobbler
             string applicationVersion = ApplicationUtility.BuildVersion();
             string pathDownload = Core.UserDownloadsPath;
 
-            VersionChecker.VersionState result = await Task.Run(() => VersionChecker.CheckVersion(Core.UpdateUrl));
+            VersionChecker.VersionState result = await Task.Run(() => VersionChecker.CheckVersion(Core.UpdateUrl)).ConfigureAwait(false);
 
             if (result.IsNewVersion)
             {

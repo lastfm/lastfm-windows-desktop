@@ -134,7 +134,7 @@ namespace ITunesScrobblePlugin
                                     Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
 
                                     Console.WriteLine("iTunes Plugin checking media state...");
-                                    MediaItem mediaDetail = await GetMediaDetail(iTunesApp);
+                                    MediaItem mediaDetail = await GetMediaDetail(iTunesApp).ConfigureAwait(false);
 
                                     ITPlayerState playerState = iTunesApp?.PlayerState ?? ITPlayerState.ITPlayerStateStopped;
                                     double playerPosition = iTunesApp?.PlayerPosition ?? 0;

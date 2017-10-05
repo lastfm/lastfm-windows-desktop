@@ -66,6 +66,8 @@
     <Compile Include="Models\Scrobbles.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SessionToken.cs" />
+    <Compile Include="Models\Track.cs" />
+    <Compile Include="Models\TrackDetail.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

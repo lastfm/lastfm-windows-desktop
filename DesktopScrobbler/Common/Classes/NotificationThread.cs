@@ -11,6 +11,11 @@ using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Windows.Forms;
 using static LastFM.ApiClient.LastFMClient;
+using System.Net;
+using System.ComponentModel;
+using System.IO;
+using ICSharpCode.SharpZipLib.Zip;
+using System.Threading.Tasks;
 
 namespace LastFM.Common.Classes
 {
@@ -53,6 +58,9 @@ namespace LastFM.Common.Classes
 
         private async void NotificationThread_Load(object sender, System.EventArgs e)
         {
+
+            VersionChecker.CleanUpDownloads();
+
             trayIcon.DoubleClick += TrayIcon_DoubleClick;
             trayIcon.BalloonTipClosed += ClearBallonTip;
             trayIcon.MouseClick += (o, ev) =>
@@ -107,19 +115,69 @@ namespace LastFM.Common.Classes
 
             stripLoveTrack.Click += stripLoveTrack_Click;
 
-            stripLoveTrack.MouseEnter += (o, ev) =>
-            {
-                statusStrip1.Cursor = stripLoveTrack.Enabled ? Cursors.Hand : Cursors.No;
-            };
+            stripLoveTrack.MouseEnter += Common_MouseEnter;
+            stripLoveTrack.MouseLeave += Common_MouseLeave;
 
-            stripLoveTrack.MouseLeave += (o, ev) => 
-            {
-                statusStrip1.Cursor = Cursors.Default;
-            };
+            stripNewVersion.MouseEnter += Common_MouseEnter;
+            stripNewVersion.MouseLeave += Common_MouseLeave;
 
             _normalTrayIcon = trayIcon.Icon;
             _greyScaleIcon = await ImageHelper.GreyScaleIcon(_normalTrayIcon);
 
+        }
+
+        private async void Common_MouseEnter(object sender, EventArgs e)
+        {
+            statusStrip1.Cursor = ((ToolStripStatusLabel)sender).Enabled ? Cursors.Hand : Cursors.No;
+
+            ToolStripLabel sendingLabel = sender as ToolStripStatusLabel;
+            if (sendingLabel != null)
+            {
+                if (sendingLabel == stripLoveTrack)
+                {
+                    LoveStatus currentStatus = (LoveStatus)sendingLabel.Tag;
+                    switch (currentStatus)
+                    {
+                        case LoveStatus.Love:
+                        {
+                            stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_hover_64.png");
+                            break;
+                        }
+                        case LoveStatus.Unlove:
+                        {
+                            stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_hover_64.png");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private async void Common_MouseLeave(object sender, EventArgs e)
+        {
+            statusStrip1.Cursor = Cursors.Default;
+
+            ToolStripLabel sendingLabel = sender as ToolStripStatusLabel;
+            if (sendingLabel != null)
+            {
+                if (sendingLabel == stripLoveTrack)
+                {
+                    LoveStatus currentStatus = (LoveStatus)sendingLabel.Tag;
+                    switch (currentStatus)
+                    {
+                        case LoveStatus.Love:
+                            {
+                                stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_off_64.png");
+                                break;
+                            }
+                        case LoveStatus.Unlove:
+                            {
+                                stripLoveTrack.Image = await ImageHelper.LoadImage("Resources\\love_on_64.png");
+                                break;
+                            }
+                    }
+                }
+            }
         }
 
         protected void ScrobbleStateChanging(bool scrobblingEnabled)
@@ -254,7 +312,7 @@ namespace LastFM.Common.Classes
             }
         }
 
-        private void NotificationThread_FormClosing(object sender, FormClosingEventArgs e)
+        private async void NotificationThread_FormClosing(object sender, FormClosingEventArgs e)
         {
             bool canCloseApp = (e.CloseReason == CloseReason.UserClosing && !Core.Settings.CloseToTray) || _userExiting || e.CloseReason != CloseReason.UserClosing;
 
@@ -263,6 +321,10 @@ namespace LastFM.Common.Classes
                 NotificationHelper.ClearNotifications();
 
                 ScrobbleFactory.ScrobblingEnabled = false;
+
+                // Give the scrobblers a chance to stop running cleanly
+                await Task.Delay(2000);
+
                 ScrobbleFactory.Dispose();
 
                 _settingsUI?.Close();
@@ -401,11 +463,161 @@ namespace LastFM.Common.Classes
             ResetLoveTrackState(LoveStatus.Love);
         }
 
-        public void ExitApplication()
+        public void HasNewVersion(VersionChecker.VersionState versionDetail)
+        {
+            this.Invoke(new MethodInvoker(() => {
+
+                stripNewVersion.Tag = versionDetail;
+                stripNewVersion.Visible = true;
+                stripNewVersion.Text = $"Version{versionDetail.Version} is available to download...";
+                stripNewVersion.ToolTipText = $"Version {versionDetail.Version} is available to download...";
+
+                mnuNewVersion.Text = $"Download v{versionDetail.Version}...";
+                mnuNewVersion.Visible = true;
+                mnuNewVersionSeparator.Visible = true;
+
+                ResetVersionMenuClickHandlers();
+
+                mnuNewVersion.Click += DownloadNewVersion;
+                stripNewVersion.Click += DownloadNewVersion;
+
+                NotificationHelper.ShowNotification(this, Core.APPLICATION_TITLE, $"Version {versionDetail.Version} of the Desktop Scrobbler is now available to download.");
+            }));
+        }
+
+        private void ResetVersionMenuClickHandlers()
+        {
+            mnuNewVersion.Click -= DownloadNewVersion;
+            mnuNewVersion.Click -= InstallUpdate;
+            stripNewVersion.Click -= DownloadNewVersion;
+            stripNewVersion.Click -= InstallUpdate;
+            stripUpdateProgress.Click -= InstallUpdate;
+
+            stripUpdateProgress.MouseEnter -= Common_MouseEnter;
+            stripUpdateProgress.MouseLeave -= Common_MouseLeave;
+
+        }
+
+        public async void DownloadNewVersion(object sender, EventArgs e)
+        {
+            mnuNewVersion.Enabled = false;
+            stripUpdateProgress.Visible = true;
+            stripUpdateProgress.AutoSize = true;
+
+            await VersionChecker.DownloadUpdate(stripNewVersion.Tag as VersionChecker.VersionState, Core.UserDownloadsPath, DownloadProgressUpdated, DownloadComplete);
+        }
+
+        private void DownloadComplete(object sender, AsyncCompletedEventArgs e)
+        {
+            if(e.Error != null)
+            {
+                mnuNewVersion.Enabled = true;
+                MessageBox.Show(this, $"Failed to download the latest version due to an error:\r\n{e.Error.Message}", $"{Core.APPLICATION_TITLE}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                VersionChecker.VersionState downloadedVersionInfo = e.UserState as VersionChecker.VersionState;
+
+                if (downloadedVersionInfo != null)
+                {
+                    ResetVersionMenuClickHandlers();
+
+                    stripUpdateProgress.Text = "Ready to install.";
+
+                    mnuNewVersion.Text = $"Install v{downloadedVersionInfo.Version}...";
+                    mnuNewVersion.Enabled = true;
+                    mnuNewVersion.Click += InstallUpdate;
+                    stripNewVersion.Click += InstallUpdate;
+                    stripUpdateProgress.Click += InstallUpdate;
+
+                    stripUpdateProgress.MouseEnter += Common_MouseEnter;
+                    stripUpdateProgress.MouseLeave += Common_MouseLeave;
+
+                }
+            }
+        }
+
+        private void InstallUpdate(object sender, EventArgs e)
+        {
+            VersionChecker.VersionState updateInfo = stripNewVersion.Tag as VersionChecker.VersionState;
+
+            if (updateInfo != null)
+            {
+                string downloadOSFilename = new Uri(updateInfo.Url).PathAndQuery.Replace('/', Path.DirectorySeparatorChar);
+                FileInfo downloadFileInfo = new FileInfo(downloadOSFilename);
+
+                FileInfo downloadedFile = new FileInfo($"{Core.UserDownloadsPath}{downloadFileInfo.Name}");
+                string extractionPath = downloadedFile.FullName.Substring(0, downloadedFile.FullName.IndexOf(downloadedFile.Extension));
+
+                try
+                {
+                    if (downloadedFile.Exists)
+                    {
+                        using (ZipInputStream s = new ZipInputStream(File.OpenRead(downloadedFile.FullName)))
+                        {
+                            ZipEntry theEntry;
+                            while ((theEntry = s.GetNextEntry()) != null)
+                            {
+
+                                string directoryName = extractionPath;
+                                string fileName = Path.GetFileName(theEntry.Name);
+
+                                // create directory 
+                                if (directoryName.Length > 0)
+                                {
+                                    if (!Directory.Exists(directoryName))
+                                    {
+                                        Directory.CreateDirectory(directoryName);
+                                    }
+                                }
+
+                                if (fileName != String.Empty)
+                                {
+                                    using (FileStream streamWriter = File.Create(string.Format("{0}\\{1}", directoryName, theEntry.Name)))
+                                    {
+                                        int size = 2048;
+                                        byte[] data = new byte[2048];
+                                        while (true)
+                                        {
+                                            size = s.Read(data, 0, data.Length);
+                                            if (size > 0)
+                                            {
+                                                streamWriter.Write(data, 0, size);
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (File.Exists(extractionPath + "\\setup.exe"))
+                        {
+                            ProcessHelper.LaunchProcess($"{extractionPath}\\setup.exe");
+                            ExitApplication();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }        
+        }
+
+        private void DownloadProgressUpdated(object sender, DownloadProgressChangedEventArgs e)
+        {
+            mnuNewVersion.Text = $"Downloading: {e.ProgressPercentage}%";
+            stripUpdateProgress.Text = $"Downloading: {e.ProgressPercentage}%";
+        }
+
+        public async Task ExitApplication()
         {
             _userExiting = true;
             this.Close();
         }
-
     }
 }

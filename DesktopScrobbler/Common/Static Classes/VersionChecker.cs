@@ -1,5 +1,7 @@
-﻿using System;
+﻿using LastFM.Common.Helpers;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -72,6 +74,21 @@ namespace LastFM.Common.Static_Classes
             return content.ToArray();
         }
 
+        internal static void CleanUpDownloads()
+        {
+            if (Directory.Exists(Core.UserDownloadsPath))
+            {
+                try
+                {
+                    Directory.Delete(Core.UserDownloadsPath, true);
+                }
+                catch (Exception ex)
+                {
+                    // Do nothing...
+                }
+            }
+        }
+
         internal static async Task<VersionState> GetVersionFromSource(string pageSource)
         {
             // Load the page source in the Agility Pack so that we can parse the DOM effectively
@@ -109,6 +126,19 @@ namespace LastFM.Common.Static_Classes
             twitterDoc = null;
 
             return state;
+        }
+
+        internal static async Task DownloadUpdate(VersionChecker.VersionState downloadInfo, string downloadDirectory, DownloadProgressChangedEventHandler progressEventHandler, AsyncCompletedEventHandler downloadCompleted)
+        {
+            string downloadOSFilename = new Uri(downloadInfo.Url).PathAndQuery.Replace('/', Path.DirectorySeparatorChar);
+            FileInfo downloadFileInfo = new FileInfo(downloadOSFilename);
+
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(progressEventHandler);
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(downloadCompleted);
+                client.DownloadFileAsync(new Uri(downloadInfo.Url), $"{downloadDirectory}{downloadFileInfo.Name}", downloadInfo);
+            }
         }
     }
 }

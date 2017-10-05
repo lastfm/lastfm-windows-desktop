@@ -44,6 +44,10 @@ namespace LastFM.Common.Classes
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.stripLoveTrack = new System.Windows.Forms.ToolStripStatusLabel();
             this.stripVersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stripNewVersion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.mnuNewVersion = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuNewVersionSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.stripUpdateProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.trayMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -51,6 +55,8 @@ namespace LastFM.Common.Classes
             // trayMenu
             // 
             this.trayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuNewVersion,
+            this.mnuNewVersionSeparator,
             this.mnuLoveThisTrack,
             this.toolStripSeparator5,
             this.mnuShow,
@@ -63,7 +69,7 @@ namespace LastFM.Common.Classes
             this.toolStripSeparator2,
             this.mnuExit});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(206, 166);
+            this.trayMenu.Size = new System.Drawing.Size(206, 194);
             // 
             // mnuLoveThisTrack
             // 
@@ -140,7 +146,9 @@ namespace LastFM.Common.Classes
             this.stripStatus,
             this.toolStripStatusLabel1,
             this.stripLoveTrack,
-            this.stripVersionLabel});
+            this.stripVersionLabel,
+            this.stripNewVersion,
+            this.stripUpdateProgress});
             this.statusStrip1.Location = new System.Drawing.Point(0, 105);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(444, 22);
@@ -176,6 +184,37 @@ namespace LastFM.Common.Classes
             this.stripVersionLabel.Size = new System.Drawing.Size(75, 17);
             this.stripVersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // stripNewVersion
+            // 
+            this.stripNewVersion.AutoSize = false;
+            this.stripNewVersion.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.stripNewVersion.Image = ((System.Drawing.Image)(resources.GetObject("stripNewVersion.Image")));
+            this.stripNewVersion.Name = "stripNewVersion";
+            this.stripNewVersion.Size = new System.Drawing.Size(24, 17);
+            this.stripNewVersion.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.stripNewVersion.Visible = false;
+            // 
+            // mnuNewVersion
+            // 
+            this.mnuNewVersion.Name = "mnuNewVersion";
+            this.mnuNewVersion.Size = new System.Drawing.Size(205, 22);
+            this.mnuNewVersion.Text = "New Version Available";
+            this.mnuNewVersion.Visible = false;
+            // 
+            // mnuNewVersionSeparator
+            // 
+            this.mnuNewVersionSeparator.Name = "mnuNewVersionSeparator";
+            this.mnuNewVersionSeparator.Size = new System.Drawing.Size(202, 6);
+            this.mnuNewVersionSeparator.Visible = false;
+            // 
+            // stripUpdateProgress
+            // 
+            this.stripUpdateProgress.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.stripUpdateProgress.Name = "stripUpdateProgress";
+            this.stripUpdateProgress.Size = new System.Drawing.Size(78, 17);
+            this.stripUpdateProgress.Text = "Connecting...";
+            this.stripUpdateProgress.Visible = false;
+            // 
             // NotificationThread
             // 
             this.ClientSize = new System.Drawing.Size(444, 127);
@@ -197,5 +236,9 @@ namespace LastFM.Common.Classes
         private ToolStripMenuItem mnuLoveThisTrack;
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripStatusLabel stripNewVersion;
+        private ToolStripMenuItem mnuNewVersion;
+        private ToolStripSeparator mnuNewVersionSeparator;
+        private ToolStripStatusLabel stripUpdateProgress;
     }
 }

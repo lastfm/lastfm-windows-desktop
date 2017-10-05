@@ -156,7 +156,7 @@ namespace DesktopScrobbler
                                 double playerPosition = _mediaPlayer?.Player?.Ctlcontrols?.currentPosition ?? 0;
 
                                 bool hasMedia = mediaDetail != null;
-                                bool hasReachedTrackEnd = hasMedia && (int)playerPosition >= (int)mediaDetail?.TrackLength && mediaDetail?.TrackLength > 0;
+                                bool hasReachedTrackEnd = hasMedia && (int)playerPosition + 1 >= (int)mediaDetail?.TrackLength && mediaDetail?.TrackLength > 0;
                                 bool hasTrackChanged = _currentMediaItem?.TrackName != mediaDetail?.TrackName;
                                 bool isPaused = playerState == WMPPlayState.wmppsPaused;
                                 bool isPlaying = playerState == WMPPlayState.wmppsPlaying;

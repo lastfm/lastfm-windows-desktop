@@ -14,6 +14,7 @@ using PluginSupport;
 using LastFM.Common.Classes;
 using LastFM.Common.Helpers;
 using static LastFM.Common.Factories.ScrobbleFactory;
+using System.IO;
 
 namespace DesktopScrobbler
 {
@@ -62,6 +63,8 @@ namespace DesktopScrobbler
 
         private async void ScrobblerUi_Load(object sender, System.EventArgs e)
         {
+            CheckForNewVersion();
+
             _playerForm = new WindowsMediaPlayer();
             _playerForm.ShowInTaskbar = false;
             _playerForm.WindowState = FormWindowState.Minimized;
@@ -77,7 +80,7 @@ namespace DesktopScrobbler
 
             _playerForm.Hide();
 
-            linkSettings.Click += (o, ev) => 
+            linkSettings.Click += (o, ev) =>
             {
                 base.ShowSettings();
                 ShowIdleStatus();
@@ -101,7 +104,7 @@ namespace DesktopScrobbler
                 else
                 {
                     pbLogo.Cursor = DefaultCursor;
-                }                
+                }
             };
 
             pbLogo.Click += (o, ev) =>
@@ -246,7 +249,7 @@ namespace DesktopScrobbler
                 base.APIClient.SessionToken = new SessionToken() { Key = Core.Settings.SessionToken };
             }
 
-            if(Core.Settings.UserHasAuthorizedApp)
+            if (Core.Settings.UserHasAuthorizedApp)
             {
                 base.ShowTrayIcon();
 
@@ -257,7 +260,8 @@ namespace DesktopScrobbler
 
         public void RefreshOnlineStatus(OnlineState currentState)
         {
-            this.Invoke(new MethodInvoker(()  => {
+            this.Invoke(new MethodInvoker(() =>
+            {
 
                 linkLogIn.Visible = false;
 
@@ -271,7 +275,7 @@ namespace DesktopScrobbler
                 else if (!string.IsNullOrEmpty(Core.Settings.Username))
                 {
                     lblSignInName.Text = $"(Offline) {Core.Settings.Username}";
-                }            
+                }
                 else
                 {
                     lblSignInName.Text = $"{Core.APPLICATION_TITLE}";
@@ -292,7 +296,7 @@ namespace DesktopScrobbler
             {
                 base.CurrentUser = await base.APIClient.GetUserInfo(Core.Settings.Username);
 
-                if(!string.IsNullOrEmpty(base.CurrentUser?.Name))
+                if (!string.IsNullOrEmpty(base.CurrentUser?.Name))
                 {
                     RefreshOnlineStatus(OnlineState.Online);
                 }
@@ -314,7 +318,7 @@ namespace DesktopScrobbler
 
         private void ShowIdleStatus()
         {
-            if(Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) > 0 && ScrobbleFactory.ScrobblingEnabled)
+            if (Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) > 0 && ScrobbleFactory.ScrobblingEnabled)
             {
                 SetStatus("Waiting to Scrobble...");
             }
@@ -377,7 +381,19 @@ namespace DesktopScrobbler
 
             return _isApplicationAuthed;
         }
+
+
+        private async Task CheckForNewVersion()
+        {
+            string applicationVersion = ApplicationUtility.BuildVersion();
+            string pathDownload = Core.UserDownloadsPath;
+
+            VersionChecker.VersionState result = await Task.Run(() => VersionChecker.CheckVersion(Core.UpdateUrl));
+
+            if (result.IsNewVersion)
+            {
+                base.HasNewVersion(result);
+            }
+        }
     }
-
-
 }

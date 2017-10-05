@@ -318,6 +318,9 @@ namespace LastFM.Common.Classes
 
             if (canCloseApp)
             {
+                trayIcon.Visible = false;
+                trayIcon.Dispose();
+
                 NotificationHelper.ClearNotifications();
 
                 ScrobbleFactory.ScrobblingEnabled = false;
@@ -328,9 +331,6 @@ namespace LastFM.Common.Classes
                 ScrobbleFactory.Dispose();
 
                 _settingsUI?.Close();
-
-                trayIcon.Visible = false;
-                trayIcon.Dispose();
             }
             else
             {

@@ -103,6 +103,11 @@ namespace LastFM.Common.Static_Classes
             return stringList;
         }
 
+        public static string GetApplicationFullVersionNumber()
+        {
+            return ApplicationUtility.ApplicationAssembly.GetName().Version.ToString(4);
+        }
+
         public static string GetApplicationVersionNumber()
         {
             return ApplicationUtility.ApplicationAssembly.GetName().Version.ToString(3);

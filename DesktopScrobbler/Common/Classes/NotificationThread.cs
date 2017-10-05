@@ -72,7 +72,7 @@ namespace LastFM.Common.Classes
                 }
             };
 
-            stripVersionLabel.Text = $"v{ApplicationUtility.GetApplicationVersionNumber()}";
+            stripVersionLabel.Text = $"v{ApplicationUtility.GetApplicationFullVersionNumber()}";
 
             this.FormClosing += NotificationThread_FormClosing;
             this.Resize += NotificationThread_Resize;

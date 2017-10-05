@@ -439,24 +439,11 @@ namespace LastFM.Common.Classes
 
             if (_currentMediaItem != null && !wasResumed)
             {
-                string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
-                string artistName = _currentMediaItem?.ArtistName ?? "<unknown>";
-
                 if (Core.Settings.ShowTrackChanges)
                 {
-                    string initialText = $"Now playing: '{trackName}' by '{artistName}'";
+                    string notificationText = $"Now playing: {MediaHelper.GetTrackDescription(_currentMediaItem)}";
 
-                    if (initialText.Length > 120)
-                    {
-                        initialText = $"Now playing: '{trackName}'";
-                    }
-
-                    if (initialText.Length > 120)
-                    {
-                        initialText = $"{initialText.Substring(0, 117)} ...";
-                    }
-
-                    ShowNotification(Core.APPLICATION_TITLE, initialText);
+                    ShowNotification(Core.APPLICATION_TITLE, notificationText);
                 }
             }
 

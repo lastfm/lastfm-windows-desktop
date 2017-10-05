@@ -42,12 +42,9 @@ namespace DesktopScrobbler
         {
             if (mediaItem != null)
             {
-                string trackName = mediaItem?.TrackName ?? "<unknown>";
-                string artistName = mediaItem?.ArtistName ?? "<unknown>";
-
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    lblTrackName.Text = $"Current track: '{trackName}' by '{artistName}'";
+                    lblTrackName.Text = $"Current track: {MediaHelper.GetTrackDescription(mediaItem)}";
                 }));
             }
             else

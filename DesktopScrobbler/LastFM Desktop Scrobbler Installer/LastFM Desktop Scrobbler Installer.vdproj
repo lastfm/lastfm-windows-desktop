@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:LastFM Desktop Scrobbler Installer"
+"ProjectName" = "8:Last.fm Desktop Scrobbler Installer"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -207,7 +207,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\LastFM Desktop Scrobbler Installer.msi"
+        "OutputFilename" = "8:Debug\\Last.fm Desktop Scrobbler Installer.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -378,7 +378,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LastFM.Common, Version=3.1.5.24, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:LastFM.Common, Version=3.1.5.100, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_4EEEC4DD38687BBF207BBCFBECEE260A"
@@ -409,7 +409,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Transitions, Version=3.1.5.24, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Transitions, Version=3.1.5.100, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5847AB044EE2A1BFAD4933868B1BAC7B"
@@ -471,7 +471,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PluginSupport, Version=3.1.5.24, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:PluginSupport, Version=3.1.5.100, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_6B35CED08653531681A754C510FC751D"
@@ -522,7 +522,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LastFM.ApiClient, Version=3.1.5.24, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:LastFM.ApiClient, Version=3.1.5.100, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_7A4B0D6527A3B07677CBDA82732925AC"
@@ -761,7 +761,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Last.fm Desktop Scrobbler"
         "ProductCode" = "8:{9E768EF9-EE4C-4AE4-AB96-C6661CF4131E}"
-        "PackageCode" = "8:{0E4FAFB4-D990-4FAB-B7DF-2583285E3B9E}"
+        "PackageCode" = "8:{59D90307-70C6-4F59-82F3-1608FF5AD84B}"
         "UpgradeCode" = "8:{7A74D48A-302C-4C01-9306-67624A50E7BE}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

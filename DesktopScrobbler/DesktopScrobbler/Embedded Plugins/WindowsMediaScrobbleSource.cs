@@ -186,7 +186,7 @@ namespace DesktopScrobbler
                                         _currentMediaItem = mediaDetail;
                                         _onTrackStarted?.Invoke(mediaDetail, false);
                                     }
-                                    else if (hasReachedTrackEnd)
+                                    else if (hasReachedTrackEnd && playerPosition < 1)
                                     {
                                         _currentMediaItem = null;
                                     }
@@ -217,6 +217,7 @@ namespace DesktopScrobbler
                                     if (_currentMediaPlayTime > 0)
                                     {
                                         _onTrackEnded?.Invoke(mediaDetail);
+                                        _currentMediaItem = null;
                                     }
 
                                     // Set the persisted pause state

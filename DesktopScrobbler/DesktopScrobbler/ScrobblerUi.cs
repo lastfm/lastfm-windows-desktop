@@ -36,6 +36,7 @@ namespace DesktopScrobbler
         {
             InitializeComponent();
 
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.Load += ScrobblerUi_Load;
         }
 

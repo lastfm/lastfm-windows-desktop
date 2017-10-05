@@ -211,7 +211,7 @@ namespace LastFM.Common.Classes
                 stripLoveTrack.Text = string.Empty;
                 stripLoveTrack.Tag = newState;
 
-                stripLoveTrack.Enabled = _currentUser != null && _currentMediaItem != null;
+                stripLoveTrack.Enabled = _currentUser != null && _currentMediaItem != null && _currentMediaItem.TrackLength > 0;
 
                 switch(newState)
                 {

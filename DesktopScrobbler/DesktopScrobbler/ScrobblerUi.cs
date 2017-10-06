@@ -63,6 +63,8 @@ namespace DesktopScrobbler
 
         private async void ScrobblerUi_Load(object sender, System.EventArgs e)
         {
+            SetFormStartupSize();
+
             CheckForNewVersion();
 
             _playerForm = new WindowsMediaPlayer();
@@ -82,16 +84,7 @@ namespace DesktopScrobbler
 
             linkSettings.Click += (o, ev) =>
             {
-                base.ShowSettings();
-
-                if (this.Height == 164)
-                {
-                    linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Closed;
-                }
-                else
-                {
-                    linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Open;
-                }
+                ShowSettings();
             };
 
             linkProfile.Click += linkProfile_Click;
@@ -126,6 +119,25 @@ namespace DesktopScrobbler
             };
 
             Startup();
+        }
+
+        private void SetFormStartupSize()
+        {
+            this.Size = new Size(this.Width, FormHelper.GetRelativeLocation(this, lblGeneralSettingsTitle).Y + 12);
+        }
+
+        protected override void ShowSettings()
+        {
+            if (linkSettings.Text == LocalizationStrings.ScrobblerUi_LinkSettings_Closed)
+            {
+                linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Open;
+                this.Size = new Size(this.Width, FormHelper.GetRelativeLocation(this, chkShowScrobbleNotifications).Y + chkShowScrobbleNotifications.Height + chkShowScrobbleNotifications.Padding.Top + chkShowScrobbleNotifications.Padding.Bottom + base.StatusBarHeight + 12);                
+            }
+            else
+            {
+                linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Closed;
+                SetFormStartupSize();                
+            }
         }
 
         private void UpdateScrobbleState(bool scrobblingEnabled)

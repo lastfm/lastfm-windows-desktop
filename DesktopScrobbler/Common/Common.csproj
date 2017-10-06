@@ -81,6 +81,7 @@
       <DependentUpon>SettingsUi.cs</DependentUpon>
     </Compile>
     <Compile Include="Factories\ScrobbleFactory.cs" />
+    <Compile Include="Helpers\FormHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\NotificationHelper.cs" />

@@ -38,6 +38,8 @@ namespace LastFM.Common.Classes
 
         public ScrobbleStateChanged OnScrobbleStateChanged { get; set; }
 
+        protected internal int StatusBarHeight => Convert.ToInt32(statusStrip1?.Height);
+
         protected UserInfo CurrentUser
         {
             get { return _currentUser; }
@@ -382,7 +384,9 @@ namespace LastFM.Common.Classes
             }
         }
 
-        protected void ShowSettings()
+
+
+        protected virtual void ShowSettings()
         {
             if (this.Height == 164)
             {
@@ -392,7 +396,6 @@ namespace LastFM.Common.Classes
             {
                 this.Height = 164;
             }
-
         }
 
         public void HideTrayIcon()

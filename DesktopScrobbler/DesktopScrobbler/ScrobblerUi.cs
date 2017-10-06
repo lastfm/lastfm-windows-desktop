@@ -202,7 +202,10 @@ namespace DesktopScrobbler
 
             ApplicationConfiguration.CheckPluginDefaultStatus();
 
-            DisplaySettings();
+            if (!afterLogOut)
+            {
+                DisplaySettings();
+            }
 
             ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
 
@@ -421,6 +424,7 @@ namespace DesktopScrobbler
         {
             checkedPluginList.BorderStyle = BorderStyle.None;
             checkedPluginList.BackColor = this.BackColor;
+            checkedPluginList.Items.Clear();
 
             chkMinimizeToTray.Checked = Core.Settings.CloseToTray;
             chkStartMinimized.Checked = Core.Settings.StartMinimized;

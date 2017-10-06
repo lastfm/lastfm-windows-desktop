@@ -52,8 +52,10 @@ namespace LastFM.Common.Helpers
                     // for the new window will be
                     var totalDisplayWindowHeight = (notificationWindow.Height * _notifications.Count) + (5 * _notifications.Count);
 
-                    var newWindowTopPoint = (workingArea.Height - totalDisplayWindowHeight) - (notificationWindow.Height + 5);
-                    var newWindowLeftpoint = workingArea.Width - (notificationWindow.Width + 11); //workingArea.Width;
+                    var newWindowTopPoint = ((workingArea.Top + workingArea.Height) - totalDisplayWindowHeight) - (notificationWindow.Height + 5);
+                    var newWindowLeftpoint = (workingArea.Left + workingArea.Width) - (notificationWindow.Width + 11); //workingArea.Width;
+
+                    var widthToSet = notificationWindow.Width;
 
                     notificationWindow.Width = 0;
 
@@ -82,7 +84,7 @@ namespace LastFM.Common.Helpers
                     _runningTransitions.Add(showingAnimation);
 
                     //showingAnimation.add(notificationWindow, "Left", newWindowLeftpoint - (notificationWindow.Width + 11));
-                    showingAnimation.add(notificationWindow, "Width", 284);
+                    showingAnimation.add(notificationWindow, "Width", widthToSet);
                     showingAnimation.run();
                 }));
             }

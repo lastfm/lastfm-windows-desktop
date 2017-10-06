@@ -1,5 +1,6 @@
 ﻿using System;
 using LastFM.Common.Helpers;
+using LastFM.Common.Localization;
 
 namespace LastFM.Common
 {
@@ -8,7 +9,7 @@ namespace LastFM.Common
         public static string FILENAME_SETTINGS = "Settings.cfg";
         public static string FAILEDSCROBBLE_LIMITEXCEEDEDFILENAMEEXTENSION = ".scle";
         public static string FAILEDSCROBBLE_NOCONNECTION = ".scnc";
-        public static string APPLICATION_TITLE = "Last.fm Desktop Scrobbler";
+        public static string APPLICATION_TITLE = LocalizationStrings.General_ApplicationTitle;
 
         public static string UserDownloadsPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Last.fm\\Desktop Scrobbler\\v3\\Updates\\";
         public static string UserSettingsPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Last.fm\\Desktop Scrobbler\\v3\\Settings\\";

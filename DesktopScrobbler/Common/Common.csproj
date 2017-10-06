@@ -86,7 +86,13 @@
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\ProcessHelper.cs" />
+    <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Interfaces\IScrobbleSource.cs" />
+    <Compile Include="Localization\LocalizationStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizationStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Static Classes\APIDetails.cs" />
     <Compile Include="Static Classes\ApplicationUtility.cs" />
     <Compile Include="Static Classes\ApplicationConfiguration.cs" />
@@ -104,6 +110,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Classes\SettingsUi.resx">
       <DependentUpon>SettingsUi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\LocalizationStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizationStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -92,15 +92,17 @@ namespace LastFM.Common.Static_Classes
         internal static async Task<VersionState> GetVersionFromSource(string pageSource)
         {
             // Load the page source in the Agility Pack so that we can parse the DOM effectively
-            HtmlDocument twitterDoc = new HtmlDocument();
+            HtmlDocument updateDoc = new HtmlDocument();
             VersionState state = new VersionState() { IsNewVersion = false, Url = String.Empty, Version = string.Empty };
 
-            twitterDoc.LoadHtml(pageSource);
+            updateDoc.LoadHtml(pageSource);
 
-            var pageH3s = twitterDoc.DocumentNode.Descendants("h3");
+            // Find any 'H3' elements in the document
+            var pageH3s = updateDoc.DocumentNode.Descendants("h3");
 
             if (pageH3s != null)
             {
+                // The first one that has a 'Zip' file as its source, is our upgrade file
                 var firstZipLink = pageH3s.Select(h3 => h3.Descendants("a").FirstOrDefault(a => a.Attributes["href"] != null && a.Attributes["href"].Value != null && a.Attributes["href"].Value.ToLower().Contains(".zip"))).FirstOrDefault(item => item != null);
 
                 if (firstZipLink != null)
@@ -108,7 +110,10 @@ namespace LastFM.Common.Static_Classes
                     List<string> linkText = firstZipLink.InnerText.Split(' ').ToList();
                     if (linkText.Count >= 3)
                     {
+                        // Use the link text to get the version number
                         string webVersionInfo = linkText[1];
+
+                        // Get the current version number (note the process DOESN'T take into account revisions...)
                         string appVersionInfo = ApplicationUtility.BuildVersion();
 
                         ApplicationUtility.VersionState currentState = ApplicationUtility.CompareVersions(appVersionInfo, webVersionInfo);
@@ -123,7 +128,7 @@ namespace LastFM.Common.Static_Classes
                 }
             }
 
-            twitterDoc = null;
+            updateDoc = null;
 
             return state;
         }

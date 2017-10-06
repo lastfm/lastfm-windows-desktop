@@ -15,6 +15,7 @@ using LastFM.Common.Classes;
 using LastFM.Common.Helpers;
 using static LastFM.Common.Factories.ScrobbleFactory;
 using System.IO;
+using LastFM.Common.Localization;
 
 
 namespace DesktopScrobbler
@@ -46,7 +47,7 @@ namespace DesktopScrobbler
             {
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    lblTrackName.Text = $"Current track: {MediaHelper.GetTrackDescription(mediaItem)}";
+                    lblTrackName.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
                 }));
             }
             else
@@ -85,11 +86,11 @@ namespace DesktopScrobbler
 
                 if (this.Height == 164)
                 {
-                    linkSettings.Text = "Settings...";
+                    linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Closed;
                 }
                 else
                 {
-                    linkSettings.Text = "Settings <<";
+                    linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Open;
                 }
             };
 
@@ -139,7 +140,7 @@ namespace DesktopScrobbler
 
         private void LogoutUser(object sender, EventArgs e)
         {
-            if (MessageBox.Show(this, "Are you sure you want to log out?", Core.APPLICATION_TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show(this, LocalizationStrings.ScrobblerUi_LogoutUser_Message, Core.APPLICATION_TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 ScrobbleFactory.ScrobblingEnabled = false;
 
@@ -153,7 +154,7 @@ namespace DesktopScrobbler
 
                 RefreshOnlineStatus(OnlineState.Offline);
 
-                VerifyAuthorization("Authentication Required");
+                VerifyAuthorization(LocalizationStrings.AuthenticationUi_AuthorizationRequired_WindowTitle);
             }
         }
 
@@ -166,7 +167,7 @@ namespace DesktopScrobbler
         {
             if (!afterLogOut)
             {
-                SetStatus("Starting up...");
+                SetStatus(LocalizationStrings.NotificationThread_Status_StartingUp);
                 Core.InitializeSettings();
 
                 if (Core.Settings.StartMinimized)
@@ -174,7 +175,7 @@ namespace DesktopScrobbler
                     this.WindowState = FormWindowState.Minimized;
                 }
 
-                SetStatus("Loading plugins...");
+                SetStatus(LocalizationStrings.ScrobblerUi_Status_LoadingPlugins);
                 await GetPlugins().ConfigureAwait(false);
             }
             else
@@ -182,7 +183,7 @@ namespace DesktopScrobbler
                 ScrobbleFactory.OnlineStatusUpdated -= OnlineStatusUpdated;
             }
 
-            SetStatus("Checking connection to Last.fm...");
+            SetStatus(LocalizationStrings.ScrobblerUi_Status_ConnectingToLastfm);
             await ConnectToLastFM(afterLogOut).ConfigureAwait(false);
 
             await ScrobbleFactory.Initialize(base.APIClient, this).ConfigureAwait(false);
@@ -242,7 +243,7 @@ namespace DesktopScrobbler
 
             if (!Core.Settings.UserHasAuthorizedApp)
             {
-                if (await VerifyAuthorization("Authentication Required").ConfigureAwait(false))
+                if (await VerifyAuthorization(LocalizationStrings.AuthenticationUi_AuthorizationRequired_WindowTitle).ConfigureAwait(false))
                 {
                     Core.Settings.SessionToken = base.APIClient.SessionToken.Key;
                     Core.Settings.UserHasAuthorizedApp = true;
@@ -252,7 +253,7 @@ namespace DesktopScrobbler
                 }
                 else
                 {
-                    SetStatus("Not Logged In.");
+                    SetStatus(LocalizationStrings.ScrobblerUi_Status_NotLoggedIn);
                 }
             }
             else
@@ -280,18 +281,18 @@ namespace DesktopScrobbler
                 {
                     if (!string.IsNullOrEmpty(base.CurrentUser?.Name))
                     {
-                        lblSignInName.Text = $"Welcome {base.CurrentUser?.Name}";
+                        lblSignInName.Text = string.Format(LocalizationStrings.ScrobblerUi_UserLoggedInText, base.CurrentUser?.Name);
                     }
                 }
                 else if (!string.IsNullOrEmpty(Core.Settings.Username))
                 {
-                    lblSignInName.Text = $"(Offline) {Core.Settings.Username}";
+                    lblSignInName.Text = String.Format(LocalizationStrings.ScrobblerUi_UserOffline, base.CurrentUser?.Name);
                 }
                 else
                 {
                     lblSignInName.Text = $"{Core.APPLICATION_TITLE}";
                     linkLogIn.Visible = true;
-                    SetStatus("Not logged in.");
+                    SetStatus(LocalizationStrings.ScrobblerUi_Status_NotLoggedIn);
                 }
 
                 linkProfile.Visible = currentState == OnlineState.Online;
@@ -319,7 +320,7 @@ namespace DesktopScrobbler
             catch (Exception)
             {
                 RefreshOnlineStatus(OnlineState.Offline);
-                SetStatus("A connection to Last.fm is not available.");
+                SetStatus(LocalizationStrings.ScrobblerUi_Status_ConnectionToLastfmNotAvailable);
             }
             finally
             {
@@ -331,19 +332,19 @@ namespace DesktopScrobbler
         {
             if (Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) > 0 && ScrobbleFactory.ScrobblingEnabled)
             {
-                SetStatus("Waiting to Scrobble...");
+                SetStatus(LocalizationStrings.NotificationThread_Status_WaitingToScrobble);
             }
             else if (Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) == 0 && ScrobbleFactory.ScrobblingEnabled)
             {
-                SetStatus("Scrobbling Disabled (No Plugins Available / Enabled)...");
+                SetStatus(LocalizationStrings.ScrobblerUi_Status_NoPluginsAvailable);
             }
             else if (!Core.Settings.UserHasAuthorizedApp)
             {
-                SetStatus("Not logged in.");
+                SetStatus(LocalizationStrings.ScrobblerUi_Status_NotLoggedIn);
             }
             else
             {
-                SetStatus("Scrobbling Paused...");
+                SetStatus(LocalizationStrings.NotificationThread_Status_ScrobblingPaused);
             }
         }
 
@@ -365,7 +366,7 @@ namespace DesktopScrobbler
 
             this.Enabled = false;
 
-            SetStatus("Waiting for you to authorize the application...");
+            SetStatus(LocalizationStrings.ScrobblerUi_Status_WaitingForAuthorization);
 
             var authenticationCloseResult = _authUi.ShowDialog(this);
 
@@ -373,7 +374,7 @@ namespace DesktopScrobbler
 
             if (_authUi.DialogResult == DialogResult.OK)
             {
-                SetStatus("Checking your connection to Last.fm...");
+                SetStatus(LocalizationStrings.ScrobblerUi_Status_ConnectingToLastfm);
 
                 // Verify the result by trying to get a SessionToken
                 _isApplicationAuthed = !string.IsNullOrEmpty(_authUi?.ApiSessionToken.Key);
@@ -386,7 +387,7 @@ namespace DesktopScrobbler
             }
             else if (_authUi.DialogResult == DialogResult.Cancel)
             {
-                MessageBox.Show(this, "A valid user account is required for the Desktop Scrobbler to operate correctly, so the application will now close.", $"{Core.APPLICATION_TITLE} Failed to Authenticate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, LocalizationStrings.ScrobblerUi_ValidUserAccountRequiredMessage, string.Format(LocalizationStrings.AuthenticationUI_FailedToAuthorize_Message, Core.APPLICATION_TITLE), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 base.ExitApplication();
             }
 
@@ -396,9 +397,6 @@ namespace DesktopScrobbler
 
         private async Task CheckForNewVersion()
         {
-            string applicationVersion = ApplicationUtility.BuildVersion();
-            string pathDownload = Core.UserDownloadsPath;
-
             VersionChecker.VersionState result = await Task.Run(() => VersionChecker.CheckVersion(Core.UpdateUrl)).ConfigureAwait(false);
 
             if (result.IsNewVersion)

@@ -1,4 +1,6 @@
-﻿namespace DesktopScrobbler
+﻿using LastFM.Common.Localization;
+
+namespace DesktopScrobbler
 {
     partial class ScrobblerUi
     {
@@ -76,7 +78,7 @@
             this.lblSignInName.Name = "lblSignInName";
             this.lblSignInName.Size = new System.Drawing.Size(332, 23);
             this.lblSignInName.TabIndex = 3;
-            this.lblSignInName.Text = "Last.fm Desktop Scrobbler";
+            this.lblSignInName.Text = LocalizationStrings.General_ApplicationTitle;
             this.lblSignInName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkProfile
@@ -86,7 +88,7 @@
             this.linkProfile.Size = new System.Drawing.Size(335, 23);
             this.linkProfile.TabIndex = 4;
             this.linkProfile.TabStop = true;
-            this.linkProfile.Text = "Click here to view your profile...";
+            this.linkProfile.Text = LocalizationStrings.NotificationThread_TrayMenu_ViewYourProfile;
             this.linkProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkProfile.Visible = false;
             // 
@@ -97,7 +99,7 @@
             this.linkSettings.Size = new System.Drawing.Size(62, 23);
             this.linkSettings.TabIndex = 5;
             this.linkSettings.TabStop = true;
-            this.linkSettings.Text = "Settings...";
+            this.linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Closed;
             this.linkSettings.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkLogOut
@@ -107,7 +109,7 @@
             this.linkLogOut.Size = new System.Drawing.Size(62, 23);
             this.linkLogOut.TabIndex = 6;
             this.linkLogOut.TabStop = true;
-            this.linkLogOut.Text = "Log Out...";
+            this.linkLogOut.Text = LocalizationStrings.ScrobblerUi_UserLogout;
             this.linkLogOut.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkLogOut.Visible = false;
             // 
@@ -129,7 +131,7 @@
             this.linkLogIn.Size = new System.Drawing.Size(62, 23);
             this.linkLogIn.TabIndex = 7;
             this.linkLogIn.TabStop = true;
-            this.linkLogIn.Text = "Log In...";
+            this.linkLogIn.Text = LocalizationStrings.ScrobblerUi_UserLogin;
             this.linkLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTrackName
@@ -149,7 +151,7 @@
             this.chkShowtrackChanges.Name = "chkShowtrackChanges";
             this.chkShowtrackChanges.Size = new System.Drawing.Size(129, 17);
             this.chkShowtrackChanges.TabIndex = 12;
-            this.chkShowtrackChanges.Text = "Show Track Changes";
+            this.chkShowtrackChanges.Text = LocalizationStrings.ScrobblerUi_Settings_ShowTrackChanges;
             this.chkShowtrackChanges.UseVisualStyleBackColor = true;
             // 
             // chkShowScrobbleNotifications
@@ -159,7 +161,7 @@
             this.chkShowScrobbleNotifications.Name = "chkShowScrobbleNotifications";
             this.chkShowScrobbleNotifications.Size = new System.Drawing.Size(159, 17);
             this.chkShowScrobbleNotifications.TabIndex = 14;
-            this.chkShowScrobbleNotifications.Text = "Show Scrobble Notifications";
+            this.chkShowScrobbleNotifications.Text = LocalizationStrings.ScrobblerUi_Settings_ShowScrobbles;
             this.chkShowScrobbleNotifications.UseVisualStyleBackColor = true;
             // 
             // label2
@@ -169,7 +171,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(200, 17);
             this.label2.TabIndex = 16;
-            this.label2.Text = "Scrobbler Plugins";
+            this.label2.Text = LocalizationStrings.ScrobblerUi_Settings_ScrobblePlugins_Title;
             // 
             // chkMinimizeToTray
             // 
@@ -178,7 +180,7 @@
             this.chkMinimizeToTray.Name = "chkMinimizeToTray";
             this.chkMinimizeToTray.Size = new System.Drawing.Size(139, 17);
             this.chkMinimizeToTray.TabIndex = 9;
-            this.chkMinimizeToTray.Text = "Close / Minimize to Tray";
+            this.chkMinimizeToTray.Text = LocalizationStrings.ScrobblerUi_Settings_CloseMinimizeToTray;
             this.chkMinimizeToTray.UseVisualStyleBackColor = true;
             // 
             // chkStartMinimized
@@ -188,7 +190,7 @@
             this.chkStartMinimized.Name = "chkStartMinimized";
             this.chkStartMinimized.Size = new System.Drawing.Size(97, 17);
             this.chkStartMinimized.TabIndex = 10;
-            this.chkStartMinimized.Text = "Start Minimized";
+            this.chkStartMinimized.Text = LocalizationStrings.ScrobblerUi_Settings_StartMinimized;
             this.chkStartMinimized.UseVisualStyleBackColor = true;
             // 
             // lblGeneralSettingsTitle
@@ -198,7 +200,7 @@
             this.lblGeneralSettingsTitle.Name = "lblGeneralSettingsTitle";
             this.lblGeneralSettingsTitle.Size = new System.Drawing.Size(200, 17);
             this.lblGeneralSettingsTitle.TabIndex = 13;
-            this.lblGeneralSettingsTitle.Text = "General Settings";
+            this.lblGeneralSettingsTitle.Text = LocalizationStrings.ScrobblerUi_Settings_GeneralSettingsTitle;
             // 
             // lblPlugins
             // 
@@ -206,7 +208,7 @@
             this.lblPlugins.Name = "lblPlugins";
             this.lblPlugins.Size = new System.Drawing.Size(200, 13);
             this.lblPlugins.TabIndex = 11;
-            this.lblPlugins.Text = "Select the Scrobbler Plugins to Enable:";
+            this.lblPlugins.Text = LocalizationStrings.ScrobblerUi_Settings_ScrobblePluginsEnableMessage;
             // 
             // checkedPluginList
             // 
@@ -223,7 +225,7 @@
             this.linkTerms.Size = new System.Drawing.Size(81, 23);
             this.linkTerms.TabIndex = 17;
             this.linkTerms.TabStop = true;
-            this.linkTerms.Text = "Terms of use...";
+            this.linkTerms.Text = LocalizationStrings.ScrobblerUi_TermsOfUse;
             this.linkTerms.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ScrobblerUi
@@ -249,7 +251,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "ScrobblerUi";
-            this.Text = "Last.fm Desktop Scrobbler";
+            this.Text = LocalizationStrings.General_ApplicationTitle;
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

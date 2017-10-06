@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Threading.Tasks;
+using LastFM.Common.Localization;
 
 namespace LastFM.Common.Classes
 {
@@ -273,16 +274,16 @@ namespace LastFM.Common.Classes
             {
                 if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Love)
                 {
-                    mnuLoveThisTrack.Text = $"Love '{trackName}'";
+                    mnuLoveThisTrack.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_LoveTrack, trackName);
                 }
                 else if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Unlove)
             {
-                    mnuLoveThisTrack.Text = $"Un-Love '{trackName}'";
+                    mnuLoveThisTrack.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_Un_Love, trackName);
                 }
             }
             else
             {
-                mnuLoveThisTrack.Text = "&Love this Track";
+                mnuLoveThisTrack.Text = LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;
             }
 
             mnuEnableScrobbling.Checked = ScrobbleFactory.ScrobblingEnabled;
@@ -354,11 +355,11 @@ namespace LastFM.Common.Classes
         {
             if (ScrobbleFactory.ScrobblingEnabled)
             {
-                SetStatus("Waiting to Scrobble...");
+                SetStatus(LocalizationStrings.NotificationThread_Status_WaitingToScrobble);
             }
             else
             {
-                SetStatus("Scrobbling is paused.");
+                SetStatus(LocalizationStrings.NotificationThread_Status_ScrobblingPaused);
             }
         }
 
@@ -424,7 +425,7 @@ namespace LastFM.Common.Classes
             {
                 if (Core.Settings.ShowTrackChanges)
                 {
-                    string notificationText = $"Now playing: {MediaHelper.GetTrackDescription(_currentMediaItem)}";
+                    string notificationText = string.Format(LocalizationStrings.PopupNotifications_TrackChanged, MediaHelper.GetTrackDescription(_currentMediaItem));
 
                     ShowNotification(Core.APPLICATION_TITLE, notificationText);
                 }
@@ -439,10 +440,8 @@ namespace LastFM.Common.Classes
 
                 stripNewVersion.Tag = versionDetail;
                 stripNewVersion.Visible = true;
-                stripNewVersion.Text = $"Version{versionDetail.Version} is available to download...";
-                stripNewVersion.ToolTipText = $"Version {versionDetail.Version} is available to download...";
 
-                mnuNewVersion.Text = $"Download v{versionDetail.Version}...";
+                mnuNewVersion.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_DownloadNewVersion, versionDetail.Version);
                 mnuNewVersion.Visible = true;
                 mnuNewVersionSeparator.Visible = true;
 
@@ -451,7 +450,7 @@ namespace LastFM.Common.Classes
                 mnuNewVersion.Click += DownloadNewVersion;
                 stripNewVersion.Click += DownloadNewVersion;
 
-                NotificationHelper.ShowNotification(this, Core.APPLICATION_TITLE, $"Version {versionDetail.Version} of the Desktop Scrobbler is now available to download.");
+                NotificationHelper.ShowNotification(this, Core.APPLICATION_TITLE, string.Format(LocalizationStrings.PopupNotifications_NewVersionAvailable, versionDetail.Version));
             }));
         }
 
@@ -482,7 +481,7 @@ namespace LastFM.Common.Classes
             if(e.Error != null)
             {
                 mnuNewVersion.Enabled = true;
-                MessageBox.Show(this, $"Failed to download the latest version due to an error:\r\n{e.Error.Message}", $"{Core.APPLICATION_TITLE}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, string.Format(LocalizationStrings.NotificationThread_FailedToDownload, e.Error.Message), $"{Core.APPLICATION_TITLE}", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -492,9 +491,9 @@ namespace LastFM.Common.Classes
                 {
                     ResetVersionMenuClickHandlers();
 
-                    stripUpdateProgress.Text = "Ready to install.";
+                    stripUpdateProgress.Text = LocalizationStrings.NotificationThread_Status_ReadyToInstall;
 
-                    mnuNewVersion.Text = $"Install v{downloadedVersionInfo.Version}...";
+                    mnuNewVersion.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_InstallNewVersion, downloadedVersionInfo.Version);
                     mnuNewVersion.Enabled = true;
                     mnuNewVersion.Click += InstallUpdate;
                     stripNewVersion.Click += InstallUpdate;
@@ -580,8 +579,8 @@ namespace LastFM.Common.Classes
 
         private void DownloadProgressUpdated(object sender, DownloadProgressChangedEventArgs e)
         {
-            mnuNewVersion.Text = $"Downloading: {e.ProgressPercentage}%";
-            stripUpdateProgress.Text = $"Downloading: {e.ProgressPercentage}%";
+            mnuNewVersion.Text = string.Format(LocalizationStrings.NotificationThread_DownloadProgressUpdated, e.ProgressPercentage);
+            stripUpdateProgress.Text = string.Format(LocalizationStrings.NotificationThread_DownloadProgressUpdated, e.ProgressPercentage);
         }
 
         public async Task ExitApplication()

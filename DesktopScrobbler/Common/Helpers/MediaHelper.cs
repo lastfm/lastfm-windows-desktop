@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LastFM.ApiClient.Models;
+using LastFM.Common.Localization;
 
 namespace LastFM.Common.Helpers
 {
@@ -20,19 +21,19 @@ namespace LastFM.Common.Helpers
             {
                 if (!string.IsNullOrEmpty(trackName) && !string.IsNullOrEmpty(artistName))
                 {
-                    trackDescription = $"'{trackName}' by '{artistName}'";
+                    trackDescription = string.Format(LocalizationStrings.MediaHelper_TrackDescription_Complete, trackName, artistName);
                 }
                 else if (!string.IsNullOrEmpty(trackName))
                 {
-                    trackDescription = $"'{trackName}' ";
+                    trackDescription =  string.Format(LocalizationStrings.MediaHelper_TrackDescription_TrackOnly, trackName);
                 }
                 else if (!string.IsNullOrEmpty(artistName))
                 {
-                    trackDescription = $"An unknown track by '{artistName}'";
+                    trackDescription = string.Format(LocalizationStrings.MediaHelper_TrackDescription_ArtistOnly, artistName);
                 }
                 else
                 {
-                    trackDescription = $"An unknown track by an unknown artist";
+                    trackDescription = LocalizationStrings.MediaHelper_TrackDescription_Unknown;
                 }
             }
 

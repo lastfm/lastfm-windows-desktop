@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using LastFM.Common.Localization;
 
 namespace DesktopScrobbler
 {
@@ -22,7 +23,7 @@ namespace DesktopScrobbler
             }
             else
             {
-                MessageBox.Show("You already have an instance of the Desktop Scrobbler running.", Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(LocalizationStrings.Application_InstanceAlreadyRunning, Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

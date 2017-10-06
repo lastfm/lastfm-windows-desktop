@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NotificationThread_TrayMenu_LoveTrack" xml:space="preserve">
+    <value>Love '{0}'</value>
+    <comment>Menu item: Love Track</comment>
+  </data>
+  <data name="NotificationThread_TrayMenu_Un_Love" xml:space="preserve">
+    <value>Un-Love '{0}'</value>
+    <comment>Menu item: Unlove Track</comment>
+  </data>
+  <data name="NotificationThread_TrayMenu_Love_this_Track" xml:space="preserve">
+    <value>&amp;Love this Track</value>
+    <comment>Menu item:  Default text for no media item</comment>
+  </data>
+  <data name="NotificationThread_Status_WaitingToScrobble" xml:space="preserve">
+    <value>Waiting to Scrobble...</value>
+    <comment>Status bar: Waiting to Scrobble message</comment>
+  </data>
+  <data name="NotificationThread_Status_ScrobblingPaused" xml:space="preserve">
+    <value>Scrobbling is paused.</value>
+    <comment>Status bar: Scrobbling paused message</comment>
+  </data>
+  <data name="NotificationThread_Status_StartingUp" xml:space="preserve">
+    <value>Starting up...</value>
+    <comment>Status bar: Starting up message</comment>
+  </data>
+  <data name="NotificationThread_TrayMenu_DownloadNewVersion" xml:space="preserve">
+    <value>Download v{0}...</value>
+    <comment>Menu item: Download v3.1.2 (for example)</comment>
+  </data>
+  <data name="NotificationThread_FailedToDownload" xml:space="preserve">
+    <value>Failed to download the latest version due to an error:\r\n{0}</value>
+    <comment>Error message when download fails</comment>
+  </data>
+  <data name="NotificationThread_Status_ReadyToInstall" xml:space="preserve">
+    <value>Ready to install.</value>
+    <comment>Status bar: Ready to install update message</comment>
+  </data>
+  <data name="NotificationThread_TrayMenu_InstallNewVersion" xml:space="preserve">
+    <value>Install v{0}...</value>
+    <comment>Menu item: Install new version</comment>
+  </data>
+  <data name="PopupNotifications_NewVersionAvailable" xml:space="preserve">
+    <value>Version {0} of the Desktop Scrobbler is now available to download.</value>
+    <comment>Popup Notification: New version available to download message</comment>
+  </data>
+  <data name="PopupNotifications_TrackChanged" xml:space="preserve">
+    <value>Now playing: {0}</value>
+    <comment>Popup Notification: Track changed</comment>
+  </data>
+  <data name="NotificationThread_DownloadProgressUpdated" xml:space="preserve">
+    <value>Downloading: {0}%</value>
+    <comment>Status bar and menu item showing download progress update</comment>
+  </data>
+  <data name="NotificationThread_StatusBar_Connecting" xml:space="preserve">
+    <value>Connecting...</value>
+    <comment>Status bar: Connecting (to download server)</comment>
+  </data>
+  <data name="NotificationThread_TrayMenu_EnableScrobbling" xml:space="preserve">
+    <value>&amp;Enable Scrobbling</value>
+    <comment>Menu Item: Enable Scrobbling</comment>
+  </data>
+  <data name="NotificationThread_TrayMEnu_Exit" xml:space="preserve">
+    <value>E&amp;xit</value>
+    <comment>Menu Item: Exit application</comment>
+  </data>
+  <data name="NotificationThread_TrayMenu_NewVersionAvailableDefault" xml:space="preserve">
+    <value>New Version Available</value>
+    <comment>Menu item: New version available default (despite being hidden)</comment>
+  </data>
+  <data name="NotificationThread_TrayMenu_Show" xml:space="preserve">
+    <value>&amp;Show</value>
+    <comment>Menu Item: Show scrobbler UI</comment>
+  </data>
+  <data name="NotificationThread_TrayMenu_ViewYourProfile" xml:space="preserve">
+    <value>&amp;View your Last.fm Profile</value>
+    <comment>Menu Item: View your profile</comment>
+  </data>
+  <data name="AuthenticationUI_FailedToAuthorize_Message" xml:space="preserve">
+    <value>Failed to retrieve an authentication token from Last.fm, so authorization cannot take place.</value>
+  </data>
+  <data name="AuthenticationUi_FailedToAuthorize_MessageTitle" xml:space="preserve">
+    <value>{0} Failed to Authenticate</value>
+    <comment>Authentication UI: Failed authorization message</comment>
+  </data>
+  <data name="AuthenticationUi_AuthorizeButton" xml:space="preserve">
+    <value>Authorize</value>
+    <comment>Authentication UI: Authorize Button Text</comment>
+  </data>
+  <data name="AuthenticationUi_CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Authentication UI: Cancel Button Text</comment>
+  </data>
+  <data name="AuthenticationUi_InstructionsText" xml:space="preserve">
+    <value>Before you can start scrobbling to Last.fm, the Desktop Scrobbler needs your permission to submit information on your behalf.  
+
+Click on 'Authorize' to start this process, then click on 'Yes, allow access'' in the browser window that follows.</value>
+    <comment>Authentication UI: Instructions to display to the user</comment>
+  </data>
+  <data name="AuthenticationUi_WindowTitle" xml:space="preserve">
+    <value>Authentication</value>
+    <comment>Authentication UI: Title at top of the window</comment>
+  </data>
+  <data name="ScrobblerUi_CurrentTrack" xml:space="preserve">
+    <value>Current track: {0}</value>
+    <comment>Scrobbler Ui: Title of the track currently playing</comment>
+  </data>
+  <data name="ScrobblerUi_LinkSettings_Closed" xml:space="preserve">
+    <value>Settings...</value>
+    <comment>Scrobbler Ui: Setting link text when settings are closed</comment>
+  </data>
+  <data name="ScrobblerUi_LinkSettings_Open" xml:space="preserve">
+    <value>Settings &lt;&lt;</value>
+    <comment>Scrobbler Ui: Setting link text when settings are open</comment>
+  </data>
+  <data name="ScrobblerUi_LogoutUser_Message" xml:space="preserve">
+    <value>Are you sure you want to log out?</value>
+    <comment>Scrobbler Ui: Message given to user when they click 'Log Out'</comment>
+  </data>
+  <data name="AuthenticationUi_AuthorizationRequired_WindowTitle" xml:space="preserve">
+    <value>Authentication Required</value>
+    <comment>Authentication Ui: Title display on the Ui when authentication fails and authorization is required</comment>
+  </data>
+  <data name="General_ApplicationTitle" xml:space="preserve">
+    <value>Last.fm Desktop Scrobbler</value>
+    <comment>The title of the application</comment>
+  </data>
+  <data name="ScrobblerUi_Settings_CloseMinimizeToTray" xml:space="preserve">
+    <value>Close / Minimize to Tray</value>
+    <comment>Scrobbler Ui: Settings option for 'Close/Minimize to tray'</comment>
+  </data>
+  <data name="ScrobblerUi_Settings_GeneralSettingsTitle" xml:space="preserve">
+    <value>General Settings</value>
+    <comment>Scrobbler Ui: Settings title for General Settings</comment>
+  </data>
+  <data name="ScrobblerUi_Settings_ScrobblePluginsEnableMessage" xml:space="preserve">
+    <value>Select the Scrobbler Plugins to Enable:</value>
+    <comment>Scrobbler Ui: Settings description for enabling scrobble plugins</comment>
+  </data>
+  <data name="ScrobblerUi_Settings_ScrobblePlugins_Title" xml:space="preserve">
+    <value>Scrobbler Plugins</value>
+    <comment>Scrobbler Ui: Settings title for Scrobbler Plugins</comment>
+  </data>
+  <data name="ScrobblerUi_Settings_ShowScrobbles" xml:space="preserve">
+    <value>Show Scrobble Notifications</value>
+    <comment>Scrobbler Ui: Setting option 'Show Scrobble Notifications'</comment>
+  </data>
+  <data name="ScrobblerUi_Settings_ShowTrackChanges" xml:space="preserve">
+    <value>Show Track Changes</value>
+    <comment>Scrobbler Ui: Setting option 'Show Track Changes'</comment>
+  </data>
+  <data name="ScrobblerUi_Settings_StartMinimized" xml:space="preserve">
+    <value>Start Minimized</value>
+    <comment>Scrobbler Ui: Settings option for 'Start Minimized'</comment>
+  </data>
+  <data name="ScrobblerUi_Status_ConnectingToLastfm" xml:space="preserve">
+    <value>Checking connection to Last.fm...</value>
+    <comment>Scrobbler Ui: Status displayed when application is authenticating to the API</comment>
+  </data>
+  <data name="ScrobblerUi_Status_ConnectionToLastfmNotAvailable" xml:space="preserve">
+    <value>A connection to Last.fm is not available.</value>
+    <comment>Scrobbler Ui: Status displayed when a connection to Last.fm is not available</comment>
+  </data>
+  <data name="ScrobblerUi_Status_LoadingPlugins" xml:space="preserve">
+    <value>Loading plugins...</value>
+    <comment>Scrobbler Ui: Status displayed when application is starting up and plugins are being loaded</comment>
+  </data>
+  <data name="ScrobblerUi_Status_NoPluginsAvailable" xml:space="preserve">
+    <value>Scrobbling Disabled (No Plugins Available / Enabled)...</value>
+    <comment>Scrobbler Ui: Status displayed when no plugins are loaded or enabled</comment>
+  </data>
+  <data name="ScrobblerUi_Status_NotLoggedIn" xml:space="preserve">
+    <value>Not Logged In.</value>
+    <comment>Scrobbler Ui: Status displayed when user is not logged in</comment>
+  </data>
+  <data name="ScrobblerUi_Status_WaitingForAuthorization" xml:space="preserve">
+    <value>Waiting for you to authorize the application...</value>
+    <comment>Scrobbler Ui: Status displayed when waiting for user to authorize the application</comment>
+  </data>
+  <data name="ScrobblerUi_TermsOfUse" xml:space="preserve">
+    <value>Terms of use...</value>
+    <comment>Scrobble Ui: Terms of use link text</comment>
+  </data>
+  <data name="ScrobblerUi_UserLoggedInText" xml:space="preserve">
+    <value>Welcome {0}</value>
+    <comment>Scrobbler Ui: Text displaying the user name when logged in</comment>
+  </data>
+  <data name="ScrobblerUi_UserLogin" xml:space="preserve">
+    <value>Log In...</value>
+    <comment>Scrobbler Ui: Link displayed to allow user to log in / auth the application</comment>
+  </data>
+  <data name="ScrobblerUi_UserLogout" xml:space="preserve">
+    <value>Log Out...</value>
+    <comment>Scrobbler Ui: Link displayed to allow user to log out / deauth the application</comment>
+  </data>
+  <data name="ScrobblerUi_UserOffline" xml:space="preserve">
+    <value>(Offline) {0}</value>
+    <comment>Scrobbler Ui: Text displaying the user name when offline</comment>
+  </data>
+  <data name="ScrobblerUi_ValidUserAccountRequiredMessage" xml:space="preserve">
+    <value>A valid user account is required for the Desktop Scrobbler to operate correctly, so the application will now close.</value>
+    <comment>Scrobbler Ui: Message body displayed when the user cancels authorization</comment>
+  </data>
+  <data name="Application_InstanceAlreadyRunning" xml:space="preserve">
+    <value>You already have an instance of the Desktop Scrobbler running.</value>
+    <comment>Application General: Message to display when an instance of the application is running already</comment>
+  </data>
+  <data name="MediaHelper_TrackDescription_ArtistOnly" xml:space="preserve">
+    <value>An unknown track by '{0}'</value>
+    <comment>Track description when only the artist is known</comment>
+  </data>
+  <data name="MediaHelper_TrackDescription_Complete" xml:space="preserve">
+    <value>'{0}' by '{1}'</value>
+    <comment>Track description where track and artist name are known</comment>
+  </data>
+  <data name="MediaHelper_TrackDescription_TrackOnly" xml:space="preserve">
+    <value>'{0}'</value>
+    <comment>Track description when only the track is known</comment>
+  </data>
+  <data name="MediaHelper_TrackDescription_Unknown" xml:space="preserve">
+    <value>An unknown track by an unknown artist</value>
+    <comment>Track description when neither track name or artist is known</comment>
+  </data>
+</root>

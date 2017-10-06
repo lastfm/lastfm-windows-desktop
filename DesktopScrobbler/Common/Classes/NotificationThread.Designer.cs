@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using LastFM.Common.Localization;
 
 namespace LastFM.Common.Classes
 {
@@ -69,7 +70,7 @@ namespace LastFM.Common.Classes
             // 
             this.mnuNewVersion.Name = "mnuNewVersion";
             this.mnuNewVersion.Size = new System.Drawing.Size(205, 22);
-            this.mnuNewVersion.Text = "New Version Available";
+            this.mnuNewVersion.Text = LocalizationStrings.NotificationThread_TrayMenu_NewVersionAvailableDefault;
             this.mnuNewVersion.Visible = false;
             // 
             // mnuNewVersionSeparator
@@ -82,7 +83,7 @@ namespace LastFM.Common.Classes
             // 
             this.mnuLoveThisTrack.Name = "mnuLoveThisTrack";
             this.mnuLoveThisTrack.Size = new System.Drawing.Size(205, 22);
-            this.mnuLoveThisTrack.Text = "&Love this Track";
+            this.mnuLoveThisTrack.Text = LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;
             // 
             // toolStripSeparator5
             // 
@@ -93,7 +94,7 @@ namespace LastFM.Common.Classes
             // 
             this.mnuShow.Name = "mnuShow";
             this.mnuShow.Size = new System.Drawing.Size(205, 22);
-            this.mnuShow.Text = "&Show";
+            this.mnuShow.Text = LocalizationStrings.NotificationThread_TrayMenu_Show;
             // 
             // toolStripSeparator1
             // 
@@ -106,7 +107,7 @@ namespace LastFM.Common.Classes
             this.mnuEnableScrobbling.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mnuEnableScrobbling.Name = "mnuEnableScrobbling";
             this.mnuEnableScrobbling.Size = new System.Drawing.Size(205, 22);
-            this.mnuEnableScrobbling.Text = "&Enable Scrobbling";
+            this.mnuEnableScrobbling.Text = LocalizationStrings.NotificationThread_TrayMenu_EnableScrobbling;
             // 
             // toolStripSeparator3
             // 
@@ -117,7 +118,7 @@ namespace LastFM.Common.Classes
             // 
             this.mnuViewUserProfile.Name = "mnuViewUserProfile";
             this.mnuViewUserProfile.Size = new System.Drawing.Size(205, 22);
-            this.mnuViewUserProfile.Text = "&View your Last.fm Profile";
+            this.mnuViewUserProfile.Text = LocalizationStrings.NotificationThread_TrayMenu_ViewYourProfile;
             // 
             // toolStripSeparator2
             // 
@@ -128,13 +129,13 @@ namespace LastFM.Common.Classes
             // 
             this.mnuExit.Name = "mnuExit";
             this.mnuExit.Size = new System.Drawing.Size(205, 22);
-            this.mnuExit.Text = "E&xit";
+            this.mnuExit.Text = LocalizationStrings.NotificationThread_TrayMEnu_Exit;
             // 
             // trayIcon
             // 
             this.trayIcon.ContextMenuStrip = this.trayMenu;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
-            this.trayIcon.Text = "Starting up...";
+            this.trayIcon.Text = LocalizationStrings.NotificationThread_Status_StartingUp;
             // 
             // statusStrip1
             // 
@@ -156,7 +157,7 @@ namespace LastFM.Common.Classes
             // 
             this.stripStatus.Name = "stripStatus";
             this.stripStatus.Size = new System.Drawing.Size(77, 17);
-            this.stripStatus.Text = "Starting up....";
+            this.stripStatus.Text = LocalizationStrings.NotificationThread_Status_StartingUp;
             // 
             // toolStripStatusLabel1
             // 
@@ -195,7 +196,7 @@ namespace LastFM.Common.Classes
             this.stripUpdateProgress.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.stripUpdateProgress.Name = "stripUpdateProgress";
             this.stripUpdateProgress.Size = new System.Drawing.Size(78, 17);
-            this.stripUpdateProgress.Text = "Connecting...";
+            this.stripUpdateProgress.Text = LocalizationStrings.NotificationThread_StatusBar_Connecting;
             this.stripUpdateProgress.Visible = false;
             // 
             // NotificationThread

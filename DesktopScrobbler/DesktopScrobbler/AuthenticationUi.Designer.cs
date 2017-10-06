@@ -1,4 +1,6 @@
-﻿namespace DesktopScrobbler
+﻿using LastFM.Common.Localization;
+
+namespace DesktopScrobbler
 {
     partial class AuthenticationUi
     {
@@ -42,7 +44,7 @@
             this.lblInstructions.Name = "lblInstructions";
             this.lblInstructions.Size = new System.Drawing.Size(249, 84);
             this.lblInstructions.TabIndex = 0;
-            this.lblInstructions.Text = resources.GetString("lblInstructions.Text");
+            this.lblInstructions.Text = LocalizationStrings.AuthenticationUi_InstructionsText;
             // 
             // btnAuthorize
             // 
@@ -51,7 +53,7 @@
             this.btnAuthorize.Name = "btnAuthorize";
             this.btnAuthorize.Size = new System.Drawing.Size(96, 33);
             this.btnAuthorize.TabIndex = 1;
-            this.btnAuthorize.Text = "Authorize";
+            this.btnAuthorize.Text = LocalizationStrings.AuthenticationUi_AuthorizeButton;
             this.btnAuthorize.UseVisualStyleBackColor = true;
             this.btnAuthorize.Click += new System.EventHandler(this.btnAuthorize_Click);
             // 
@@ -62,7 +64,7 @@
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(96, 33);
             this.btnClose.TabIndex = 3;
-            this.btnClose.Text = "Close";
+            this.btnClose.Text = LocalizationStrings.AuthenticationUi_CancelButton;
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -88,7 +90,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "AuthenticationUi";
-            this.Text = "Authentication";
+            this.Text = LocalizationStrings.AuthenticationUi_WindowTitle;
             this.Load += new System.EventHandler(this.Authentication_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.ResumeLayout(false);

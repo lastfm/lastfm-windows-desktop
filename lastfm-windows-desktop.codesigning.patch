@@ -1,0 +1,216 @@
+diff --git a/DesktopScrobbler/BuildTask/BuildTask.csproj b/DesktopScrobbler/BuildTask/BuildTask.csproj
+index 82405a2..b374ed8 100644
+--- a/DesktopScrobbler/BuildTask/BuildTask.csproj
++++ b/DesktopScrobbler/BuildTask/BuildTask.csproj
+@@ -41,6 +41,18 @@
+   <PropertyGroup>
+     <StartupObject>VersionIncrementBuildTask.Program</StartupObject>
+   </PropertyGroup>
++  <PropertyGroup>
++    <SignAssembly>true</SignAssembly>
++  </PropertyGroup>
++  <PropertyGroup>
++    <SignManifests>true</SignManifests>
++  </PropertyGroup>
++  <PropertyGroup>
++    <ManifestCertificateThumbprint>948A30D066775994CFCFA49FE55D8B17458AED41</ManifestCertificateThumbprint>
++  </PropertyGroup>
++  <PropertyGroup>
++    <AssemblyOriginatorKeyFile>strongname.pfx</AssemblyOriginatorKeyFile>
++  </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="Microsoft.Build.Framework" />
+     <Reference Include="Microsoft.Build.Tasks.v4.0" />
+@@ -71,6 +83,7 @@
+   <ItemGroup>
+     <None Include="app.config" />
+     <None Include="packages.config" />
++    <None Include="strongname.pfx" />
+   </ItemGroup>
+   <ItemGroup>
+     <Folder Include="Properties\" />
+diff --git a/DesktopScrobbler/Common/Common.csproj b/DesktopScrobbler/Common/Common.csproj
+index e3e7914..31bcef8 100644
+--- a/DesktopScrobbler/Common/Common.csproj
++++ b/DesktopScrobbler/Common/Common.csproj
+@@ -35,6 +35,12 @@
+   <PropertyGroup>
+     <StartupObject />
+   </PropertyGroup>
++  <PropertyGroup>
++    <SignAssembly>true</SignAssembly>
++  </PropertyGroup>
++  <PropertyGroup>
++    <AssemblyOriginatorKeyFile>strongname.pfx</AssemblyOriginatorKeyFile>
++  </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="HtmlAgilityPack, Version=1.5.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+       <HintPath>..\packages\HtmlAgilityPack.1.5.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+@@ -136,6 +142,7 @@
+       <DependentUpon>Settings.settings</DependentUpon>
+       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+     </Compile>
++    <None Include="strongname.pfx" />
+   </ItemGroup>
+   <ItemGroup>
+     <None Include="App.config" />
+@@ -151,6 +158,9 @@
+     </ProjectReference>
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
++  <PropertyGroup>
++    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41  "$(TargetPath)"</PostBuildEvent>
++  </PropertyGroup>
+   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+        Other similar extension points exist, see Microsoft.Common.targets.
+   <Target Name="BeforeBuild">
+diff --git a/DesktopScrobbler/DesktopScrobbler/DesktopScrobbler.csproj b/DesktopScrobbler/DesktopScrobbler/DesktopScrobbler.csproj
+index db795ca..372f110 100644
+--- a/DesktopScrobbler/DesktopScrobbler/DesktopScrobbler.csproj
++++ b/DesktopScrobbler/DesktopScrobbler/DesktopScrobbler.csproj
+@@ -38,6 +53,18 @@
+   <PropertyGroup>
+     <ApplicationIcon>audioscrobbler.ico</ApplicationIcon>
+   </PropertyGroup>
++  <PropertyGroup>
++    <SignManifests>true</SignManifests>
++  </PropertyGroup>
++  <PropertyGroup>
++    <ManifestCertificateThumbprint>948A30D066775994CFCFA49FE55D8B17458AED41</ManifestCertificateThumbprint>
++  </PropertyGroup>
++  <PropertyGroup>
++    <SignAssembly>true</SignAssembly>
++  </PropertyGroup>
++  <PropertyGroup>
++    <AssemblyOriginatorKeyFile>strongname.pfx</AssemblyOriginatorKeyFile>
++  </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="Interop.iTunesLib">
+       <HintPath>..\Packages\InterOpLibraries\Interop.iTunesLib.dll</HintPath>
+@@ -114,6 +141,7 @@
+       <DependentUpon>Settings.settings</DependentUpon>
+       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+     </Compile>
++    <None Include="strongname.pfx" />
+   </ItemGroup>
+   <ItemGroup>
+     <None Include="App.config" />
+@@ -162,10 +190,25 @@
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </Content>
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+   <PropertyGroup>
+     <PreBuildEvent>"$(SolutionDir)\BuildTask\bin\debug\VersionIncrementBuildTask.exe" "$(SolutionPath);23/09/2017;3</PreBuildEvent>
+   </PropertyGroup>
++  <PropertyGroup>
++    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41  "$(TargetPath)"</PostBuildEvent>
++  </PropertyGroup>
+   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+        Other similar extension points exist, see Microsoft.Common.targets.
+   <Target Name="BeforeBuild">
+diff --git a/DesktopScrobbler/LastFMApi/LastFMApiClient.csproj b/DesktopScrobbler/LastFMApi/LastFMApiClient.csproj
+index 2016493..e4c0ebb 100644
+--- a/DesktopScrobbler/LastFMApi/LastFMApiClient.csproj
++++ b/DesktopScrobbler/LastFMApi/LastFMApiClient.csproj
+@@ -30,6 +30,12 @@
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
++  <PropertyGroup>
++    <SignAssembly>true</SignAssembly>
++  </PropertyGroup>
++  <PropertyGroup>
++    <AssemblyOriginatorKeyFile>strongname.pfx</AssemblyOriginatorKeyFile>
++  </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+@@ -74,8 +80,12 @@
+   </ItemGroup>
+   <ItemGroup>
+     <None Include="packages.config" />
++    <None Include="strongname.pfx" />
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
++  <PropertyGroup>
++    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41  "$(TargetPath)"</PostBuildEvent>
++  </PropertyGroup>
+   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+        Other similar extension points exist, see Microsoft.Common.targets.
+   <Target Name="BeforeBuild">
+diff --git a/DesktopScrobbler/PluginSupport/PluginSupport.csproj b/DesktopScrobbler/PluginSupport/PluginSupport.csproj
+index 519d3b9..1e217a4 100644
+--- a/DesktopScrobbler/PluginSupport/PluginSupport.csproj
++++ b/DesktopScrobbler/PluginSupport/PluginSupport.csproj
+@@ -36,6 +36,12 @@
+     <WarningLevel>4</WarningLevel>
+     <Prefer32Bit>false</Prefer32Bit>
+   </PropertyGroup>
++  <PropertyGroup>
++    <SignAssembly>true</SignAssembly>
++  </PropertyGroup>
++  <PropertyGroup>
++    <AssemblyOriginatorKeyFile>strongname.pfx</AssemblyOriginatorKeyFile>
++  </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="System" />
+     <Reference Include="System.Core" />
+@@ -50,7 +56,13 @@
+     <Compile Include="PluginFactory.cs" />
+     <Compile Include="Properties\AssemblyInfo.cs" />
+   </ItemGroup>
++  <ItemGroup>
++    <None Include="strongname.pfx" />
++  </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
++  <PropertyGroup>
++    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign  /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(TargetPath)"</PostBuildEvent>
++  </PropertyGroup>
+   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+        Other similar extension points exist, see Microsoft.Common.targets.
+   <Target Name="BeforeBuild">
+diff --git a/DesktopScrobbler/Transitions/Transitions.csproj b/DesktopScrobbler/Transitions/Transitions.csproj
+index ba0aba5..c1dad1f 100644
+--- a/DesktopScrobbler/Transitions/Transitions.csproj
++++ b/DesktopScrobbler/Transitions/Transitions.csproj
+@@ -57,6 +57,12 @@
+     <WarningLevel>4</WarningLevel>
+     <Prefer32Bit>false</Prefer32Bit>
+   </PropertyGroup>
++  <PropertyGroup>
++    <SignAssembly>true</SignAssembly>
++  </PropertyGroup>
++  <PropertyGroup>
++    <AssemblyOriginatorKeyFile>strongname.pfx</AssemblyOriginatorKeyFile>
++  </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="System" />
+     <Reference Include="System.Data" />
+@@ -100,7 +106,13 @@
+       <Install>true</Install>
+     </BootstrapperPackage>
+   </ItemGroup>
++  <ItemGroup>
++    <None Include="strongname.pfx" />
++  </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
++  <PropertyGroup>
++    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41  "$(TargetPath)"</PostBuildEvent>
++  </PropertyGroup>
+   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+        Other similar extension points exist, see Microsoft.Common.targets.
+   <Target Name="BeforeBuild">
+diff --git a/DesktopScrobbler/LastFM Desktop Scrobbler Installer/LastFM Desktop Scrobbler Installer.vdproj b/DesktopScrobbler/LastFM Desktop Scrobbler Installer/LastFM Desktop Scrobbler Installer.vdproj
+index 26bd90e..807c537 100644
+--- a/DesktopScrobbler/LastFM Desktop Scrobbler Installer/LastFM Desktop Scrobbler Installer.vdproj	
++++ b/DesktopScrobbler/LastFM Desktop Scrobbler Installer/LastFM Desktop Scrobbler Installer.vdproj	
+@@ -818,7 +818,7 @@
+         "UseSystemSearchPath" = "11:TRUE"
+         "TargetPlatform" = "3:0"
+         "PreBuildEvent" = "8:"
+-        "PostBuildEvent" = "8:"
++        "PostBuildEvent" = "8:\"C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x86\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41  \"$(BuiltOuputPath)\""
+         "RunPostBuildEvent" = "3:0"
+         }
+         "Registry"

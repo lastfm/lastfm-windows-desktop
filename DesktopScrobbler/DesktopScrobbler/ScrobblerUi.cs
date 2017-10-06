@@ -166,7 +166,7 @@ namespace DesktopScrobbler
 
                 RefreshOnlineStatus(OnlineState.Offline);
 
-                VerifyAuthorization(LocalizationStrings.AuthenticationUi_AuthorizationRequired_WindowTitle);
+                Startup(true);
             }
         }
 

@@ -198,11 +198,29 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checking Scrobble State....
+        /// </summary>
+        public static string NotificationThread_Status_CheckingScrobbleStatus {
+            get {
+                return ResourceManager.GetString("NotificationThread_Status_CheckingScrobbleStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ready to install..
         /// </summary>
         public static string NotificationThread_Status_ReadyToInstall {
             get {
                 return ResourceManager.GetString("NotificationThread_Status_ReadyToInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scrobbling {0} item(s).....
+        /// </summary>
+        public static string NotificationThread_Status_Scrobbling {
+            get {
+                return ResourceManager.GetString("NotificationThread_Status_Scrobbling", resourceCulture);
             }
         }
         
@@ -333,11 +351,29 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to scrobble {0} track(s)..
+        /// </summary>
+        public static string PopupNotifications_FailedToScrobble {
+            get {
+                return ResourceManager.GetString("PopupNotifications_FailedToScrobble", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version {0} of the Desktop Scrobbler is now available to download..
         /// </summary>
         public static string PopupNotifications_NewVersionAvailable {
             get {
                 return ResourceManager.GetString("PopupNotifications_NewVersionAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully scrobbled {0} track(s)..
+        /// </summary>
+        public static string PopupNotifications_ScrobbleSuccess {
+            get {
+                return ResourceManager.GetString("PopupNotifications_ScrobbleSuccess", resourceCulture);
             }
         }
         

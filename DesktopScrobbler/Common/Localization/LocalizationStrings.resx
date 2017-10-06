@@ -338,4 +338,20 @@ Click on 'Authorize' to start this process, then click on 'Yes, allow access'' i
     <value>An unknown track by an unknown artist</value>
     <comment>Track description when neither track name or artist is known</comment>
   </data>
+  <data name="PopupNotifications_ScrobbleSuccess" xml:space="preserve">
+    <value>Successfully scrobbled {0} track(s).</value>
+    <comment>Popup Notification: Notification displayed when application scrobbles successfully</comment>
+  </data>
+  <data name="NotificationThread_Status_CheckingScrobbleStatus" xml:space="preserve">
+    <value>Checking Scrobble State...</value>
+    <comment>Status displayed when the application is checking for media to scrobble</comment>
+  </data>
+  <data name="NotificationThread_Status_Scrobbling" xml:space="preserve">
+    <value>Scrobbling {0} item(s)....</value>
+    <comment>Status displayed when the application is scrobbling</comment>
+  </data>
+  <data name="PopupNotifications_FailedToScrobble" xml:space="preserve">
+    <value>Failed to scrobble {0} track(s).</value>
+    <comment>Notification displayed when the application fails to scrobble items</comment>
+  </data>
 </root>

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using LastFM.Common.Localization;
 using Newtonsoft.Json;
 
 namespace LastFM.Common.Factories
@@ -141,7 +142,7 @@ namespace LastFM.Common.Factories
 
             if (_scrobblingActive)
             {
-                _uiThread.SetStatus("Checking Scrobble State...");
+                _uiThread.SetStatus(LocalizationStrings.NotificationThread_Status_CheckingScrobbleStatus);
 
                 List<MediaItem> sourceMedia = new List<MediaItem>();
 
@@ -161,7 +162,7 @@ namespace LastFM.Common.Factories
                     {
                         Console.WriteLine($"Scrobbling {sourceMedia.Count} item(s)....");
 
-                        _uiThread.SetStatus($"Scrobbling {sourceMedia.Count} item(s)....");
+                        _uiThread.SetStatus(string.Format(LocalizationStrings.NotificationThread_Status_Scrobbling, sourceMedia.Count));
 
                         try
                         {
@@ -222,7 +223,7 @@ namespace LastFM.Common.Factories
         {
             if (Core.Settings.ShowScrobbleNotifications && sourceMedia != null && sourceMedia.Count > 0)
             {
-                string balloonText = $"Failed to scrobble {sourceMedia.Count()} track(s).";
+                string balloonText =  string.Format(LocalizationStrings.PopupNotifications_FailedToScrobble, sourceMedia.Count());
 
                 _uiThread.ShowNotification(Core.APPLICATION_TITLE, balloonText);
             }
@@ -243,7 +244,7 @@ namespace LastFM.Common.Factories
 
                 if (successfulScrobbleCount > 0)
                 {
-                    string balloonText = $"Successfully scrobbled {scrobbleResult.Scrobbles.ScrobbleItems.Count()} track(s).";
+                    string balloonText = string.Format(LocalizationStrings.PopupNotifications_ScrobbleSuccess, scrobbleResult.Scrobbles.ScrobbleItems.Count());
 
                     _uiThread.ShowNotification(Core.APPLICATION_TITLE, balloonText);
                 }

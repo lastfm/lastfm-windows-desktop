@@ -17,8 +17,10 @@ namespace LastFM.Common
 
         public List<ScrobblerSourceStatus> ScrobblerStatus { get; set; } = new List<ScrobblerSourceStatus>();
 
-        public bool ShowTrackChanges { get; set; } = true;
+        public bool ShowNotifications { get; set; } = true;
 
-        public bool ShowScrobbleNotifications { get; set; } = true;
+        public bool? ShowTrackChanges { get; set; } = false;
+
+        public bool? ShowScrobbleNotifications { get; set; } = false;
     }
 }

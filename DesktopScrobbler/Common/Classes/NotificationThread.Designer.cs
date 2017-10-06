@@ -27,6 +27,7 @@ namespace LastFM.Common.Classes
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotificationThread));
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuNewVersion = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuNowPlaying = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNewVersionSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.mnuLoveThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -54,6 +55,7 @@ namespace LastFM.Common.Classes
             this.trayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuNewVersion,
             this.mnuNewVersionSeparator,
+            this.mnuNowPlaying,
             this.mnuLoveThisTrack,
             this.toolStripSeparator5,
             this.mnuShow,
@@ -64,14 +66,21 @@ namespace LastFM.Common.Classes
             this.toolStripSeparator2,
             this.mnuExit});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(206, 166);
+            this.trayMenu.Size = new System.Drawing.Size(206, 210);
             // 
             // mnuNewVersion
             // 
             this.mnuNewVersion.Name = "mnuNewVersion";
             this.mnuNewVersion.Size = new System.Drawing.Size(205, 22);
-            this.mnuNewVersion.Text = LocalizationStrings.NotificationThread_TrayMenu_NewVersionAvailableDefault;
+            this.mnuNewVersion.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_TrayMenu_NewVersionAvailableDefault;
             this.mnuNewVersion.Visible = false;
+            // 
+            // mnuNowPlaying
+            // 
+            this.mnuNowPlaying.Enabled = false;
+            this.mnuNowPlaying.Name = "mnuNowPlaying";
+            this.mnuNowPlaying.Size = new System.Drawing.Size(205, 22);
+            this.mnuNowPlaying.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_NowPlayingDefault;
             // 
             // mnuNewVersionSeparator
             // 
@@ -83,7 +92,7 @@ namespace LastFM.Common.Classes
             // 
             this.mnuLoveThisTrack.Name = "mnuLoveThisTrack";
             this.mnuLoveThisTrack.Size = new System.Drawing.Size(205, 22);
-            this.mnuLoveThisTrack.Text = LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;
+            this.mnuLoveThisTrack.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;
             // 
             // toolStripSeparator5
             // 
@@ -94,7 +103,7 @@ namespace LastFM.Common.Classes
             // 
             this.mnuShow.Name = "mnuShow";
             this.mnuShow.Size = new System.Drawing.Size(205, 22);
-            this.mnuShow.Text = LocalizationStrings.NotificationThread_TrayMenu_Show;
+            this.mnuShow.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_TrayMenu_Show;
             // 
             // toolStripSeparator1
             // 
@@ -107,7 +116,7 @@ namespace LastFM.Common.Classes
             this.mnuEnableScrobbling.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mnuEnableScrobbling.Name = "mnuEnableScrobbling";
             this.mnuEnableScrobbling.Size = new System.Drawing.Size(205, 22);
-            this.mnuEnableScrobbling.Text = LocalizationStrings.NotificationThread_TrayMenu_EnableScrobbling;
+            this.mnuEnableScrobbling.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_TrayMenu_EnableScrobbling;
             // 
             // toolStripSeparator3
             // 
@@ -118,7 +127,7 @@ namespace LastFM.Common.Classes
             // 
             this.mnuViewUserProfile.Name = "mnuViewUserProfile";
             this.mnuViewUserProfile.Size = new System.Drawing.Size(205, 22);
-            this.mnuViewUserProfile.Text = LocalizationStrings.NotificationThread_TrayMenu_ViewYourProfile;
+            this.mnuViewUserProfile.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_TrayMenu_ViewYourProfile;
             // 
             // toolStripSeparator2
             // 
@@ -129,13 +138,13 @@ namespace LastFM.Common.Classes
             // 
             this.mnuExit.Name = "mnuExit";
             this.mnuExit.Size = new System.Drawing.Size(205, 22);
-            this.mnuExit.Text = LocalizationStrings.NotificationThread_TrayMEnu_Exit;
+            this.mnuExit.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_TrayMEnu_Exit;
             // 
             // trayIcon
             // 
             this.trayIcon.ContextMenuStrip = this.trayMenu;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
-            this.trayIcon.Text = LocalizationStrings.NotificationThread_Status_StartingUp;
+            this.trayIcon.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_Status_StartingUp;
             // 
             // statusStrip1
             // 
@@ -152,17 +161,18 @@ namespace LastFM.Common.Classes
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.Visible = false;
             // 
             // stripStatus
             // 
             this.stripStatus.Name = "stripStatus";
-            this.stripStatus.Size = new System.Drawing.Size(77, 17);
-            this.stripStatus.Text = LocalizationStrings.NotificationThread_Status_StartingUp;
+            this.stripStatus.Size = new System.Drawing.Size(74, 17);
+            this.stripStatus.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_Status_StartingUp;
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(253, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(154, 17);
             this.toolStripStatusLabel1.Spring = true;
             // 
             // stripLoveTrack
@@ -196,7 +206,7 @@ namespace LastFM.Common.Classes
             this.stripUpdateProgress.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.stripUpdateProgress.Name = "stripUpdateProgress";
             this.stripUpdateProgress.Size = new System.Drawing.Size(78, 17);
-            this.stripUpdateProgress.Text = LocalizationStrings.NotificationThread_StatusBar_Connecting;
+            this.stripUpdateProgress.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_StatusBar_Connecting;
             this.stripUpdateProgress.Visible = false;
             // 
             // NotificationThread
@@ -224,5 +234,6 @@ namespace LastFM.Common.Classes
         private ToolStripMenuItem mnuNewVersion;
         private ToolStripSeparator mnuNewVersionSeparator;
         private ToolStripStatusLabel stripUpdateProgress;
+        private ToolStripMenuItem mnuNowPlaying;
     }
 }

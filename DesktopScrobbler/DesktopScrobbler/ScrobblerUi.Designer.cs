@@ -31,11 +31,9 @@ namespace DesktopScrobbler
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScrobblerUi));
-            this.pbLogo = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblSignInName = new System.Windows.Forms.Label();
             this.linkProfile = new System.Windows.Forms.LinkLabel();
-            this.linkSettings = new System.Windows.Forms.LinkLabel();
             this.linkLogOut = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLogIn = new System.Windows.Forms.LinkLabel();
@@ -49,19 +47,10 @@ namespace DesktopScrobbler
             this.lblPlugins = new System.Windows.Forms.Label();
             this.checkedPluginList = new System.Windows.Forms.CheckedListBox();
             this.linkTerms = new System.Windows.Forms.LinkLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
+            this.chkShowNotifications = new System.Windows.Forms.CheckBox();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pbLogo
-            // 
-            this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
-            this.pbLogo.Location = new System.Drawing.Point(12, 12);
-            this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(84, 84);
-            this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbLogo.TabIndex = 1;
-            this.pbLogo.TabStop = false;
             // 
             // label1
             // 
@@ -74,165 +63,183 @@ namespace DesktopScrobbler
             // lblSignInName
             // 
             this.lblSignInName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSignInName.Location = new System.Drawing.Point(115, 12);
+            this.lblSignInName.Location = new System.Drawing.Point(9, 12);
             this.lblSignInName.Name = "lblSignInName";
-            this.lblSignInName.Size = new System.Drawing.Size(332, 23);
+            this.lblSignInName.Size = new System.Drawing.Size(311, 42);
             this.lblSignInName.TabIndex = 3;
-            this.lblSignInName.Text = LocalizationStrings.General_ApplicationTitle;
-            this.lblSignInName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSignInName.Text = "Connected as QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ";
+            this.lblSignInName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // linkProfile
             // 
-            this.linkProfile.Location = new System.Drawing.Point(112, 35);
+            this.linkProfile.Location = new System.Drawing.Point(417, 12);
             this.linkProfile.Name = "linkProfile";
-            this.linkProfile.Size = new System.Drawing.Size(335, 23);
+            this.linkProfile.Size = new System.Drawing.Size(102, 23);
             this.linkProfile.TabIndex = 4;
             this.linkProfile.TabStop = true;
-            this.linkProfile.Text = LocalizationStrings.NotificationThread_TrayMenu_ViewYourProfile;
+            this.linkProfile.Text = "View Your Profile";
             this.linkProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkProfile.Visible = false;
             // 
-            // linkSettings
-            // 
-            this.linkSettings.Location = new System.Drawing.Point(3, 46);
-            this.linkSettings.Name = "linkSettings";
-            this.linkSettings.Size = new System.Drawing.Size(62, 23);
-            this.linkSettings.TabIndex = 5;
-            this.linkSettings.TabStop = true;
-            this.linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Closed;
-            this.linkSettings.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // linkLogOut
             // 
-            this.linkLogOut.Location = new System.Drawing.Point(3, 23);
+            this.linkLogOut.Location = new System.Drawing.Point(3, 0);
             this.linkLogOut.Name = "linkLogOut";
             this.linkLogOut.Size = new System.Drawing.Size(62, 23);
             this.linkLogOut.TabIndex = 6;
             this.linkLogOut.TabStop = true;
-            this.linkLogOut.Text = LocalizationStrings.ScrobblerUi_UserLogout;
+            this.linkLogOut.Text = "Log Out";
             this.linkLogOut.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkLogOut.Visible = false;
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel1.Controls.Add(this.linkLogIn);
             this.flowLayoutPanel1.Controls.Add(this.linkLogOut);
-            this.flowLayoutPanel1.Controls.Add(this.linkSettings);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(456, 12);
+            this.flowLayoutPanel1.Controls.Add(this.linkLogIn);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(322, 8);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(83, 66);
             this.flowLayoutPanel1.TabIndex = 7;
             // 
             // linkLogIn
             // 
-            this.linkLogIn.Location = new System.Drawing.Point(3, 0);
+            this.linkLogIn.Location = new System.Drawing.Point(3, 23);
             this.linkLogIn.Name = "linkLogIn";
             this.linkLogIn.Size = new System.Drawing.Size(62, 23);
             this.linkLogIn.TabIndex = 7;
             this.linkLogIn.TabStop = true;
-            this.linkLogIn.Text = LocalizationStrings.ScrobblerUi_UserLogin;
+            this.linkLogIn.Text = "Log In";
             this.linkLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTrackName
             // 
             this.lblTrackName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTrackName.Location = new System.Drawing.Point(112, 58);
+            this.lblTrackName.Location = new System.Drawing.Point(416, 177);
             this.lblTrackName.Name = "lblTrackName";
-            this.lblTrackName.Size = new System.Drawing.Size(335, 39);
+            this.lblTrackName.Size = new System.Drawing.Size(201, 39);
             this.lblTrackName.TabIndex = 8;
+            this.lblTrackName.Text = "Now Playing:";
             this.lblTrackName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTrackName.UseMnemonic = false;
+            this.lblTrackName.Visible = false;
             // 
             // chkShowtrackChanges
             // 
             this.chkShowtrackChanges.AutoSize = true;
-            this.chkShowtrackChanges.Location = new System.Drawing.Point(12, 203);
+            this.chkShowtrackChanges.Location = new System.Drawing.Point(420, 125);
             this.chkShowtrackChanges.Name = "chkShowtrackChanges";
             this.chkShowtrackChanges.Size = new System.Drawing.Size(129, 17);
             this.chkShowtrackChanges.TabIndex = 12;
-            this.chkShowtrackChanges.Text = LocalizationStrings.ScrobblerUi_Settings_ShowTrackChanges;
+            this.chkShowtrackChanges.Text = "Show Track Changes";
             this.chkShowtrackChanges.UseVisualStyleBackColor = true;
+            this.chkShowtrackChanges.Visible = false;
             // 
             // chkShowScrobbleNotifications
             // 
             this.chkShowScrobbleNotifications.AutoSize = true;
-            this.chkShowScrobbleNotifications.Location = new System.Drawing.Point(12, 226);
+            this.chkShowScrobbleNotifications.Location = new System.Drawing.Point(420, 148);
             this.chkShowScrobbleNotifications.Name = "chkShowScrobbleNotifications";
             this.chkShowScrobbleNotifications.Size = new System.Drawing.Size(159, 17);
             this.chkShowScrobbleNotifications.TabIndex = 14;
-            this.chkShowScrobbleNotifications.Text = LocalizationStrings.ScrobblerUi_Settings_ShowScrobbles;
+            this.chkShowScrobbleNotifications.Text = "Show Scrobble Notifications";
             this.chkShowScrobbleNotifications.UseVisualStyleBackColor = true;
+            this.chkShowScrobbleNotifications.Visible = false;
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(274, 124);
+            this.label2.Location = new System.Drawing.Point(9, 87);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(200, 17);
             this.label2.TabIndex = 16;
-            this.label2.Text = LocalizationStrings.ScrobblerUi_Settings_ScrobblePlugins_Title;
+            this.label2.Text = "Scrobbler Plugins";
             // 
             // chkMinimizeToTray
             // 
             this.chkMinimizeToTray.AutoSize = true;
-            this.chkMinimizeToTray.Location = new System.Drawing.Point(12, 157);
+            this.chkMinimizeToTray.Location = new System.Drawing.Point(420, 79);
             this.chkMinimizeToTray.Name = "chkMinimizeToTray";
-            this.chkMinimizeToTray.Size = new System.Drawing.Size(139, 17);
+            this.chkMinimizeToTray.Size = new System.Drawing.Size(98, 17);
             this.chkMinimizeToTray.TabIndex = 9;
-            this.chkMinimizeToTray.Text = LocalizationStrings.ScrobblerUi_Settings_CloseMinimizeToTray;
+            this.chkMinimizeToTray.Text = "Minimize to tray";
             this.chkMinimizeToTray.UseVisualStyleBackColor = true;
+            this.chkMinimizeToTray.Visible = false;
             // 
             // chkStartMinimized
             // 
             this.chkStartMinimized.AutoSize = true;
-            this.chkStartMinimized.Location = new System.Drawing.Point(12, 180);
+            this.chkStartMinimized.Location = new System.Drawing.Point(420, 102);
             this.chkStartMinimized.Name = "chkStartMinimized";
             this.chkStartMinimized.Size = new System.Drawing.Size(97, 17);
             this.chkStartMinimized.TabIndex = 10;
-            this.chkStartMinimized.Text = LocalizationStrings.ScrobblerUi_Settings_StartMinimized;
+            this.chkStartMinimized.Text = "Start Minimized";
             this.chkStartMinimized.UseVisualStyleBackColor = true;
+            this.chkStartMinimized.Visible = false;
             // 
             // lblGeneralSettingsTitle
             // 
             this.lblGeneralSettingsTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGeneralSettingsTitle.Location = new System.Drawing.Point(9, 124);
+            this.lblGeneralSettingsTitle.Location = new System.Drawing.Point(417, 46);
             this.lblGeneralSettingsTitle.Name = "lblGeneralSettingsTitle";
             this.lblGeneralSettingsTitle.Size = new System.Drawing.Size(200, 17);
             this.lblGeneralSettingsTitle.TabIndex = 13;
-            this.lblGeneralSettingsTitle.Text = LocalizationStrings.ScrobblerUi_Settings_GeneralSettingsTitle;
+            this.lblGeneralSettingsTitle.Text = "General Settings";
+            this.lblGeneralSettingsTitle.Visible = false;
             // 
             // lblPlugins
             // 
-            this.lblPlugins.Location = new System.Drawing.Point(274, 157);
+            this.lblPlugins.Location = new System.Drawing.Point(9, 110);
             this.lblPlugins.Name = "lblPlugins";
             this.lblPlugins.Size = new System.Drawing.Size(200, 13);
             this.lblPlugins.TabIndex = 11;
-            this.lblPlugins.Text = LocalizationStrings.ScrobblerUi_Settings_ScrobblePluginsEnableMessage;
+            this.lblPlugins.Text = "Instructions:";
             // 
             // checkedPluginList
             // 
             this.checkedPluginList.FormattingEnabled = true;
-            this.checkedPluginList.Location = new System.Drawing.Point(277, 180);
+            this.checkedPluginList.Location = new System.Drawing.Point(12, 133);
             this.checkedPluginList.Name = "checkedPluginList";
-            this.checkedPluginList.Size = new System.Drawing.Size(250, 64);
+            this.checkedPluginList.Size = new System.Drawing.Size(250, 49);
             this.checkedPluginList.TabIndex = 15;
             // 
             // linkTerms
             // 
-            this.linkTerms.Location = new System.Drawing.Point(459, 66);
+            this.linkTerms.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkTerms.Location = new System.Drawing.Point(9, 184);
             this.linkTerms.Name = "linkTerms";
             this.linkTerms.Size = new System.Drawing.Size(81, 23);
             this.linkTerms.TabIndex = 17;
             this.linkTerms.TabStop = true;
-            this.linkTerms.Text = LocalizationStrings.ScrobblerUi_TermsOfUse;
-            this.linkTerms.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkTerms.Text = "Terms";
+            this.linkTerms.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // chkShowNotifications
+            // 
+            this.chkShowNotifications.AutoSize = true;
+            this.chkShowNotifications.Location = new System.Drawing.Point(12, 57);
+            this.chkShowNotifications.Name = "chkShowNotifications";
+            this.chkShowNotifications.Size = new System.Drawing.Size(114, 17);
+            this.chkShowNotifications.TabIndex = 18;
+            this.chkShowNotifications.Text = "Show Notifications";
+            this.chkShowNotifications.UseVisualStyleBackColor = true;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblVersion.Location = new System.Drawing.Point(187, 189);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(200, 13);
+            this.lblVersion.TabIndex = 19;
+            this.lblVersion.Text = "version";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // ScrobblerUi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(546, 125);
+            this.ClientSize = new System.Drawing.Size(391, 208);
+            this.Controls.Add(this.lblVersion);
+            this.Controls.Add(this.chkShowNotifications);
             this.Controls.Add(this.linkTerms);
             this.Controls.Add(this.chkShowtrackChanges);
             this.Controls.Add(this.chkShowScrobbleNotifications);
@@ -247,12 +254,10 @@ namespace DesktopScrobbler
             this.Controls.Add(this.linkProfile);
             this.Controls.Add(this.lblSignInName);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.pbLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ScrobblerUi";
-            this.Text = LocalizationStrings.General_ApplicationTitle;
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -260,11 +265,9 @@ namespace DesktopScrobbler
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblSignInName;
         private System.Windows.Forms.LinkLabel linkProfile;
-        private System.Windows.Forms.LinkLabel linkSettings;
         private System.Windows.Forms.LinkLabel linkLogOut;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.LinkLabel linkLogIn;
@@ -278,6 +281,8 @@ namespace DesktopScrobbler
         private System.Windows.Forms.Label lblPlugins;
         private System.Windows.Forms.CheckedListBox checkedPluginList;
         private System.Windows.Forms.LinkLabel linkTerms;
+        private System.Windows.Forms.CheckBox chkShowNotifications;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
 

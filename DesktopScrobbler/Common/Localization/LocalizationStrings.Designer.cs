@@ -198,6 +198,15 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Now Playing....
+        /// </summary>
+        public static string NotificationThread_NowPlayingDefault {
+            get {
+                return ResourceManager.GetString("NotificationThread_NowPlayingDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checking Scrobble State....
         /// </summary>
         public static string NotificationThread_Status_CheckingScrobbleStatus {
@@ -558,7 +567,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome {0}.
+        ///   Looks up a localized string similar to Connected as {0}.
         /// </summary>
         public static string ScrobblerUi_UserLoggedInText {
             get {

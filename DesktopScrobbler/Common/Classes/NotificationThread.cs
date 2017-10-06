@@ -424,9 +424,24 @@ namespace LastFM.Common.Classes
 
             ShowScrobbleState();
 
+            if (mediaItem != null)
+            {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+                }));
+            }
+            else
+            {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    mnuNowPlaying.Text = LocalizationStrings.NotificationThread_NowPlayingDefault;
+                }));
+            }
+
             if (_currentMediaItem != null && !wasResumed)
             {
-                if (Core.Settings.ShowTrackChanges)
+                if (Core.Settings.ShowNotifications && (Core.Settings.ShowTrackChanges == null || Core.Settings.ShowTrackChanges==true))
                 {
                     string notificationText = string.Format(LocalizationStrings.PopupNotifications_TrackChanged, MediaHelper.GetTrackDescription(_currentMediaItem));
 
@@ -435,6 +450,8 @@ namespace LastFM.Common.Classes
             }
 
             ResetLoveTrackState(LoveStatus.Love);
+
+
         }
 
         public void HasNewVersion(VersionChecker.VersionState versionDetail)

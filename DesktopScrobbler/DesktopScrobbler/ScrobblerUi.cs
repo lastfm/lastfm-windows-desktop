@@ -39,6 +39,7 @@ namespace DesktopScrobbler
 
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Load += ScrobblerUi_Load;
+            Localize();
         }
 
         public override void TrackChanged(MediaItem mediaItem, bool wasResumed)
@@ -63,7 +64,9 @@ namespace DesktopScrobbler
 
         private async void ScrobblerUi_Load(object sender, System.EventArgs e)
         {
-            SetFormStartupSize();
+            //SetFormStartupSize();
+
+            lblVersion.Text = $"v{ApplicationUtility.GetApplicationFullVersionNumber()}";
 
             CheckForNewVersion();
 
@@ -82,10 +85,10 @@ namespace DesktopScrobbler
 
             _playerForm.Hide();
 
-            linkSettings.Click += (o, ev) =>
-            {
-                ShowSettings();
-            };
+            //linkSettings.Click += (o, ev) =>
+            //{
+            //    ShowSettings();
+            //};
 
             linkProfile.Click += linkProfile_Click;
             linkTerms.Click += (o, ev) => { ProcessHelper.LaunchUrl(Core.TermsUrl); };
@@ -95,28 +98,28 @@ namespace DesktopScrobbler
 
             base.OnScrobbleStateChanged += UpdateScrobbleState;
 
-            _normalStateLogo = pbLogo.Image;
-            _greyStateLogo = await ImageHelper.GreyScaleImage(_normalStateLogo).ConfigureAwait(false);
+            //_normalStateLogo = pbLogo.Image;
+            //_greyStateLogo = await ImageHelper.GreyScaleImage(_normalStateLogo).ConfigureAwait(false);
 
-            pbLogo.MouseEnter += (o, ev) =>
-            {
-                if (!string.IsNullOrEmpty(base.APIClient.SessionToken?.Key))
-                {
-                    pbLogo.Cursor = Cursors.Hand;
-                }
-                else
-                {
-                    pbLogo.Cursor = DefaultCursor;
-                }
-            };
+            //pbLogo.MouseEnter += (o, ev) =>
+            //{
+            //    if (!string.IsNullOrEmpty(base.APIClient.SessionToken?.Key))
+            //    {
+            //        pbLogo.Cursor = Cursors.Hand;
+            //    }
+            //    else
+            //    {
+            //        pbLogo.Cursor = DefaultCursor;
+            //    }
+            //};
 
-            pbLogo.Click += (o, ev) =>
-            {
-                if (!string.IsNullOrEmpty(base.APIClient.SessionToken?.Key))
-                {
-                    base.ScrobbleStateChanging(!ScrobbleFactory.ScrobblingEnabled);
-                }
-            };
+            //pbLogo.Click += (o, ev) =>
+            //{
+            //    if (!string.IsNullOrEmpty(base.APIClient.SessionToken?.Key))
+            //    {
+            //        base.ScrobbleStateChanging(!ScrobbleFactory.ScrobblingEnabled);
+            //    }
+            //};
 
             Startup();
         }
@@ -126,23 +129,23 @@ namespace DesktopScrobbler
             this.Size = new Size(this.Width, FormHelper.GetRelativeLocation(this, lblGeneralSettingsTitle).Y + 12);
         }
 
-        protected override void ShowSettings()
-        {
-            if (linkSettings.Text == LocalizationStrings.ScrobblerUi_LinkSettings_Closed)
-            {
-                linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Open;
-                this.Size = new Size(this.Width, FormHelper.GetRelativeLocation(this, chkShowScrobbleNotifications).Y + chkShowScrobbleNotifications.Height + chkShowScrobbleNotifications.Padding.Top + chkShowScrobbleNotifications.Padding.Bottom + base.StatusBarHeight + 12);                
-            }
-            else
-            {
-                linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Closed;
-                SetFormStartupSize();                
-            }
-        }
+        //protected override void ShowSettings()
+        //{
+        //    if (linkSettings.Text == LocalizationStrings.ScrobblerUi_LinkSettings_Closed)
+        //    {
+        //        linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Open;
+        //        this.Size = new Size(this.Width, FormHelper.GetRelativeLocation(this, chkShowScrobbleNotifications).Y + chkShowScrobbleNotifications.Height + chkShowScrobbleNotifications.Padding.Top + chkShowScrobbleNotifications.Padding.Bottom + base.StatusBarHeight + 12);                
+        //    }
+        //    else
+        //    {
+        //        linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Closed;
+        //        SetFormStartupSize();                
+        //    }
+        //}
 
         private void UpdateScrobbleState(bool scrobblingEnabled)
         {
-            pbLogo.Image = (scrobblingEnabled) ? _normalStateLogo : _greyStateLogo;
+            //pbLogo.Image = (scrobblingEnabled) ? _normalStateLogo : _greyStateLogo;
         }
 
         private void LogInUser(object sender, EventArgs e)
@@ -211,7 +214,7 @@ namespace DesktopScrobbler
 
             ScrobbleFactory.OnlineStatusUpdated += OnlineStatusUpdated;
 
-            linkSettings.Visible = true;
+            //linkSettings.Visible = true;
         }
 
         private void OnlineStatusUpdated(OnlineState currentState, UserInfo latestUserInfo)
@@ -428,8 +431,10 @@ namespace DesktopScrobbler
 
             chkMinimizeToTray.Checked = Core.Settings.CloseToTray;
             chkStartMinimized.Checked = Core.Settings.StartMinimized;
-            chkShowScrobbleNotifications.Checked = Core.Settings.ShowScrobbleNotifications;
-            chkShowtrackChanges.Checked = Core.Settings.ShowTrackChanges;
+
+            chkShowNotifications.Checked = Core.Settings.ShowNotifications;
+            chkShowScrobbleNotifications.Checked = Convert.ToBoolean(Core.Settings.ShowScrobbleNotifications);
+            chkShowtrackChanges.Checked = Convert.ToBoolean(Core.Settings.ShowTrackChanges);
 
             foreach (IScrobbleSource plugin in ScrobbleFactory.ScrobblePlugins)
             {
@@ -440,15 +445,19 @@ namespace DesktopScrobbler
             chkShowtrackChanges.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
             chkMinimizeToTray.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
             chkStartMinimized.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
+            chkShowNotifications.CheckedChanged += (o, ev) => { SettingItem_Changed(); };
             checkedPluginList.ItemCheck += (o, ev) => { this.BeginInvoke(new MethodInvoker(SettingItem_Changed)); };
         }
 
         private void SettingItem_Changed()
         {
+            ScrobbleFactory.ScrobblingEnabled = false;
+
             Core.Settings.CloseToTray = chkMinimizeToTray.Checked;
             Core.Settings.StartMinimized = chkStartMinimized.Checked;
             Core.Settings.ShowScrobbleNotifications = chkShowScrobbleNotifications.Checked;
             Core.Settings.ShowTrackChanges = chkShowtrackChanges.Checked;
+            Core.Settings.ShowNotifications = chkShowNotifications.Checked;
 
             Core.Settings.ScrobblerStatus.Clear();
 
@@ -460,11 +469,33 @@ namespace DesktopScrobbler
                 Core.Settings.ScrobblerStatus.Add(newStatus);
             }
 
+            this.linkLogIn.Text = LocalizationStrings.ScrobblerUi_UserLogin;
+
+
             ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
 
             Core.SaveSettings();
 
             ShowIdleStatus();
+        }
+
+        private void Localize()
+        {
+            this.lblSignInName.Text = LocalizationStrings.General_ApplicationTitle;
+            this.linkProfile.Text = LocalizationStrings.NotificationThread_TrayMenu_ViewYourProfile;
+            //this.linkSettings.Text = LocalizationStrings.ScrobblerUi_LinkSettings_Closed;
+            this.linkLogOut.Text = LocalizationStrings.ScrobblerUi_UserLogout;
+            this.linkLogIn.Text = LocalizationStrings.ScrobblerUi_UserLogin;
+            this.chkShowtrackChanges.Text = LocalizationStrings.ScrobblerUi_Settings_ShowTrackChanges;
+            this.chkShowScrobbleNotifications.Text = LocalizationStrings.ScrobblerUi_Settings_ShowScrobbles;
+            this.label2.Text = LocalizationStrings.ScrobblerUi_Settings_ScrobblePlugins_Title;
+            this.chkMinimizeToTray.Text = LocalizationStrings.ScrobblerUi_Settings_CloseMinimizeToTray;
+            this.chkStartMinimized.Text = LocalizationStrings.ScrobblerUi_Settings_StartMinimized;
+            this.lblGeneralSettingsTitle.Text = LocalizationStrings.ScrobblerUi_Settings_GeneralSettingsTitle;
+            this.lblPlugins.Text = LocalizationStrings.ScrobblerUi_Settings_ScrobblePluginsEnableMessage;
+            this.linkTerms.Text = LocalizationStrings.ScrobblerUi_TermsOfUse;
+            this.Text = LocalizationStrings.General_ApplicationTitle;
+
         }
     }
 }

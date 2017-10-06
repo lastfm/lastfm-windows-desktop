@@ -19,8 +19,8 @@ namespace Common.Classes
         {
             chkMinimizeToTray.Checked = Core.Settings.CloseToTray;
             chkStartMinimized.Checked = Core.Settings.StartMinimized;
-            chkShowScrobbleNotifications.Checked = Core.Settings.ShowScrobbleNotifications;
-            chkShowtrackChanges.Checked = Core.Settings.ShowTrackChanges;
+            chkShowScrobbleNotifications.Checked = Convert.ToBoolean(Core.Settings.ShowScrobbleNotifications);
+            chkShowtrackChanges.Checked = Convert.ToBoolean(Core.Settings.ShowTrackChanges);
 
             foreach(IScrobbleSource plugin in ScrobbleFactory.ScrobblePlugins)
             {

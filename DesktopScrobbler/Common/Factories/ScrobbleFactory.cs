@@ -221,7 +221,7 @@ namespace LastFM.Common.Factories
 
         private static void ShowScrobbleResult(List<MediaItem> sourceMedia)
         {
-            if (Core.Settings.ShowScrobbleNotifications && sourceMedia != null && sourceMedia.Count > 0)
+            if (Core.Settings.ShowNotifications && (Core.Settings.ShowScrobbleNotifications == null || Core.Settings.ShowScrobbleNotifications==true) && sourceMedia != null && sourceMedia.Count > 0)
             {
                 string balloonText =  string.Format(LocalizationStrings.PopupNotifications_FailedToScrobble, sourceMedia.Count());
 
@@ -231,7 +231,7 @@ namespace LastFM.Common.Factories
 
         private static void ShowScrobbleResult(ScrobbleResponse scrobbleResult)
         {
-            if (Core.Settings.ShowScrobbleNotifications)
+            if (Core.Settings.ShowNotifications && (Core.Settings.ShowScrobbleNotifications==null || Core.Settings.ShowScrobbleNotifications==true))
             {
                 int successfulScrobbleCount = scrobbleResult.Scrobbles.AcceptedResult.Accepted;
                 //int ignoredScrobbles = scrobbleResult.Scrobbles.AcceptedResult.Ignored;

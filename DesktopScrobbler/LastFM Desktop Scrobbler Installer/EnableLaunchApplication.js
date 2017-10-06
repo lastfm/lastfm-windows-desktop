@@ -1,3 +1,5 @@
+// This script sourced from https://blogs.msdn.microsoft.com/astebner/2006/08/12/mailbag-how-can-i-customize-an-msi-in-the-visual-studio-setupdeployment-project/
+
 // EnableLaaunchApplication.js <msi-file>
 // Performs a post-build fixup of an msi to launch a specific file when the install has completed
 

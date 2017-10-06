@@ -97,3 +97,15 @@ A progress indicator is made available on the Settings.Ui (next to the new icon)
 Once downloaded click on the Icon or progress text (which changes) or the menu option (which also changes) to install
 That process then extracts the content of the downloaded zip file into the updates folder, kicks off the setup.exe and closes the application
 As mentioned, once the application is started again (automatically after install) the updates folder is trashed to keep things 'clean'
+
+Code Signing
+============
+
+In order to enable code signing, you will need to have a code signing cert installed (out of scope of this ReadMe). 
+(The examples below use the SHA1 hash of the Last.fm code signing certificate.)
+
+Add the following post-build event to every project in the solution (except the installer):
+  "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(TargetPath)"
+
+Add the following post-build event to the installer in addition to the post-build event already there:
+  "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(BuiltOutputPath)"

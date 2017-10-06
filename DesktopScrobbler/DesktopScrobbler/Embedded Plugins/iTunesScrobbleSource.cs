@@ -185,7 +185,7 @@ namespace ITunesScrobblePlugin
                                             _onTrackStarted?.Invoke(mediaDetail, false);
                                             mediaDetail.StartedPlaying = DateTime.Now;
                                         }
-                                        else if (hasReachedTrackEnd && playerPosition < 1)
+                                        else if (hasReachedTrackEnd)
                                         {
                                             _currentMediaItem = null;
                                         }

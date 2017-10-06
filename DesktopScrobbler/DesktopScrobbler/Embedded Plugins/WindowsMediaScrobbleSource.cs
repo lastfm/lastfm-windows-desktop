@@ -23,9 +23,9 @@ namespace DesktopScrobbler
 
         private int _minimumScrobbleSeconds = 30;
         private int _currentMediaPlayTime = 0;
-        private bool _lastStatePaused = false;
+        private bool _currentMediaWasScrobbled = false;
 
-        //private WMPLib.WMPPlayState _currentPlaystate = WMPLib.WMPPlayState.wmppsWaiting;
+        private bool _lastStatePaused = false;
 
         private bool _isIntialized = false;
         private bool _isEnabled = false;
@@ -163,8 +163,10 @@ namespace DesktopScrobbler
                                 bool hasTrackChanged = _currentMediaItem?.TrackName != mediaDetail?.TrackName;
                                 bool isPaused = playerState == WMPPlayState.wmppsPaused;
                                 bool isPlaying = playerState == WMPPlayState.wmppsPlaying;
-  
-                                bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds && _currentMediaPlayTime == Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60);
+
+                                bool canScrobble = _currentMediaPlayTime >= _minimumScrobbleSeconds &&
+                                    (_currentMediaPlayTime >= Convert.ToInt32(Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60)) && !_currentMediaWasScrobbled);
+
 
 #if DebugWMPScrobbler
                                     Console.WriteLine($"Windows Media Player Plugin: Position {playerPosition} of { mediaDetail?.TrackLength }, Tracker time: {_currentMediaPlayTime}...");
@@ -195,14 +197,18 @@ namespace DesktopScrobbler
                                     {
                                         _currentMediaItem = null;
                                     }
+
+                                    _currentMediaWasScrobbled = false;
                                 }
-                                else if (isPlaying && hasMedia && canScrobble)
+                                else if (isPlaying && hasMedia && canScrobble && !_currentMediaWasScrobbled)
                                 {
                                     lock (_mediaLock)
                                     {
                                         _mediaToScrobble.Add(_currentMediaItem);
                                     }
+
                                     _currentMediaPlayTime++;
+                                    _currentMediaWasScrobbled = true;
 
                                     Console.WriteLine($"Windows Media Player: Track {mediaDetail.TrackName} queued for Scrobbling.");
                                 }
@@ -234,6 +240,7 @@ namespace DesktopScrobbler
                                         // Reset the state tracking how long we played this track for
                                         _lastStatePaused = false;
                                         _currentMediaPlayTime = 0;
+                                        _currentMediaWasScrobbled = false;
                                     }
                                 }
                             }
@@ -246,6 +253,7 @@ namespace DesktopScrobbler
                         {
                             _onTrackEnded?.Invoke(_currentMediaItem);
                             _currentMediaItem = null;
+                            _currentMediaWasScrobbled = false;
                         }
 
                         _scrobbleTimer?.Start();

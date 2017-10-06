@@ -62,7 +62,7 @@
             // pbLogo
             // 
             this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
-            this.pbLogo.Location = new System.Drawing.Point(3, 26);
+            this.pbLogo.Location = new System.Drawing.Point(4, 19);
             this.pbLogo.Name = "pbLogo";
             this.pbLogo.Size = new System.Drawing.Size(58, 55);
             this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -72,9 +72,9 @@
             // lblTitle
             // 
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(11, 3);
+            this.lblTitle.Location = new System.Drawing.Point(68, 3);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(260, 20);
+            this.lblTitle.Size = new System.Drawing.Size(203, 20);
             this.lblTitle.TabIndex = 7;
             this.lblTitle.Text = "Last.fm Desktop Scrobbler";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

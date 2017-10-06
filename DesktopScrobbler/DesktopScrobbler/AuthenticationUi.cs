@@ -59,6 +59,8 @@ namespace DesktopScrobbler
                 this.ApiSessionToken = sessionToken;
 
                 this.DialogResult = DialogResult.OK;
+
+                NotificationHelper.ShowNotification(this, Core.APPLICATION_TITLE, string.Format(LocalizationStrings.PopupNotifications_SuccessfullyAuthorized, sessionToken.Name));
                 this.Close();
             }
             else

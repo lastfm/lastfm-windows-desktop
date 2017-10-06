@@ -354,4 +354,8 @@ Click on 'Authorize' to start this process, then click on 'Yes, allow access'' i
     <value>Failed to scrobble {0} track(s).</value>
     <comment>Notification displayed when the application fails to scrobble items</comment>
   </data>
+  <data name="PopupNotifications_SuccessfullyAuthorized" xml:space="preserve">
+    <value>You have successfully authorized the application, and have been signed in as '{0}'.</value>
+    <comment>Popup Notification:  after successfully authorizing the application</comment>
+  </data>
 </root>

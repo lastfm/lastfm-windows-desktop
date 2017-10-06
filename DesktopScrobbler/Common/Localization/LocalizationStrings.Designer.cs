@@ -378,6 +378,15 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have successfully authorized the application, and have been signed in as &apos;{0}&apos;..
+        /// </summary>
+        public static string PopupNotifications_SuccessfullyAuthorized {
+            get {
+                return ResourceManager.GetString("PopupNotifications_SuccessfullyAuthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Now playing: {0}.
         /// </summary>
         public static string PopupNotifications_TrackChanged {

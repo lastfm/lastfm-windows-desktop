@@ -392,7 +392,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LastFM.Common, Version=3.1.6.20, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:LastFM.Common, Version=3.1.6.42, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_4EEEC4DD38687BBF207BBCFBECEE260A"
@@ -443,7 +443,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Transitions, Version=3.1.6.20, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Transitions, Version=3.1.6.42, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5847AB044EE2A1BFAD4933868B1BAC7B"
@@ -505,7 +505,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PluginSupport, Version=3.1.6.20, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:PluginSupport, Version=3.1.6.42, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_6B35CED08653531681A754C510FC751D"
@@ -556,7 +556,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LastFM.ApiClient, Version=3.1.6.20, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:LastFM.ApiClient, Version=3.1.6.42, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_7A4B0D6527A3B07677CBDA82732925AC"
@@ -794,15 +794,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Last.fm Desktop Scrobbler"
-        "ProductCode" = "8:{C61B25D8-826D-415D-8307-17752939D294}"
-        "PackageCode" = "8:{9D697B28-0D7A-4065-9876-6BA954690622}"
+        "ProductCode" = "8:{9B31A2AF-3769-4881-B08D-BE33960CA3BF}"
+        "PackageCode" = "8:{35C3072B-7B19-4C99-A8A6-E082803AD7DE}"
         "UpgradeCode" = "8:{D14A04F6-3BC6-4062-83AD-BB3EB3A46138}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.1.7"
+        "ProductVersion" = "8:3.1.8"
         "Manufacturer" = "8:Last.fm"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -818,7 +818,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PostBuildEvent" = "8:cscript.exe \"$(ProjectDir)EnableLaunchApplication.js\" \"$(BuiltOuputPath)\""
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"

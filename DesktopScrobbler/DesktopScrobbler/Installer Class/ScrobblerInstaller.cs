@@ -18,7 +18,9 @@ namespace DesktopScrobbler.Installer_Class
 
         public override void Commit(IDictionary savedState)
         {
-            System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(this.Context.Parameters["AssemblyPath"]) + @"\DesktopScrobbler.exe");
+            base.Commit(savedState);
+
+            //System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(this.Context.Parameters["AssemblyPath"]) + @"\DesktopScrobbler.exe");
         }
     }
 }

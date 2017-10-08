@@ -34,8 +34,9 @@ namespace ITunesScrobblePlugin
 
         private Timer _scrobbleTimer = null;
 
-        private TrackStarted _onTrackStarted = null;
-        private TrackEnded _onTrackEnded = null;
+        private TrackMonitoringStarted _onTrackMonitoringStarted = null;
+        private TrackMonitoring _onTrackMonitoring = null;
+        private TrackMonitoringEnded _onTrackMonitoringEnded = null;
         private ScrobbleTrack _onScrobbleTrack = null;
 
         public Guid SourceIdentifier
@@ -105,12 +106,13 @@ namespace ITunesScrobblePlugin
             }
         }
 
-        public void InitializeSource(int minimumScrobbleSeconds, TrackStarted onTrackStartedCallback, TrackEnded onTrackEndedCallback, ScrobbleTrack onScrobbleTrack)
+        public void InitializeSource(int minimumScrobbleSeconds, TrackMonitoringStarted onTrackMonitoringStarted, TrackMonitoring onTrackMonitoring, TrackMonitoringEnded onTrackMonitoringEnded, ScrobbleTrack onScrobbleTrack)
         {
             _minimumScrobbleSeconds = minimumScrobbleSeconds;
 
-            _onTrackStarted = onTrackStartedCallback;
-            _onTrackEnded = onTrackEndedCallback;
+            _onTrackMonitoringStarted = onTrackMonitoringStarted;
+            _onTrackMonitoring = onTrackMonitoring;
+            _onTrackMonitoringEnded = onTrackMonitoringEnded;
             _onScrobbleTrack = onScrobbleTrack;
 
             _isIntialized = true;
@@ -172,7 +174,7 @@ namespace ITunesScrobblePlugin
 
                                         if (_currentMediaItem != null)
                                         {
-                                            _onTrackEnded?.Invoke(_currentMediaItem);
+                                            _onTrackMonitoringEnded?.Invoke(_currentMediaItem);
 
                                             _onScrobbleTrack?.Invoke(_currentMediaItem);
                                         }
@@ -182,7 +184,7 @@ namespace ITunesScrobblePlugin
                                         if (hasTrackChanged)
                                         {
                                             _currentMediaItem = mediaDetail;
-                                            _onTrackStarted?.Invoke(mediaDetail, false);
+                                            _onTrackMonitoringStarted?.Invoke(mediaDetail, false);
                                             mediaDetail.StartedPlaying = DateTime.Now;
                                         }
                                         else if (hasReachedTrackEnd)
@@ -200,6 +202,7 @@ namespace ITunesScrobblePlugin
                                         {
                                             _mediaToScrobble.Add(_currentMediaItem);
                                         }
+                                        _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
                                         _currentMediaPlayTime += _timerInterval;
                                         _currentMediaWasScrobbled = true;
 
@@ -210,8 +213,9 @@ namespace ITunesScrobblePlugin
                                     {
                                         if (_lastStatePaused)
                                         {
-                                            _onTrackStarted?.Invoke(_currentMediaItem, _lastStatePaused);
+                                            _onTrackMonitoringStarted?.Invoke(_currentMediaItem, _lastStatePaused);
                                         }
+                                        _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
                                         _currentMediaPlayTime += _timerInterval;
                                     }
                                     // The media player is not playing
@@ -220,7 +224,7 @@ namespace ITunesScrobblePlugin
                                         // If we had been playing, invoke the Track Ended callback
                                         if (_currentMediaPlayTime > _timerInterval)
                                         {
-                                            _onTrackEnded?.Invoke(mediaDetail);
+                                            _onTrackMonitoringEnded?.Invoke(mediaDetail);
                                         }
 
                                         // Set the persisted pause state
@@ -260,7 +264,7 @@ namespace ITunesScrobblePlugin
                         }
                         else if (iTunesProcesses.Length == 0 && _currentMediaItem != null)
                         {
-                            _onTrackEnded?.Invoke(_currentMediaItem);
+                            _onTrackMonitoringEnded?.Invoke(_currentMediaItem);
                             _currentMediaItem = null;
                             _currentMediaWasScrobbled = false;
                             Console.WriteLine("iTunes process not detected.  Waiting for iTunes process to start...");

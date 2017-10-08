@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace LastFM.Common.Helpers
 {
+    // Helper function for performing Image related function
     public class ImageHelper
     {
+        // Method for loading an image either from the file system, or from the Web
         public static async Task<Image> LoadImage(string imageLocation)
         {
             Image returnImage = null;
@@ -49,6 +51,7 @@ namespace LastFM.Common.Helpers
             return returnImage;
         }
 
+        // Method for taking an image, and turning into greyscale version (e.g. for showing a disabled state)
         public static async Task<Image> GreyScaleImage(Image sourceImage)
         {
             System.Drawing.Image imageToReturn = null;
@@ -91,6 +94,7 @@ namespace LastFM.Common.Helpers
 
         }
 
+        // Method for taking an icon, and turning into a greyscale version (e.g for showing a disabled state)
         public static async Task<Icon> GreyScaleIcon(Icon sourceIcon)
         {
             System.Drawing.Icon imageToReturn = null;

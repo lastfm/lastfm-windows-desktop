@@ -31,8 +31,9 @@ namespace DesktopScrobbler
         private bool _isEnabled = false;
         private System.Timers.Timer _scrobbleTimer = null;
 
-        private TrackStarted _onTrackStarted = null;
-        private TrackEnded _onTrackEnded = null;
+        private TrackMonitoringStarted _onTrackMonitoringStarted = null;
+        private TrackMonitoring _onTrackMonitoring = null;
+        private TrackMonitoringEnded _onTrackMonitoringEnded = null;
         private ScrobbleTrack _onScrobbleTrack = null;
 
         private WindowsMediaPlayer _mediaPlayer = null;
@@ -112,12 +113,13 @@ namespace DesktopScrobbler
             }
         }
 
-        public void InitializeSource(int minimumScrobbleSeconds, TrackStarted onTrackStartedCallback, TrackEnded onTrackEndedCallback, ScrobbleTrack onScrobbleTrack)
+        public void InitializeSource(int minimumScrobbleSeconds, TrackMonitoringStarted onTrackMonitoringStarted, TrackMonitoring onTrackMonitoring, TrackMonitoringEnded onTrackMonitoringEnded, ScrobbleTrack onScrobbleTrack)
         {
             _minimumScrobbleSeconds = minimumScrobbleSeconds;
 
-            _onTrackStarted = onTrackStartedCallback;
-            _onTrackEnded = onTrackEndedCallback;
+            _onTrackMonitoringStarted = onTrackMonitoringStarted;
+            _onTrackMonitoring = onTrackMonitoring;
+            _onTrackMonitoringEnded = onTrackMonitoringEnded;
             _onScrobbleTrack = onScrobbleTrack;
 
             _isIntialized = true;
@@ -179,7 +181,7 @@ namespace DesktopScrobbler
 
                                     if (_currentMediaItem != null)
                                     {
-                                        _onTrackEnded?.Invoke(_currentMediaItem);
+                                        _onTrackMonitoringEnded?.Invoke(_currentMediaItem);
 
                                         _onScrobbleTrack?.Invoke(_currentMediaItem);
                                     }
@@ -191,7 +193,7 @@ namespace DesktopScrobbler
                                         mediaDetail.StartedPlaying = DateTime.Now;
 
                                         _currentMediaItem = mediaDetail;
-                                        _onTrackStarted?.Invoke(mediaDetail, false);
+                                        _onTrackMonitoringStarted?.Invoke(mediaDetail, false);
                                     }
                                     else if (hasReachedTrackEnd)
                                     {
@@ -207,6 +209,8 @@ namespace DesktopScrobbler
                                         _mediaToScrobble.Add(_currentMediaItem);
                                     }
 
+                                    _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
+
                                     _currentMediaPlayTime++;
                                     _currentMediaWasScrobbled = true;
 
@@ -217,8 +221,9 @@ namespace DesktopScrobbler
                                 {
                                     if (_lastStatePaused)
                                     {
-                                        _onTrackStarted?.Invoke(_currentMediaItem, _lastStatePaused);
+                                        _onTrackMonitoringStarted?.Invoke(_currentMediaItem, _lastStatePaused);
                                     }
+                                    _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
                                     _currentMediaPlayTime++;
                                 }
                                 // The media player is not playing
@@ -227,7 +232,7 @@ namespace DesktopScrobbler
                                     // If we had been playing, invoke the Track Ended callback
                                     if (_currentMediaPlayTime > 0)
                                     {
-                                        _onTrackEnded?.Invoke(mediaDetail);
+                                        _onTrackMonitoringEnded?.Invoke(mediaDetail);
                                         _currentMediaItem = null;
                                     }
 
@@ -251,7 +256,7 @@ namespace DesktopScrobbler
                         }
                         else if (_currentMediaItem != null)
                         {
-                            _onTrackEnded?.Invoke(_currentMediaItem);
+                            _onTrackMonitoringEnded?.Invoke(_currentMediaItem);
                             _currentMediaItem = null;
                             _currentMediaWasScrobbled = false;
                         }

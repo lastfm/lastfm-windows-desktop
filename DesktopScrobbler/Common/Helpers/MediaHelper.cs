@@ -8,8 +8,10 @@ using LastFM.Common.Localization;
 
 namespace LastFM.Common.Helpers
 {
+    // Helper for performing 'Media Item' related tasks
     public static class MediaHelper
     {
+        // Method for generating a human readable, and localized version of track details
         public static string GetTrackDescription(MediaItem mediaItem, int descriptionMaxLength=0)
         {
             string trackDescription = string.Empty;

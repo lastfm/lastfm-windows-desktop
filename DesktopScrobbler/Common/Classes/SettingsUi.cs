@@ -6,6 +6,10 @@ using System.Windows.Forms;
 
 namespace Common.Classes
 {
+    /// <summary>
+    /// Previous incarnation of the settings / options available in the application
+    /// </summary>
+    [Obsolete]   
     public partial class SettingsUi : Form
     {
         public SettingsUi()

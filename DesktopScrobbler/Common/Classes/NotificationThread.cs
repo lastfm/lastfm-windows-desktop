@@ -20,38 +20,63 @@ using LastFM.Common.Localization;
 
 namespace LastFM.Common.Classes
 {
+    /// <summary>
+    /// The base class for the User Interface, which provides all the methods
+    /// to react to the Scrobble Factory
+    /// </summary>
     public partial class NotificationThread : Form
     {
+        // Whether the reason the form is closing, is because the user has exited
         private bool _userExiting = false;
+
+        // An instance of the settings Ui, no longer in use since
+        // the settings were merged into the Scrobbler Ui (ScrobblerUi.cs)
+        [Obsolete]
         private SettingsUi _settingsUI = null;
+
+        // Details of the currently signed in user
         private UserInfo _currentUser = null;
 
+        // A dedicated client for communicating with the Last.fm API
         private ApiClient.LastFMClient _apiClient = null;
+
+        // The current media item being tracked (irrespective of source)
         private MediaItem _currentMediaItem = null;
 
+        // The default Last.fm Tray Icon (colour version)
         private Icon _normalTrayIcon = null;
+
+        // The greyscale version of the Tray Icon (when scrobbling is disabled)
         private Icon _greyScaleIcon = null;
 
+        // A list of the notifications currently being displayed
         private List<PopupNotificationUi> _notifications = new List<PopupNotificationUi>();
 
+        // Method definition for when the Scrobbling state is changed
         public delegate void ScrobbleStateChanged(bool scrobblingEnabled);
 
+        // An instance of the Scrobbling state changing method
         public ScrobbleStateChanged OnScrobbleStateChanged { get; set; }
 
+        // The height of the status bar (obsolete since the Last.fm designers implemented Ui changes)
+        [Obsolete]
         protected internal int StatusBarHeight => Convert.ToInt32(statusStrip1?.Height);
 
+        // Exposure of the user exposed to anything that might need to know about it
         protected UserInfo CurrentUser
         {
             get { return _currentUser; }
             set { _currentUser = value; }
         }
 
+        // Exposure of the API Client to anything that might need to know about it
         protected ApiClient.LastFMClient APIClient
         {
             get { return _apiClient; }
             set { _apiClient = value; }
         }
 
+        // Default constructor for the Ui
         public NotificationThread()
         {
             InitializeComponent();
@@ -59,13 +84,13 @@ namespace LastFM.Common.Classes
             this.Load += NotificationThread_Load;
         }
 
+        // Clean out the downloads folder (in case an install was recently done, or ignored.
+        // Configure the appropriate Ui elements
         private async void NotificationThread_Load(object sender, System.EventArgs e)
         {
-
             VersionChecker.CleanUpDownloads();
 
             trayIcon.DoubleClick += TrayIcon_DoubleClick;
-            trayIcon.BalloonTipClosed += ClearBallonTip;
             trayIcon.MouseClick += (o, ev) =>
             {
                 if ((ev.Button & MouseButtons.Left) != 0)
@@ -124,6 +149,7 @@ namespace LastFM.Common.Classes
 
         }
 
+        // A common handler for various Ui elements when the mouse cursor enters them
         private async void Common_MouseEnter(object sender, EventArgs e)
         {
             statusStrip1.Cursor = ((ToolStripStatusLabel)sender).Enabled ? Cursors.Hand : Cursors.No;
@@ -151,6 +177,7 @@ namespace LastFM.Common.Classes
             }
         }
 
+        // A common handler for various Ui elements when the mouse cursor leaves them
         private async void Common_MouseLeave(object sender, EventArgs e)
         {
             statusStrip1.Cursor = Cursors.Default;
@@ -178,6 +205,7 @@ namespace LastFM.Common.Classes
             }
         }
 
+        // Method raised when the Scrobble State changes
         protected void ScrobbleStateChanging(bool scrobblingEnabled)
         {
             ScrobbleFactory.ScrobblingEnabled = scrobblingEnabled;
@@ -193,7 +221,7 @@ namespace LastFM.Common.Classes
 
             if (!scrobblingEnabled)
             {
-                TrackChanged(null, false);
+                TrackMonitoringStarted(null, false);
             }
 
             ShowScrobbleState();
@@ -201,12 +229,14 @@ namespace LastFM.Common.Classes
             this.OnScrobbleStateChanged?.Invoke(scrobblingEnabled);
         }
 
+        // Method raised when the Ui is notified of 'Love Track' changes
         public void RefreshLoveTrackState()
         {
             LoveStatus currentState = (LoveStatus)stripLoveTrack.Tag;
             ResetLoveTrackState(currentState);
         }
 
+        // Method to set the 'Love track' Ui state to a specific state
         internal void ResetLoveTrackState(LoveStatus newState)
         {
             this.Invoke(new MethodInvoker(async () => { 
@@ -232,11 +262,14 @@ namespace LastFM.Common.Classes
             }));
         }
 
+        // Handler for the status strip's 'Love track' icon (obsolete)
+        [Obsolete]
         private async void stripLoveTrack_Click(object sender, EventArgs e)
         {
             LoveorUnloveCurrentMedia();
         }
 
+        // Method for sending the Love or Unlove status to the Last.fm API
         private async void LoveorUnloveCurrentMedia()
         {
             LoveStatus statusToSend = (LoveStatus)stripLoveTrack.Tag;
@@ -257,13 +290,8 @@ namespace LastFM.Common.Classes
             }
         }
 
-        private void ClearBallonTip(object sender, EventArgs e)
-        {
-            trayIcon.BalloonTipText = null;
-            trayIcon.BalloonTipTitle = null;
-            trayIcon.BalloonTipIcon = ToolTipIcon.None;
-        }
-
+        // Method for handling when the user clicks on the Tray Icon to open the context menu
+        // used to set the state of the relevant menu items
         private void TrayMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
@@ -292,16 +320,19 @@ namespace LastFM.Common.Classes
             mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);            
         }
 
+        // Displays the tray icon
         public void ShowTrayIcon()
         {
             trayIcon.Visible = true;
         }
 
+        // Handler for when the user double clicks on the tray icon
         private void TrayIcon_DoubleClick(object sender, EventArgs e)
         {
             ShowForm();
         }
 
+        // Handler form when the Window state changes, to hide it from the Task bar and keep things tidy
         private void NotificationThread_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -310,17 +341,23 @@ namespace LastFM.Common.Classes
             }
         }
 
+        // Handler for when the form is being closed
         private async void NotificationThread_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // If the (obsolete) setting Close to tray is turned off, or something other than the user
+            // requested that this Ui should close, then allow it to close and terminate the application
             bool canCloseApp = (e.CloseReason == CloseReason.UserClosing && !Core.Settings.CloseToTray) || _userExiting || e.CloseReason != CloseReason.UserClosing;
 
             if (canCloseApp)
             {
+                // Remove the icon from the tray
                 trayIcon.Visible = false;
                 trayIcon.Dispose();
 
+                // Unload any notifications that might be displayed
                 NotificationHelper.ClearNotifications();
 
+                // Stop any Scrobble related functions
                 ScrobbleFactory.ScrobblingEnabled = false;
 
                 // Give the scrobblers a chance to stop running cleanly
@@ -328,21 +365,27 @@ namespace LastFM.Common.Classes
 
                 ScrobbleFactory.Dispose();
 
+                // Close any instance of the (obsolete) settings form
                 _settingsUI?.Close();
             }
             else
             {
+                // Close / Minimize to tray is turned on (default)
+                // so cancel the disposal of the Ui, and hide it from the taskbar
                 e.Cancel = true;
                 MinimizeToTray();
             }
         }
 
+        // Hides the form from the taskbar, and removes it from view
         private void MinimizeToTray()
         {
             this.ShowInTaskbar = false;
             this.Hide();
         }
 
+        // Displays the Ui, making sure it temporarily sits on top
+        // resetting the state back to normal if the user last minimized it
         private void ShowForm()
         {
             this.TopMost = true;
@@ -353,6 +396,7 @@ namespace LastFM.Common.Classes
             this.TopMost = false;
         }
 
+        // Update the Ui to show the current Scrobbling state
         internal void ShowScrobbleState()
         {
             if (ScrobbleFactory.ScrobblingEnabled)
@@ -365,6 +409,7 @@ namespace LastFM.Common.Classes
             }
         }
 
+        // Update the (obsolete) status bar, and menu with the current Scrobble state
         public void SetStatus(string newStatus, bool setTrayText=true)
         {
             if (!this.IsDisposed && !this.Disposing)
@@ -384,41 +429,27 @@ namespace LastFM.Common.Classes
             }
         }
 
-
-
-        protected virtual void ShowSettings()
-        {
-            if (this.Height == 164)
-            {
-                this.Height = 316;
-            }
-            else
-            {
-                this.Height = 164;
-            }
-        }
-
+        // Removes the tray icon from the task bar
         public void HideTrayIcon()
         {
             trayIcon.Visible = false;
         }
 
-        private void SettingsUi_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _settingsUI = null;
-        }
-
+        // Handler for when the user clicks to view their profile, either from the tray menu,
+        // or from the obsolete LinkLabel on the Scrobbler Ui
         protected void ViewUserProfile()
         {
             ProcessHelper.LaunchUrl(_currentUser.Url);
         }
 
+        // Method for displaying a notification on the screen
         internal void ShowNotification(string title, string text)
         {
             NotificationHelper.ShowNotification(this, title, text);
         }
 
-        public virtual void TrackChanged(MediaItem mediaItem, bool wasResumed)
+        // Base method for handling when a Scrobbler source (plugin) starts monitoring (new) media
+        public virtual void TrackMonitoringStarted(MediaItem mediaItem, bool wasResumed)
         {
             _currentMediaItem = mediaItem;
 
@@ -454,6 +485,26 @@ namespace LastFM.Common.Classes
 
         }
 
+        // Base method for handling the continued monitoring a media item
+        public virtual void TrackMonitoringProgress(MediaItem mediaItem, int playerPosition)
+        {
+            if (mediaItem != null)
+            {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+                }));
+            }
+            else
+            {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    mnuNowPlaying.Text = LocalizationStrings.NotificationThread_NowPlayingDefault;
+                }));
+            }
+        }
+
+        // Method for handling whether the Version Checker has found an update, enabling Ui elements accordingly
         public void HasNewVersion(VersionChecker.VersionState versionDetail)
         {
             this.Invoke(new MethodInvoker(() => {
@@ -474,6 +525,7 @@ namespace LastFM.Common.Classes
             }));
         }
 
+        // Clears all Ui handlers related to the update process (so they can be re-instated if a new version is present)
         private void ResetVersionMenuClickHandlers()
         {
             mnuNewVersion.Click -= DownloadNewVersion;
@@ -484,9 +536,9 @@ namespace LastFM.Common.Classes
 
             stripUpdateProgress.MouseEnter -= Common_MouseEnter;
             stripUpdateProgress.MouseLeave -= Common_MouseLeave;
-
         }
 
+        // Method invoked when the user requests to download the latest update
         public async void DownloadNewVersion(object sender, EventArgs e)
         {
             mnuNewVersion.Enabled = false;
@@ -496,6 +548,7 @@ namespace LastFM.Common.Classes
             await VersionChecker.DownloadUpdate(stripNewVersion.Tag as VersionChecker.VersionState, Core.UserDownloadsPath, DownloadProgressUpdated, DownloadComplete).ConfigureAwait(false);
         }
 
+        // Method invoked by the update process when a download has completed.
         private void DownloadComplete(object sender, AsyncCompletedEventArgs e)
         {
             if(e.Error != null)
@@ -526,6 +579,7 @@ namespace LastFM.Common.Classes
             }
         }
 
+        // Method invoked to install a downloaded update
         private void InstallUpdate(object sender, EventArgs e)
         {
             VersionChecker.VersionState updateInfo = stripNewVersion.Tag as VersionChecker.VersionState;
@@ -597,12 +651,14 @@ namespace LastFM.Common.Classes
             }        
         }
 
+        // Method invoked to show the current progress of an update being downloaded
         private void DownloadProgressUpdated(object sender, DownloadProgressChangedEventArgs e)
         {
             mnuNewVersion.Text = string.Format(LocalizationStrings.NotificationThread_DownloadProgressUpdated, e.ProgressPercentage);
             stripUpdateProgress.Text = string.Format(LocalizationStrings.NotificationThread_DownloadProgressUpdated, e.ProgressPercentage);
         }
 
+        // Central method invoked to deal with closing the application when it has been requested to close
         public async Task ExitApplication()
         {
             _userExiting = true;

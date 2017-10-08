@@ -11,22 +11,24 @@ using Transitions;
 
 namespace LastFM.Common.Classes
 {
+    /// <summary>
+    /// The application's Popup Notifications
+    /// </summary>
     public partial class PopupNotificationUi : Form
     {
+        // An instance of the (single) transition used to display the notificatin
         private Transition _showingTransition = null;
+
+        //An instance of the (single) transitions used to hide the notification
         private Transition _hidingTransition = null;
 
+        // Default constructor for the Popup Notification (useful for design purposes!)
         public PopupNotificationUi()
         {
             InitializeComponent();
-            this.FormClosing += OnFormClosing;
         }
 
-        private void OnFormClosing(object sender, FormClosingEventArgs formClosingEventArgs)
-        {
-            
-        }
-
+        // Overriding constructor for the Popup Notification, that sets the title and body text
         public PopupNotificationUi(string title, string text)
         {
             InitializeComponent();

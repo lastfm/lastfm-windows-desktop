@@ -42,7 +42,7 @@ namespace DesktopScrobbler
             Localize();
         }
 
-        public override void TrackChanged(MediaItem mediaItem, bool wasResumed)
+        public override void TrackMonitoringStarted(MediaItem mediaItem, bool wasResumed)
         {
             if (mediaItem != null)
             {
@@ -59,7 +59,7 @@ namespace DesktopScrobbler
                 }));
             }
 
-            base.TrackChanged(mediaItem, wasResumed);
+            base.TrackMonitoringStarted(mediaItem, wasResumed);
         }
 
         private async void ScrobblerUi_Load(object sender, System.EventArgs e)
@@ -76,6 +76,8 @@ namespace DesktopScrobbler
 
             try
             {
+                // Load the form which houses the Windows Media Player OCX interop control so we can
+                // start communicating with Windows Media Player
                 _playerForm.Show();
             }
             catch (Exception exception)

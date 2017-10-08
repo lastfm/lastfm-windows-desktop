@@ -52,11 +52,9 @@
     <Compile Include="HttpClient.cs" />
     <Compile Include="MD5.cs" />
     <Compile Include="Models\AcceptedStatus.cs" />
-    <Compile Include="Models\ApiError.cs" />
     <Compile Include="Models\AuthenticationToken.cs" />
     <Compile Include="LastFMClient.cs" />
     <Compile Include="Models\CorrectedStatus.cs" />
-    <Compile Include="Models\DateItem.cs" />
     <Compile Include="Models\IgnoredMessage.cs" />
     <Compile Include="Models\ImageMedia.cs" />
     <Compile Include="Models\MediaItem.cs" />

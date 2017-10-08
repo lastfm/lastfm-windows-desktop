@@ -14,11 +14,8 @@ namespace WindowsMediaPlayerScrobblePlugin
 	[System.Windows.Forms.AxHost.ClsidAttribute("{6bf52a52-394a-11d3-b153-00c04f79faa6}")]
 	[ComVisible(true)]
 	[ClassInterface(ClassInterfaceType.AutoDispatch)]
-	public class RemotedWindowsMediaPlayer : System.Windows.Forms.AxHost,
-		IOleServiceProvider,
-		IOleClientSite
+	public class RemotedWindowsMediaPlayer : System.Windows.Forms.AxHost, IOleServiceProvider, IOleClientSite
 	{
-
         private IOleObject _oleObject = null;
         private WMPLib.IWMPPlayer4 _controlOcx;
 

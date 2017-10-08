@@ -85,7 +85,9 @@ namespace LastFM.Common
             }
             catch (Exception)
             {
-                throw;
+                // Silently fail the creation of the settings, most likely due to permissions issue
+                // or a missing directory.  As the application always attempts to create the paths
+                // this isn't a concern as failure results in a default valid configuration anyway
             }
         }
     }

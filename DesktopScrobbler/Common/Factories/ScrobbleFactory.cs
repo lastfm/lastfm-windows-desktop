@@ -140,7 +140,7 @@ namespace LastFM.Common.Factories
 
             try
             {
-                _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StartedListening).ConfigureAwait(false);
+                _lastFMClient.SendMonitoringStatusChanged(mediaItem, LastFMClient.MonitoringStatus.StartedMonitoring).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -174,7 +174,7 @@ namespace LastFM.Common.Factories
         private static void ScrobbleSource_OnTrackMonitoringEnded(MediaItem mediaItem)
         {
             // Notify ell the API monitoring has stopped
-            _lastFMClient.SendPlayStatusChanged(mediaItem, LastFMClient.PlayStatus.StoppedListening);
+            _lastFMClient.SendMonitoringStatusChanged(mediaItem, LastFMClient.MonitoringStatus.StoppedMonitoring);
 
             // Notify the user interface monitoring has stopped
             _uiThread.TrackMonitoringStarted(null, false);

@@ -72,30 +72,40 @@ If you need to load the designer, first view the code (right click on the design
 
 Make the changes you need to, and then switch the constructor back to inherit from the NotificationThread form.
 
-╔════════════════════════════════════╗
-║ Notes below here - need tidying up ║
-╚════════════════════════════════════╝
 
 Installer
 =========
 
-The installer itself, very simple.  It's all checked in.  All you need to do, is change the version number, select the installer project, hit F4 for the properties page and modify the 'Version' property to reflect the current version.  Say yes to the question that pops up (which maintains upgrade paths) and then right-click 'Build'.
-Right click on the installer project, 'Open Folder in Explorer' and browse to the bin\debug folder, and there's your files.
+When building the installer, ensure that you modify the version number to matching the current build.  This ensures that the product code gets upgraded (Answer 'Yes') to the question that pops up,
+and ensures that a history of upgrade paths is maintained meaning the user does not need to 'un-install' the previous version.
+
+To set the version number, highlight the installer project and hit 'F4' to get to the properties.  (Right-clicking the project file is NOT the same thing!)
+
+Once built, like with any project biold, right-click on the installer project, 'Open Folder in Explorer' and browse to the bin\debug folder, and there's your installer files.
 
 
 Update Process
 ==============
 
-The update scrapes that page, and pulls the version info. from that top link
-the idea (when I designed the process for TwitterInAnApp) is that there's just 1 place to 'announce' where the update download is
-At the moment the 'text' part of the link is important, as it's used to do a comparison on what's running now
-(I'd recommend we change that in favour of an attribute on the link)
-Right now, if there's a newer version on that page, you'll get a popup notification, an icon on the 'Settings' Ui, AND a new menu option in the context menu
-Click on the icon or menu option downloads the file to %appdata%\LastFM\Desktop Scrobbler\v3\Updates
-(which is deleted on every startup of the application, to ensure no files are left hanging around)
-A progress indicator is made available on the Settings.Ui (next to the new icon), and the new menu option becomes a progress indicator too
-Once downloaded click on the Icon or progress text (which changes) or the menu option (which also changes) to install
-That process then extracts the content of the downloaded zip file into the updates folder, kicks off the setup.exe and closes the application
+The update process is a unique process that enables you to simply set version details in a public facing website that can both be used for the automatic update of software,
+and for notifying your users of a new version.
+
+The update process scrapes the specified page, and pulls the version info. from the first <h3> tag (as it stands at the time of writing).
+
+It uses the 'text' part embeded in the <a> tag to extract the new version detail, and compare that with the version of the application
+that is running now.
+
+Right now, if there's a newer version on the update page, there is a popup notification (every time the application starts), and a menu option 
+will appear in the context menu.
+
+Clicking on the menu option downloads the file to %appdata%\LastFM\Desktop Scrobbler\v3\Updates, which is deleted on every startup of the application, to ensure no files are left hanging around.
+
+During download the new menu option becomes a progress indicator.
+
+Once downloaded click on the menu option which will have changed to an install notification.
+
+The installation process then extracts the content of the downloaded zip file into the updates folder, kicks off the setup.exe and closes the currently running application
+
 As mentioned, once the application is started again (automatically after install) the updates folder is trashed to keep things 'clean'
 
 Code Signing

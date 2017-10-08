@@ -91,7 +91,6 @@ namespace DesktopScrobbler
             this.MaximizeBox = false;
             this.Name = "AuthenticationUi";
             this.Text = LocalizationStrings.AuthenticationUi_WindowTitle;
-            this.Load += new System.EventHandler(this.Authentication_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.ResumeLayout(false);
 

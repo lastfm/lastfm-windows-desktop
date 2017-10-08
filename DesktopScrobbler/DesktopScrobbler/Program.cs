@@ -15,6 +15,7 @@ namespace DesktopScrobbler
         [STAThread]
         static void Main()
         {
+            // Check that there isn't already an instance of this application running
             if (Process.GetProcesses().Count(p => p.ProcessName == Process.GetCurrentProcess().ProcessName) == 1)
             {
                 Application.EnableVisualStyles();

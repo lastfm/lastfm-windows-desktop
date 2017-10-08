@@ -7,8 +7,10 @@ using Newtonsoft.Json;
 
 namespace LastFM.ApiClient.Models
 {
+    // A Last.fm API model for a track
     public class Track
     {
+        // The track details
         [JsonProperty("track")]
         public TrackDetail Info { get; set; }
 

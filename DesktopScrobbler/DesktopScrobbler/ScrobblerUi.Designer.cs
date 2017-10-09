@@ -200,15 +200,9 @@ namespace DesktopScrobbler
             this.checkedPluginList.FormattingEnabled = true;
             this.checkedPluginList.Location = new System.Drawing.Point(12, 133);
             this.checkedPluginList.Name = "checkedPluginList";
+            this.checkedPluginList.Size = new System.Drawing.Size(250, 49);
             this.checkedPluginList.TabIndex = 15;
-
-            //
-            // Font and Size are commented out, and UseCompatibleTextRendering set, to stop descenders being cut-off in the list.
-            //
-            //this.checkedPluginList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            //this.checkedPluginList.Size = new System.Drawing.Size(250, 49);
             this.checkedPluginList.UseCompatibleTextRendering = true;
-
             // 
             // linkTerms
             // 

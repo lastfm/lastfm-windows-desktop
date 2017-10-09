@@ -180,6 +180,9 @@ namespace DesktopScrobbler
                 //checkedPluginList.SelectedIndexChanged += PluginList_SelectedIndexChanged;
             };
 
+            // Fix descenders being cut off in the list
+            checkedPluginList.ItemHeight += 4;
+
             // Once upon a time there was a logo on the form that could be used to enable / disable the scrobble state
             // but it was deemed redundant.  If it ever makes a return, re-establish this code
             //_normalStateLogo = pbLogo.Image;

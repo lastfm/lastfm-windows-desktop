@@ -150,7 +150,7 @@ namespace DesktopScrobbler
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(9, 87);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(200, 17);
+            this.label2.Size = new System.Drawing.Size(200, 15);
             this.label2.TabIndex = 16;
             this.label2.Text = "Scrobbler Plugins";
             // 
@@ -190,12 +190,14 @@ namespace DesktopScrobbler
             // 
             this.lblPlugins.Location = new System.Drawing.Point(9, 110);
             this.lblPlugins.Name = "lblPlugins";
-            this.lblPlugins.Size = new System.Drawing.Size(200, 13);
+            this.lblPlugins.Size = new System.Drawing.Size(253, 20);
             this.lblPlugins.TabIndex = 11;
             this.lblPlugins.Text = "Instructions:";
+            this.lblPlugins.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // checkedPluginList
             // 
+            this.checkedPluginList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkedPluginList.FormattingEnabled = true;
             this.checkedPluginList.Location = new System.Drawing.Point(12, 133);
             this.checkedPluginList.Name = "checkedPluginList";

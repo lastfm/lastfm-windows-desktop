@@ -14,6 +14,7 @@ using static LastFM.ApiClient.LastFMClient;
 using System.Net;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Threading.Tasks;
 using LastFM.Common.Localization;
@@ -208,18 +209,17 @@ namespace LastFM.Common.Classes
         // Method raised when the Scrobble State changes
         protected void ScrobbleStateChanging(bool scrobblingEnabled)
         {
-            ScrobbleFactory.ScrobblingEnabled = scrobblingEnabled;
+            bool actualStateAllowed = scrobblingEnabled;
 
-            if (!scrobblingEnabled)
+            // If scrobbling is being enabled, validate that it can be enabled
+            if (scrobblingEnabled && Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) == 0)
             {
-                trayIcon.Icon = _greyScaleIcon;
-            }
-            else
-            {
-                trayIcon.Icon = _normalTrayIcon;
+                actualStateAllowed = false;
             }
 
-            if (!scrobblingEnabled)
+            ScrobbleFactory.ScrobblingEnabled = actualStateAllowed;
+
+            if (!actualStateAllowed)
             {
                 TrackMonitoringStarted(null, false);
             }
@@ -397,15 +397,17 @@ namespace LastFM.Common.Classes
         }
 
         // Update the Ui to show the current Scrobbling state
-        internal void ShowScrobbleState()
+        public void ShowScrobbleState()
         {
             if (ScrobbleFactory.ScrobblingEnabled)
             {
                 SetStatus(LocalizationStrings.NotificationThread_Status_WaitingToScrobble);
+                trayIcon.Icon = _normalTrayIcon;
             }
             else
             {
                 SetStatus(LocalizationStrings.NotificationThread_Status_ScrobblingPaused);
+                trayIcon.Icon = _greyScaleIcon;
             }
         }
 

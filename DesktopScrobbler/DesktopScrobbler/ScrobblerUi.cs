@@ -14,7 +14,6 @@ using PluginSupport;
 using LastFM.Common.Classes;
 using LastFM.Common.Helpers;
 using static LastFM.Common.Factories.ScrobbleFactory;
-using System.IO;
 using LastFM.Common.Localization;
 
 
@@ -464,6 +463,8 @@ namespace DesktopScrobbler
         // Method used to update the now obsolete status bar with the current state of the scrobbler
         private void ShowIdleStatus()
         {
+            base.ShowScrobbleState();
+
             // If there are any plugins enabled, and scrobbling is enabled... set the status to 'Waiting to scrobble'
             if (Core.Settings.ScrobblerStatus.Count(item => item.IsEnabled) > 0 && ScrobbleFactory.ScrobblingEnabled)
             {
@@ -639,7 +640,10 @@ namespace DesktopScrobbler
             }
 
             // Re-enable scrobbling based on the mew plugin status'
-            ScrobbleFactory.ScrobblingEnabled = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
+            bool allowScrobbling = Core.Settings.ScrobblerStatus.Count(plugin => plugin.IsEnabled) > 0;
+
+            base.ScrobbleStateChanging(allowScrobbling);
+
 
             // Automatically update the settings file
             Core.SaveSettings();

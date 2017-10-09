@@ -65,10 +65,9 @@ namespace DesktopScrobbler
             this.lblSignInName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSignInName.Location = new System.Drawing.Point(9, 12);
             this.lblSignInName.Name = "lblSignInName";
-            this.lblSignInName.Size = new System.Drawing.Size(311, 42);
+            this.lblSignInName.Size = new System.Drawing.Size(216, 42);
             this.lblSignInName.TabIndex = 3;
-            this.lblSignInName.Text = "Connected as QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ";
-            this.lblSignInName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblSignInName.Text = "Connected as WWWWWWWWWWWWWWW";
             // 
             // linkProfile
             // 
@@ -89,16 +88,17 @@ namespace DesktopScrobbler
             this.linkLogOut.TabIndex = 6;
             this.linkLogOut.TabStop = true;
             this.linkLogOut.Text = "Log Out";
-            this.linkLogOut.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkLogOut.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.linkLogOut.Visible = false;
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.Controls.Add(this.linkLogOut);
             this.flowLayoutPanel1.Controls.Add(this.linkLogIn);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(322, 8);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(200, 8);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(83, 66);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(65, 66);
             this.flowLayoutPanel1.TabIndex = 7;
             // 
             // linkLogIn
@@ -109,7 +109,7 @@ namespace DesktopScrobbler
             this.linkLogIn.TabIndex = 7;
             this.linkLogIn.TabStop = true;
             this.linkLogIn.Text = "Log In";
-            this.linkLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblTrackName
             // 
@@ -207,7 +207,7 @@ namespace DesktopScrobbler
             this.linkTerms.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkTerms.Location = new System.Drawing.Point(9, 184);
             this.linkTerms.Name = "linkTerms";
-            this.linkTerms.Size = new System.Drawing.Size(81, 23);
+            this.linkTerms.Size = new System.Drawing.Size(167, 23);
             this.linkTerms.TabIndex = 17;
             this.linkTerms.TabStop = true;
             this.linkTerms.Text = "Terms";
@@ -225,19 +225,19 @@ namespace DesktopScrobbler
             // 
             // lblVersion
             // 
-            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblVersion.Location = new System.Drawing.Point(187, 189);
+            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVersion.Location = new System.Drawing.Point(182, 184);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(200, 13);
+            this.lblVersion.Size = new System.Drawing.Size(83, 23);
             this.lblVersion.TabIndex = 19;
             this.lblVersion.Text = "version";
-            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // ScrobblerUi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(391, 208);
+            this.ClientSize = new System.Drawing.Size(269, 208);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.chkShowNotifications);
             this.Controls.Add(this.linkTerms);

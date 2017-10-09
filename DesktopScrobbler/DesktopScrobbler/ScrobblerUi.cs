@@ -132,6 +132,16 @@ namespace DesktopScrobbler
             // the state on this form
             base.OnScrobbleStateChanged += UpdateScrobbleState;
 
+            // Remove the annoying 'have to click twice, once to select the control, again to modify the checkbox'
+            // issue that the default behaviour of the checked listbox has
+            checkedPluginList.CheckOnClick = true;
+
+            // Make sure there's never a 'selected' row, even though it will briefly appear on the check
+            checkedPluginList.SelectedIndexChanged += (o, ev) =>
+            {
+                checkedPluginList.ClearSelected();
+            };
+
             // Once upon a time there was a logo on the form that could be used to enable / disable the scrobble state
             // but it was deemed redundant.  If it ever makes a return, re-establish this code
             //_normalStateLogo = pbLogo.Image;

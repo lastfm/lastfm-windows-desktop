@@ -45,7 +45,7 @@ namespace DesktopScrobbler
             this.chkStartMinimized = new System.Windows.Forms.CheckBox();
             this.lblGeneralSettingsTitle = new System.Windows.Forms.Label();
             this.lblPlugins = new System.Windows.Forms.Label();
-            this.checkedPluginList = new System.Windows.Forms.CheckedListBox();
+            this.checkedPluginList = new DesktopScrobbler.Controls.LastfmCheckedListBox();
             this.linkTerms = new System.Windows.Forms.LinkLabel();
             this.chkShowNotifications = new System.Windows.Forms.CheckBox();
             this.lblVersion = new System.Windows.Forms.Label();
@@ -85,7 +85,7 @@ namespace DesktopScrobbler
             this.linkLogOut.Location = new System.Drawing.Point(3, 0);
             this.linkLogOut.Name = "linkLogOut";
             this.linkLogOut.Size = new System.Drawing.Size(62, 23);
-            this.linkLogOut.TabIndex = 6;
+            this.linkLogOut.TabIndex = 0;
             this.linkLogOut.TabStop = true;
             this.linkLogOut.Text = "Log Out";
             this.linkLogOut.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -106,7 +106,7 @@ namespace DesktopScrobbler
             this.linkLogIn.Location = new System.Drawing.Point(3, 23);
             this.linkLogIn.Name = "linkLogIn";
             this.linkLogIn.Size = new System.Drawing.Size(62, 23);
-            this.linkLogIn.TabIndex = 7;
+            this.linkLogIn.TabIndex = 1;
             this.linkLogIn.TabStop = true;
             this.linkLogIn.Text = "Log In";
             this.linkLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -202,7 +202,7 @@ namespace DesktopScrobbler
             this.checkedPluginList.Location = new System.Drawing.Point(12, 133);
             this.checkedPluginList.Name = "checkedPluginList";
             this.checkedPluginList.Size = new System.Drawing.Size(250, 49);
-            this.checkedPluginList.TabIndex = 15;
+            this.checkedPluginList.TabIndex = 3;
             // 
             // linkTerms
             // 
@@ -210,7 +210,7 @@ namespace DesktopScrobbler
             this.linkTerms.Location = new System.Drawing.Point(9, 184);
             this.linkTerms.Name = "linkTerms";
             this.linkTerms.Size = new System.Drawing.Size(167, 23);
-            this.linkTerms.TabIndex = 17;
+            this.linkTerms.TabIndex = 4;
             this.linkTerms.TabStop = true;
             this.linkTerms.Text = "Terms";
             this.linkTerms.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -221,7 +221,7 @@ namespace DesktopScrobbler
             this.chkShowNotifications.Location = new System.Drawing.Point(12, 57);
             this.chkShowNotifications.Name = "chkShowNotifications";
             this.chkShowNotifications.Size = new System.Drawing.Size(114, 17);
-            this.chkShowNotifications.TabIndex = 18;
+            this.chkShowNotifications.TabIndex = 2;
             this.chkShowNotifications.Text = "Show Notifications";
             this.chkShowNotifications.UseVisualStyleBackColor = true;
             // 
@@ -281,10 +281,10 @@ namespace DesktopScrobbler
         private System.Windows.Forms.CheckBox chkStartMinimized;
         private System.Windows.Forms.Label lblGeneralSettingsTitle;
         private System.Windows.Forms.Label lblPlugins;
-        private System.Windows.Forms.CheckedListBox checkedPluginList;
         private System.Windows.Forms.LinkLabel linkTerms;
         private System.Windows.Forms.CheckBox chkShowNotifications;
         private System.Windows.Forms.Label lblVersion;
+        private Controls.LastfmCheckedListBox checkedPluginList;
     }
 }
 

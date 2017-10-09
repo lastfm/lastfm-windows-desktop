@@ -65,6 +65,9 @@
       <DependentUpon>AuthenticationUi.cs</DependentUpon>
     </Compile>
     <Compile Include="COM Interfaces.cs" />
+    <Compile Include="Controls\LastfmCheckedListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Embedded Plugins\iTunesScrobbleSource.cs" />
     <Compile Include="Installer Class\ScrobblerInstaller.cs">
       <SubType>Component</SubType>

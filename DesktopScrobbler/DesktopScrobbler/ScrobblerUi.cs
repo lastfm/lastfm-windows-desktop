@@ -23,6 +23,9 @@ namespace DesktopScrobbler
     // additional features.  Most of those features have now been 'removed' from view, but left here in case
     // there's a backtrack at any point soon
 
+    // NOTE: YOU MUST HAVE BUILT THE PROJECT AT LEAST ONCE TO BE ABLE TO LOAD THIS FORM IN DESIGNER VIEW
+    // AFTER MAKING THE CHANGES RECOMMENDED BELOW
+
     // Comment in this line of code when you need to view / make changes using the UI designer
     // Comment it out when you are done
     // public partial class ScrobblerUi : Form
@@ -119,14 +122,37 @@ namespace DesktopScrobbler
                 // Display the Last.fm terms of use web page using the user's default browser
                 ProcessHelper.LaunchUrl(Core.TermsUrl);
             };
+            linkTerms.PreviewKeyDown += (o, ev) =>
+            {
+                if (ev.KeyCode == Keys.Space || ev.KeyCode == Keys.Enter || ev.KeyCode == Keys.Return)
+                {
+                    // Display the Last.fm terms of use web page using the user's default browser
+                    ProcessHelper.LaunchUrl(Core.TermsUrl);
+                }
+            };
+
 
             // Assign a delegate to the user 'Log Out' link
             linkLogOut.Click += LogoutUser;
+            linkLogOut.PreviewKeyDown += (o, ev) =>
+            {
+                if (ev.KeyCode == Keys.Space || ev.KeyCode == Keys.Enter || ev.KeyCode == Keys.Return)
+                {
+                    LogoutUser(o, null);
+                }
+            };
 
             // Assign a delegate to the user 'Log In' link
             // (which might be redundant in both the old and new UI)
             linkLogIn.Click += LogInUser;
-            
+            linkLogIn.PreviewKeyDown += (o, ev) =>
+            {
+                if (ev.KeyCode == Keys.Space || ev.KeyCode == Keys.Enter || ev.KeyCode == Keys.Return)
+                {
+                    LogInUser(o, null);
+                }
+            };
+
             // Assign a delegate to shadow the base forms 'OnScrobbleStateChanged' event so that we can display
             // the state on this form
             base.OnScrobbleStateChanged += UpdateScrobbleState;
@@ -136,9 +162,22 @@ namespace DesktopScrobbler
             checkedPluginList.CheckOnClick = true;
 
             // Make sure there's never a 'selected' row, even though it will briefly appear on the check
-            checkedPluginList.SelectedIndexChanged += (o, ev) =>
+            //checkedPluginList.SelectedIndexChanged += PluginList_SelectedIndexChanged;
+
+            checkedPluginList.PreviewKeyDown += (o, ev) =>
             {
-                checkedPluginList.ClearSelected();
+                //checkedPluginList.SelectedIndexChanged -= PluginList_SelectedIndexChanged;
+
+                if (ev.KeyCode == Keys.Down && checkedPluginList.SelectedIndex < checkedPluginList.Items.Count - 1)
+                {
+                    checkedPluginList.SelectedIndex++;
+                }
+                else if (ev.KeyCode == Keys.Up && checkedPluginList.SelectedIndex > 0)
+                {
+                    checkedPluginList.SelectedIndex--;
+                }
+
+                //checkedPluginList.SelectedIndexChanged += PluginList_SelectedIndexChanged;
             };
 
             // Once upon a time there was a logo on the form that could be used to enable / disable the scrobble state
@@ -168,6 +207,13 @@ namespace DesktopScrobbler
 
             // Call the startup routine to check authorization and start the scrobbling process
             Startup();
+        }
+
+        // Handler for when plugin list items are selected
+        private void PluginList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Never show the highlighted row
+            checkedPluginList.ClearSelected();
         }
 
         // Obsolete method that used to be called to allow the last.fm Logo to change state based on the 

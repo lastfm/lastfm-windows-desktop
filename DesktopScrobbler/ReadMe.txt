@@ -118,4 +118,4 @@ Add the following post-build event to every project in the solution (except the 
   "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(TargetPath)"
 
 Add the following post-build event to the installer in addition to the post-build event already there:
-  "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(BuiltOutputPath)"
+  "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d "Last.fm Desktop Scrobbler" "$(BuiltOutputPath)"

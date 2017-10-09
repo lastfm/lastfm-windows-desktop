@@ -65,7 +65,8 @@ namespace LastFM.Common.Helpers
                     var widthToSet = notificationWindow.Width;
 
                     // By default, make the notification window 'zero' size as we're using a 'expanding window' transition
-                    notificationWindow.Width = 0;
+                    //notificationWindow.Width = 0;
+                    notificationWindow.Opacity = 0.0;
 
                     // Move it to the bottom right
                     SetWindowPos(notificationWindow.Handle, HWND_TOPMOST, newWindowLeftpoint, newWindowTopPoint, notificationWindow.Width, notificationWindow.Height, SWP_NOACTIVATE);
@@ -77,7 +78,7 @@ namespace LastFM.Common.Helpers
                     _notifications.Add(notificationWindow);
 
                     // Start a new 'display the window' transition
-                    Transition showingAnimation = new Transition(new TransitionType_Deceleration(1000));
+                    Transition showingAnimation = new Transition(new TransitionType_Deceleration(500));
                     showingAnimation.Tag = notificationWindow;
 
                     // Define what to do when the transition has completed
@@ -101,7 +102,7 @@ namespace LastFM.Common.Helpers
                     //showingAnimation.add(notificationWindow, "Left", newWindowLeftpoint - (notificationWindow.Width + 11));
 
                     // Where the notification window is displayed, change the window size incremently until it's reached the maximum size
-                    showingAnimation.add(notificationWindow, "Width", widthToSet);
+                    showingAnimation.add(notificationWindow, "Opacity", 1.0);
 
                     // Run the 'Display' transition
                     showingAnimation.run();
@@ -116,10 +117,10 @@ namespace LastFM.Common.Helpers
             if (!Core.ApplicationIsShuttingDown)
             {
                 // Wait for 3 seconds so the user has time to see the notification
-                await Task.Delay(3000).ConfigureAwait(false);
+                await Task.Delay(4000).ConfigureAwait(false);
 
                 // Create a new transition for hiding the notification
-                Transition hidingTransition = new Transition(new TransitionType_Acceleration(1000));
+                Transition hidingTransition = new Transition(new TransitionType_Acceleration(500));
 
                 // Keep a track of the form instance associated with this notification
                 hidingTransition.Tag = notificationWindow;
@@ -128,7 +129,7 @@ namespace LastFM.Common.Helpers
                 //hidingTransition.add(notificationWindow, "Left", notificationWindow.Left + (notificationWindow.Width + 11));
 
                 // Where the notification is displayed incrementally reduce the width of the window until it's no longer visible
-                hidingTransition.add(notificationWindow, "Width", 0);
+                hidingTransition.add(notificationWindow, "Opacity", 0.0);
 
                 // Add the transition to the queue (in case we need to stop it running because the user closes the application)
                 _runningTransitions.Add(hidingTransition);

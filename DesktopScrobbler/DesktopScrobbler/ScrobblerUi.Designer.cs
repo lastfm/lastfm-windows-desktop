@@ -218,7 +218,7 @@ namespace DesktopScrobbler
             // chkShowNotifications
             // 
             this.chkShowNotifications.AutoSize = true;
-            this.chkShowNotifications.Location = new System.Drawing.Point(12, 57);
+            this.chkShowNotifications.Location = new System.Drawing.Point(12, 47);
             this.chkShowNotifications.Name = "chkShowNotifications";
             this.chkShowNotifications.Size = new System.Drawing.Size(114, 17);
             this.chkShowNotifications.TabIndex = 2;

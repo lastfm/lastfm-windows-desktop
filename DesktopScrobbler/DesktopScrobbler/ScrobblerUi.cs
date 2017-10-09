@@ -212,13 +212,6 @@ namespace DesktopScrobbler
             Startup();
         }
 
-        // Handler for when plugin list items are selected
-        private void PluginList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Never show the highlighted row
-            checkedPluginList.ClearSelected();
-        }
-
         // Obsolete method that used to be called to allow the last.fm Logo to change state based on the 
         // current state of the scrobbler
         private void UpdateScrobbleState(bool scrobblingEnabled)

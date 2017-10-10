@@ -175,9 +175,11 @@ namespace ITunesScrobblePlugin
                                 if (_isEnabled)
                                 {
                                     iTunesApp iTunesApp = new iTunesApp();
-                                    Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
 
-                                    Console.WriteLine("iTunes Plugin checking media state...");
+                                    #if DebugiTunes
+                                        Console.WriteLine("iTunes Plugin successfully connected to iTunes COM library.");
+                                        Console.WriteLine("iTunes Plugin checking media state...");
+                                    #endif
 
                                     // Get the current media from iTunes itself (using our helper function)
                                     MediaItem mediaDetail = await GetMediaDetail(iTunesApp).ConfigureAwait(false);
@@ -215,7 +217,29 @@ namespace ITunesScrobblePlugin
                                     bool canScrobble = _currentMediaTrackingTime >= _minimumScrobbleSeconds &&
                                         (_currentMediaTrackingTime >= Convert.ToInt32(Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60)) && !_currentMediaWasScrobbled);
 
-                                    Console.WriteLine($"iTunes Media Player Plugin: Position {playerPosition} of { mediaDetail?.TrackLength }, Tracker time: {_currentMediaTrackingTime}...");
+#if DebugiTunes
+                                        Console.WriteLine($"iTunes Media Player Plugin: Position {playerPosition} of { mediaDetail?.TrackLength }, Tracker time: {_currentMediaTrackingTime}...");
+#endif
+
+                                    // If we have reached the point where the item has been tracked beyond the minimum number of tracking seconds 
+                                    // and the item hasn't already been added to the scrobble queue
+                                    if (canScrobble && !_currentMediaWasScrobbled)
+                                    {
+                                        // Safely add the media item to the scrobble queue
+                                        lock (_mediaLock)
+                                        {
+                                            _mediaToScrobble.Add(_currentMediaItem);
+                                        }
+
+                                        // Fire the 'we are still tracking this item' event
+                                        _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
+
+                                        // Mark the item as having been added to the scrobble queue
+                                        //(potential improvement, move this property to _currentMediaItem and remove the local variable)
+                                        _currentMediaWasScrobbled = true;
+
+                                        Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
+                                    }
 
                                     // If the media player is still playing and the track has changed, or the current media has reached it's end (and therefore the media player has stopped)
                                     if ((isPlaying && hasMedia && hasTrackChanged) || hasReachedTrackEnd)
@@ -261,28 +285,6 @@ namespace ITunesScrobblePlugin
 
                                         // Reset the flag determining if the current item has been added to the Scrobble queue
                                         _currentMediaWasScrobbled = false;
-                                    }
-                                    // If the media playing is playing and has media associated, we have reached the point where the item has been
-                                    // tracked beyond the minimum number of tracking seconds and the item hasn't already been added to the scrobble queue
-                                    else if (isPlaying && hasMedia && canScrobble && !_currentMediaWasScrobbled)
-                                    {
-                                        // Safely add the media item to the scrobble queue
-                                        lock (_mediaLock)
-                                        {
-                                            _mediaToScrobble.Add(_currentMediaItem);
-                                        }
-
-                                        // Fire the 'we are still tracking this item' event
-                                        _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
-
-                                        // Update the current media tracking time
-                                        _currentMediaTrackingTime += _timerInterval;
-
-                                        // Mark the item as having been added to the scrobble queue
-                                        //(potential improvement, move this property to _currentMediaItem and remove the local variable)
-                                        _currentMediaWasScrobbled = true;
-
-                                        Console.WriteLine($"Track {mediaDetail.TrackName} queued for Scrobbling.");
                                     }
                                     // The media player is playing, and is still playing the same track
                                     else if (isPlaying && !hasTrackChanged)
@@ -332,8 +334,9 @@ namespace ITunesScrobblePlugin
                                     }
                                     System.GC.Collect();
                                 }
-
+#if DebugiTunes
                                 Console.WriteLine("iTunes Plugin checking media state complete.");
+#endif
                             }
                             catch (COMException cEx)
                             {

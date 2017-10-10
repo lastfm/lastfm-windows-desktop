@@ -33,12 +33,10 @@ You _MUST_ build this project first!  (Right-click and 'Build' is sufficient)
 
 If you don't want to adopt the automated versioning, you can remove this requirement, by right-clicking on the 'DesktopScrobbler' project, selecting 'Properties', selecting 'Build Events' and removing the 'Pre-build event command line'
 
-To use the iTunes Scrobbler Plugin (track iTunes playback) then you must Build this project separately.  Right-click the 'iTunesScrobblerPlugin' project and 'Build', which will build the plugin into the main application bin folder.
-
 LastFM API Details
 ------------------
 
-To successfully run the project, you must substitute the values in the 'Common -> Static Classes -> APIDetails.cs' with your own details.
+You must substitute the values in the 'Common -> Static Classes -> APIDetails.cs' with your own details.
 
 Some General Debugging Advice
 =============================
@@ -48,7 +46,7 @@ Due to the nature of this code, Visual Studio doesn't always recover well if you
 
 If you take too long (literally a matter of seconds) stuck at a breakpoint, the COM interoperability will become broken and one of 2 things will happen:
 
-1) Visual Studio will stop responding, taking upwards of 3 minutes to come back to life.  It will come bakc to life, at which point you should stop debugging (and restart if you need to).
+1) Visual Studio will stop responding, taking upwards of 3 minutes to come back to life.  It will come back to life, at which point you should stop debugging (and restart if you need to).
 2) Windows Media Player will stop responding, and will never recover until you 'End Task' it.
 
 WindowsMediaPlayerScrobbleplugin
@@ -81,7 +79,7 @@ and ensures that a history of upgrade paths is maintained meaning the user does 
 
 To set the version number, highlight the installer project and hit 'F4' to get to the properties.  (Right-clicking the project file is NOT the same thing!)
 
-Once built, like with any project biold, right-click on the installer project, 'Open Folder in Explorer' and browse to the bin\debug folder, and there's your installer files.
+Once built, like with any project bold, right-click on the installer project, 'Open Folder in Explorer' and browse to the bin\debug folder, and there's your installer files.
 
 
 Update Process
@@ -113,6 +111,8 @@ Code Signing
 
 In order to enable code signing, you will need to have a code signing cert installed (out of scope of this ReadMe). 
 (The examples below use the SHA1 hash of the Last.fm code signing certificate.)
+
+Easiest way to build is to check out the codesigning branch, and rebase it onto master. (The following changes are already applied in that branch.)
 
 Add the following post-build event to every project in the solution (except the installer):
   "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(TargetPath)"

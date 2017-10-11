@@ -20,7 +20,7 @@ namespace DesktopScrobbler.Installer_Class
         {
             base.Commit(savedState);
 
-            //System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(this.Context.Parameters["AssemblyPath"]) + @"\DesktopScrobbler.exe");
+            //System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(this.Context.Parameters["AssemblyPath"]) + @"\Last.f Desktop Scrobbler.exe");
         }
     }
 }

@@ -7,7 +7,7 @@
 // Configurable values
 var checkboxChecked = true;			// Is the checkbox on the finished dialog checked by default?
 var checkboxText = "Launch Desktop Scrobbler";	// Text for the checkbox on the finished dialog
-var filename = "DesktopScrobbler.exe";	// The name of the executable to launch - change this to match the file you want to launch at the end of your setup
+var filename = "Last.fm Desktop Scrobbler.exe";	// The name of the executable to launch - change this to match the file you want to launch at the end of your setup
 
 
 // Constant values from Windows Installer

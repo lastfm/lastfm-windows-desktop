@@ -299,7 +299,7 @@ Click on 'Log In' to open Last.fm, then click on 'Yes, allow access'' in the bro
     <comment>Scrobble Ui: Terms of use link text</comment>
   </data>
   <data name="ScrobblerUi_UserLoggedInText" xml:space="preserve">
-    <value>Connected as {0}</value>
+    <value>Scrobbling as {0}</value>
     <comment>Scrobbler Ui: Text displaying the user name when logged in</comment>
   </data>
   <data name="ScrobblerUi_UserLogin" xml:space="preserve">

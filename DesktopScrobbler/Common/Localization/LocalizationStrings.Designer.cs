@@ -567,7 +567,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connected as {0}.
+        ///   Looks up a localized string similar to Scrobbling as {0}.
         /// </summary>
         public static string ScrobblerUi_UserLoggedInText {
             get {

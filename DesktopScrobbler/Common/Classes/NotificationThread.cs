@@ -295,7 +295,6 @@ namespace LastFM.Common.Classes
         private void TrayMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             mnuShow.Enabled = this.WindowState == FormWindowState.Minimized || this.Visible == false;
-            mnuLoveThisTrack.Enabled = _currentMediaItem != null && _currentUser != null;
             mnuEnableScrobbling.Checked = ScrobbleFactory.ScrobblingEnabled;
             mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);            
         }
@@ -471,6 +470,11 @@ namespace LastFM.Common.Classes
                     ShowNotification(Core.APPLICATION_TITLE, notificationText);
                 }
             }
+
+            this.Invoke(new MethodInvoker(() =>
+            {
+                mnuLoveThisTrack.Enabled = _currentMediaItem != null && _currentUser != null;
+            }));
 
             ResetLoveTrackState(LoveStatus.Love);
         }

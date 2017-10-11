@@ -27,8 +27,8 @@ namespace LastFM.Common.Classes
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotificationThread));
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuNewVersion = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuNowPlaying = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNewVersionSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuNowPlaying = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuLoveThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuShow = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,6 +75,12 @@ namespace LastFM.Common.Classes
             this.mnuNewVersion.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_TrayMenu_NewVersionAvailableDefault;
             this.mnuNewVersion.Visible = false;
             // 
+            // mnuNewVersionSeparator
+            // 
+            this.mnuNewVersionSeparator.Name = "mnuNewVersionSeparator";
+            this.mnuNewVersionSeparator.Size = new System.Drawing.Size(202, 6);
+            this.mnuNewVersionSeparator.Visible = false;
+            // 
             // mnuNowPlaying
             // 
             this.mnuNowPlaying.Enabled = false;
@@ -82,14 +88,9 @@ namespace LastFM.Common.Classes
             this.mnuNowPlaying.Size = new System.Drawing.Size(205, 22);
             this.mnuNowPlaying.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_NowPlayingDefault;
             // 
-            // mnuNewVersionSeparator
-            // 
-            this.mnuNewVersionSeparator.Name = "mnuNewVersionSeparator";
-            this.mnuNewVersionSeparator.Size = new System.Drawing.Size(202, 6);
-            this.mnuNewVersionSeparator.Visible = false;
-            // 
             // mnuLoveThisTrack
             // 
+            this.mnuLoveThisTrack.Enabled = false;
             this.mnuLoveThisTrack.Name = "mnuLoveThisTrack";
             this.mnuLoveThisTrack.Size = new System.Drawing.Size(205, 22);
             this.mnuLoveThisTrack.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;

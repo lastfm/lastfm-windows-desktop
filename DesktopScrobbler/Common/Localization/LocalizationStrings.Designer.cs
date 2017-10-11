@@ -19,7 +19,7 @@ namespace LastFM.Common.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class LocalizationStrings {
@@ -61,7 +61,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You already have an instance of the Desktop Scrobbler running..
+        ///   Looks up a localized string similar to The Desktop Scrobbler is already running..
         /// </summary>
         public static string Application_InstanceAlreadyRunning {
             get {
@@ -70,7 +70,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authentication Required.
+        ///   Looks up a localized string similar to Log In Required.
         /// </summary>
         public static string AuthenticationUi_AuthorizationRequired_WindowTitle {
             get {
@@ -79,7 +79,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authorize.
+        ///   Looks up a localized string similar to Log In.
         /// </summary>
         public static string AuthenticationUi_AuthorizeButton {
             get {
@@ -97,7 +97,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to retrieve an authentication token from Last.fm, so authorization cannot take place..
+        ///   Looks up a localized string similar to There was an error logging in. Please try again..
         /// </summary>
         public static string AuthenticationUI_FailedToAuthorize_Message {
             get {
@@ -106,7 +106,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Failed to Authenticate.
+        ///   Looks up a localized string similar to {0} Failed to Log In.
         /// </summary>
         public static string AuthenticationUi_FailedToAuthorize_MessageTitle {
             get {
@@ -115,9 +115,9 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Before you can start scrobbling to Last.fm, the Desktop Scrobbler needs your permission to submit information on your behalf.  
+        ///   Looks up a localized string similar to Before you can scrobble to Last.fm, you must log in.
         ///
-        ///Click on &apos;Authorize&apos; to start this process, then click on &apos;Yes, allow access&apos;&apos; in the browser window that follows..
+        ///Click on &apos;Log In&apos; to open Last.fm, then click on &apos;Yes, allow access&apos;&apos; in the browser window that follows..
         /// </summary>
         public static string AuthenticationUi_InstructionsText {
             get {
@@ -126,7 +126,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authentication.
+        ///   Looks up a localized string similar to Log In.
         /// </summary>
         public static string AuthenticationUi_WindowTitle {
             get {
@@ -333,7 +333,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;Show.
+        ///   Looks up a localized string similar to &amp;Settings.
         /// </summary>
         public static string NotificationThread_TrayMenu_Show {
             get {
@@ -378,7 +378,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully scrobbled {0} track(s)..
+        ///   Looks up a localized string similar to Scrobbled {0} track(s)..
         /// </summary>
         public static string PopupNotifications_ScrobbleSuccess {
             get {
@@ -387,7 +387,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have successfully authorized the application, and have been signed in as &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Now scrobbling as &apos;{0}&apos;..
         /// </summary>
         public static string PopupNotifications_SuccessfullyAuthorized {
             get {
@@ -468,7 +468,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the Scrobbler Plugins to Enable:.
+        ///   Looks up a localized string similar to Select the plugins to enable:.
         /// </summary>
         public static string ScrobblerUi_Settings_ScrobblePluginsEnableMessage {
             get {
@@ -549,7 +549,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Waiting for you to authorize the application....
+        ///   Looks up a localized string similar to Waiting for you to log in....
         /// </summary>
         public static string ScrobblerUi_Status_WaitingForAuthorization {
             get {
@@ -603,7 +603,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A valid user account is required for the Desktop Scrobbler to operate correctly, so the application will now close..
+        ///   Looks up a localized string similar to You must log in to scrobble to your Last.fm account, so the application will now close..
         /// </summary>
         public static string ScrobblerUi_ValidUserAccountRequiredMessage {
             get {

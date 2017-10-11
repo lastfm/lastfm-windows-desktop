@@ -342,7 +342,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Un-Love &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Unlove &apos;{0}&apos;.
         /// </summary>
         public static string NotificationThread_TrayMenu_Un_Love {
             get {

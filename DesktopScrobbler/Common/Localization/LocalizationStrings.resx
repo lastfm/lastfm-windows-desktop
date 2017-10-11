@@ -122,7 +122,7 @@
     <comment>Menu item: Love Track</comment>
   </data>
   <data name="NotificationThread_TrayMenu_Un_Love" xml:space="preserve">
-    <value>Un-Love '{0}'</value>
+    <value>Unlove '{0}'</value>
     <comment>Menu item: Unlove Track</comment>
   </data>
   <data name="NotificationThread_TrayMenu_Love_this_Track" xml:space="preserve">

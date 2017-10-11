@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NotificationThread_TrayMenu_LoveTrack" xml:space="preserve">
-    <value>Love '{0}'</value>
+    <value>Love {0}</value>
     <comment>Menu item: Love Track</comment>
   </data>
   <data name="NotificationThread_TrayMenu_Un_Love" xml:space="preserve">
-    <value>Unlove '{0}'</value>
+    <value>Unlove {0}</value>
     <comment>Menu item: Unlove Track</comment>
   </data>
   <data name="NotificationThread_TrayMenu_Love_this_Track" xml:space="preserve">

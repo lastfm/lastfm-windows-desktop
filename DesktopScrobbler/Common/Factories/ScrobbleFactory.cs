@@ -177,7 +177,7 @@ namespace LastFM.Common.Factories
             _lastFMClient.SendMonitoringStatusChanged(mediaItem, LastFMClient.MonitoringStatus.StoppedMonitoring);
 
             // Notify the user interface monitoring has stopped
-            _uiThread.TrackMonitoringStarted(null, false);
+            _uiThread.TrackMonitoringEnded(mediaItem);
         }
 
         // Method used to tell the Scrobbler to attempt to scrobble and cached, or queued media items if scrobbling is enabled
@@ -475,7 +475,7 @@ namespace LastFM.Common.Factories
 
             }
 
-            OnlineStatusUpdated?.Invoke((canScrobble) ? OnlineState.Online : OnlineState.Offline, currentUser);
+            OnlineStatusUpdated?.BeginInvoke((canScrobble) ? OnlineState.Online : OnlineState.Offline, currentUser, null, null);
 
             return canScrobble;
         }

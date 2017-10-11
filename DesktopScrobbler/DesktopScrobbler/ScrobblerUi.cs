@@ -68,7 +68,7 @@ namespace DesktopScrobbler
             if (mediaItem != null)
             {
                 // Display the name of the track, in human-readable localized form
-                this.Invoke(new MethodInvoker(() =>
+                this.BeginInvoke(new MethodInvoker(() =>
                 {
                     lblTrackName.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
                 }));
@@ -76,7 +76,7 @@ namespace DesktopScrobbler
             else
             {
                 // Otherwise clear the display of the track name
-                this.Invoke(new MethodInvoker(() =>
+                this.BeginInvoke(new MethodInvoker(() =>
                 {
                     lblTrackName.Text = string.Empty;
                 }));
@@ -434,7 +434,7 @@ namespace DesktopScrobbler
         // Delegate method used to update the User Interface with the current state of the user session
         public void RefreshOnlineStatus(OnlineState currentState)
         {
-            this.Invoke(new MethodInvoker(() =>
+            this.BeginInvoke(new MethodInvoker(() =>
             {
                 // Hide the (obsolete) 'Log Lin' link
                 linkLogIn.Visible = false;

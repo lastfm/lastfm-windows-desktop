@@ -294,28 +294,8 @@ namespace LastFM.Common.Classes
         // used to set the state of the relevant menu items
         private void TrayMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            string trackName = _currentMediaItem?.TrackName ?? "<unknown>";
-
             mnuShow.Enabled = this.WindowState == FormWindowState.Minimized || this.Visible == false;
-
             mnuLoveThisTrack.Enabled = _currentMediaItem != null && _currentUser != null;
-
-            if (_currentMediaItem != null)
-            {
-                if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Love)
-                {
-                    mnuLoveThisTrack.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_LoveTrack, trackName);
-                }
-                else if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Unlove)
-            {
-                    mnuLoveThisTrack.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_Un_Love, trackName);
-                }
-            }
-            else
-            {
-                mnuLoveThisTrack.Text = LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;
-            }
-
             mnuEnableScrobbling.Checked = ScrobbleFactory.ScrobblingEnabled;
             mnuViewUserProfile.Enabled = !string.IsNullOrEmpty(_currentUser?.Url);            
         }
@@ -462,6 +442,15 @@ namespace LastFM.Common.Classes
                 this.Invoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+
+                    if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Love)
+                    {
+                        mnuLoveThisTrack.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_LoveTrack, MediaHelper.GetTrackDescription(mediaItem));
+                    }
+                    else if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Unlove)
+                    {
+                        mnuLoveThisTrack.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_Un_Love, MediaHelper.GetTrackDescription(mediaItem));
+                    }
                 }));
             }
             else
@@ -469,6 +458,7 @@ namespace LastFM.Common.Classes
                 this.Invoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = LocalizationStrings.NotificationThread_NowPlayingDefault;
+                    mnuLoveThisTrack.Text = LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;
                 }));
             }
 
@@ -483,8 +473,6 @@ namespace LastFM.Common.Classes
             }
 
             ResetLoveTrackState(LoveStatus.Love);
-
-
         }
 
         // Base method for handling the continued monitoring a media item

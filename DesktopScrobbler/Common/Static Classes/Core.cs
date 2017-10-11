@@ -29,7 +29,7 @@ namespace LastFM.Common
         public static string UserCachePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Last.fm\\Desktop Scrobbler\\v3\\Cache\\";
 
         // The Url where the application checks for an updated version
-        public const string UpdateUrl = "http://twitterinanapp.com/last-fm-updates-page/";
+        public const string UpdateUrl = "https://cdn.last.fm/client/Win/update3.html";
 
         // The Url to the terms of use (as defined by Last.fm)
         public const string TermsUrl = "https://www.last.fm/legal/terms";

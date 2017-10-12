@@ -209,9 +209,9 @@
     <comment>Authentication UI: Cancel Button Text</comment>
   </data>
   <data name="AuthenticationUi_InstructionsText" xml:space="preserve">
-    <value>Before you can scrobble to Last.fm, you must log in.
+    <value>To scrobble to Last.fm, you must log in.
 
-Click on 'Log In' to open Last.fm, then click on 'Yes, allow access'' in the browser window that follows.</value>
+Click on 'Log In' to open Last.fm, then click on 'Yes, allow access' in the browser window that follows.</value>
     <comment>Authentication UI: Instructions to display to the user</comment>
   </data>
   <data name="AuthenticationUi_WindowTitle" xml:space="preserve">

@@ -332,7 +332,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PluginSupport, Version=3.1.12.8, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:PluginSupport, Version=3.1.12.15, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_0072D76A3B7FD22D6A192C36D4CF4279"
@@ -363,7 +363,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LastFM.ApiClient, Version=3.1.12.8, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:LastFM.ApiClient, Version=3.1.12.15, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_129BC8B9429E65380E7A8E3F6B111AA5"
@@ -505,7 +505,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Transitions, Version=3.1.12.8, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Transitions, Version=3.1.12.15, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_73BB629C9B13D1B299A703CAC65B8552"
@@ -618,7 +618,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LastFM.Common, Version=3.1.12.8, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:LastFM.Common, Version=3.1.12.15, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_C493B36BC7881F9EE05B2879B0F536F3"
@@ -794,15 +794,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Last.fm Desktop Scrobbler"
-        "ProductCode" = "8:{355FEA51-A735-4225-8C94-9EEF9EED0FE2}"
-        "PackageCode" = "8:{48DC911F-AC03-4818-8BEE-16E75BCFCF59}"
+        "ProductCode" = "8:{0FDFBF04-7677-4534-867B-CBFB0CA75EBC}"
+        "PackageCode" = "8:{DBE03EF9-8350-4D26-9F4F-A7FF29928FEA}"
         "UpgradeCode" = "8:{D14A04F6-3BC6-4062-83AD-BB3EB3A46138}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.1.15"
+        "ProductVersion" = "8:3.1.17"
         "Manufacturer" = "8:Last.fm"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

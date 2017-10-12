@@ -130,3 +130,15 @@ Add the following post-build event to every project in the solution (except the 
 
 Add the following post-build event to the installer in addition to the post-build event already there:
   "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d "Last.fm Desktop Scrobbler" "$(BuiltOutputPath)"
+
+
+Notes on Building a Production Version
+======================================
+
+1. make sure you have a code signing cert installed. 
+2. check out the "codesigning" branch. You may need to merge master into it.
+3. you will need to update */*/*/APIDetails.cs with the official API key and secret.
+4. you will need to change the version number in the installer, AND the version numbers in */*/*/AssemblyInfo.cs .
+   The build process will update the AssemblyInfo files to be based on today's date, but will not change the installer - and you probably want them the same anyway.
+5. you might find it helps to do "git update-index --assume-unchanged */*/*/APIDetails.cs */*/*/AssemblyInfo.cs" so you don't have too much crap to check in.
+   NEVER COMMIT THE API DETAILS, OBVIOUSLY ;)

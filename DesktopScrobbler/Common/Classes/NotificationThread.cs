@@ -475,7 +475,13 @@ namespace LastFM.Common.Classes
                 this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
-                    trayIcon.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+                    if(mnuNowPlaying.Text.Length >= 64)
+                    {
+                        trayIcon.Text = mnuNowPlaying.Text.Substring(0, 62) + '…';
+                    } else
+                    {
+                        trayIcon.Text = mnuNowPlaying.Text;
+                    }
 
                     if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Love)
                     {
@@ -512,7 +518,14 @@ namespace LastFM.Common.Classes
                 this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
-                    trayIcon.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+                    if (mnuNowPlaying.Text.Length >= 64)
+                    {
+                        trayIcon.Text = mnuNowPlaying.Text.Substring(0, 62) + '…';
+                    }
+                    else
+                    {
+                        trayIcon.Text = mnuNowPlaying.Text;
+                    }
                 }));
             }
             else

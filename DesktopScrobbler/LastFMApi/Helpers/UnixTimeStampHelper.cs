@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LastFM.Common.Helpers
+namespace LastFMApiClient.Helpers
 {
     // Helper function to convert unix timestamps to C# DateTime, and vice versa
     public static class UnixTimeStampHelper

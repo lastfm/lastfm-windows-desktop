@@ -19,7 +19,7 @@ namespace LastFM.Common.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class LocalizationStrings {
@@ -315,7 +315,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Love &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Love {0}.
         /// </summary>
         public static string NotificationThread_TrayMenu_LoveTrack {
             get {
@@ -342,7 +342,7 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unlove &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Unlove {0}.
         /// </summary>
         public static string NotificationThread_TrayMenu_Un_Love {
             get {

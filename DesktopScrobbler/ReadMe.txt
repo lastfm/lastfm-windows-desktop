@@ -49,6 +49,17 @@ If you take too long (literally a matter of seconds) stuck at a breakpoint, the 
 1) Visual Studio will stop responding, taking upwards of 3 minutes to come back to life.  It will come back to life, at which point you should stop debugging (and restart if you need to).
 2) Windows Media Player will stop responding, and will never recover until you 'End Task' it.
 
+Debug Flags
+===========
+
+The following Debug flags are available for granular output to the debug window:
+
+DebugiTunes => Outputs messages relevant to the iTunes tracking loop
+DebugWMPScrobbler => Outputs messages relevant to the Windows Media Player tracking loop
+DebugAPICalls => Outputs messages relevant to the Last.fm API calls
+
+By default, messages are output relevant to the Start, Scrobble and End loop of the tracking process.
+
 WindowsMediaPlayerScrobbleplugin
 --------------------------------
 

@@ -206,6 +206,17 @@ namespace LastFM.Common.Classes
             }
         }
 
+        internal void TrackMonitoringEnded(MediaItem mediaItem)
+        {
+            Console.WriteLine($"Stopped monitoring: {mediaItem?.TrackName}");
+
+            _currentMediaItem = null;
+
+            ShowScrobbleState();
+
+            RefreshMenuState(null);
+        }
+
         // Method raised when the Scrobble State changes
         protected void ScrobbleStateChanging(bool scrobblingEnabled)
         {
@@ -226,7 +237,7 @@ namespace LastFM.Common.Classes
 
             ShowScrobbleState();
 
-            this.OnScrobbleStateChanged?.Invoke(scrobblingEnabled);
+            this.OnScrobbleStateChanged?.BeginInvoke(scrobblingEnabled, null, null);
         }
 
         // Method raised when the Ui is notified of 'Love Track' changes
@@ -239,7 +250,7 @@ namespace LastFM.Common.Classes
         // Method to set the 'Love track' Ui state to a specific state
         internal void ResetLoveTrackState(LoveStatus newState)
         {
-            this.Invoke(new MethodInvoker(async () => { 
+            this.BeginInvoke(new MethodInvoker(async () => { 
 
                 stripLoveTrack.Text = string.Empty;
                 stripLoveTrack.Tag = newState;
@@ -260,6 +271,8 @@ namespace LastFM.Common.Classes
                     }
                 }
             }));
+
+            RefreshMenuState(_currentMediaItem);
         }
 
         // Handler for the status strip's 'Love track' icon (obsolete)
@@ -395,7 +408,7 @@ namespace LastFM.Common.Classes
         {
             if (!this.IsDisposed && !this.Disposing)
             {
-                this.Invoke(new MethodInvoker(() =>
+                this.BeginInvoke(new MethodInvoker(() =>
                 {
                     if (stripStatus != null)
                     {
@@ -432,15 +445,37 @@ namespace LastFM.Common.Classes
         // Base method for handling when a Scrobbler source (plugin) starts monitoring (new) media
         public virtual void TrackMonitoringStarted(MediaItem mediaItem, bool wasResumed)
         {
-            _currentMediaItem = mediaItem;
+            Console.WriteLine($"Started monitoring: {mediaItem?.TrackName}");
+
+            bool raiseNotification = mediaItem?.TrackName != _currentMediaItem?.TrackName || _currentMediaItem == null || !wasResumed;
 
             ShowScrobbleState();
 
+            RefreshMenuState(mediaItem);
+
+            if (mediaItem != null && raiseNotification)
+            {
+                _currentMediaItem = mediaItem;
+
+                if (Core.Settings.ShowNotifications && (Core.Settings.ShowTrackChanges == null || Core.Settings.ShowTrackChanges == true))
+                {
+                    string notificationText = string.Format(LocalizationStrings.PopupNotifications_TrackChanged, MediaHelper.GetTrackDescription(_currentMediaItem));
+
+                    ShowNotification(Core.APPLICATION_TITLE, notificationText);
+                }
+            }
+
+            ResetLoveTrackState(LoveStatus.Love);
+        }
+
+        private void RefreshMenuState(MediaItem mediaItem)
+        {
             if (mediaItem != null)
             {
-                this.Invoke(new MethodInvoker(() =>
+                this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+                    trayIcon.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
 
                     if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Love)
                     {
@@ -454,29 +489,19 @@ namespace LastFM.Common.Classes
             }
             else
             {
-                this.Invoke(new MethodInvoker(() =>
+                this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = LocalizationStrings.NotificationThread_NowPlayingDefault;
                     mnuLoveThisTrack.Text = LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;
+                    ShowScrobbleState(); // updates tray icon to default
                 }));
             }
 
-            if (_currentMediaItem != null && !wasResumed)
+            this.BeginInvoke(new MethodInvoker(() =>
             {
-                if (Core.Settings.ShowNotifications && (Core.Settings.ShowTrackChanges == null || Core.Settings.ShowTrackChanges==true))
-                {
-                    string notificationText = string.Format(LocalizationStrings.PopupNotifications_TrackChanged, MediaHelper.GetTrackDescription(_currentMediaItem));
-
-                    ShowNotification(Core.APPLICATION_TITLE, notificationText);
-                }
-            }
-
-            this.Invoke(new MethodInvoker(() =>
-            {
-                mnuLoveThisTrack.Enabled = _currentMediaItem != null && _currentUser != null;
+                mnuLoveThisTrack.Enabled = mediaItem != null && _currentUser != null;
             }));
 
-            ResetLoveTrackState(LoveStatus.Love);
         }
 
         // Base method for handling the continued monitoring a media item
@@ -484,16 +509,18 @@ namespace LastFM.Common.Classes
         {
             if (mediaItem != null)
             {
-                this.Invoke(new MethodInvoker(() =>
+                this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+                    trayIcon.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
                 }));
             }
             else
             {
-                this.Invoke(new MethodInvoker(() =>
+                this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = LocalizationStrings.NotificationThread_NowPlayingDefault;
+                    ShowScrobbleState(); // updates tray icon to default
                 }));
             }
         }
@@ -501,7 +528,7 @@ namespace LastFM.Common.Classes
         // Method for handling whether the Version Checker has found an update, enabling Ui elements accordingly
         public void HasNewVersion(VersionChecker.VersionState versionDetail)
         {
-            this.Invoke(new MethodInvoker(() => {
+            this.BeginInvoke(new MethodInvoker(() => {
 
                 stripNewVersion.Tag = versionDetail;
                 stripNewVersion.Visible = true;

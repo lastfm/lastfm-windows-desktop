@@ -232,7 +232,7 @@ namespace ITunesScrobblePlugin
                                         }
 
                                         // Fire the 'we are still tracking this item' event
-                                        _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
+                                        _onTrackMonitoring?.BeginInvoke(_currentMediaItem, (int)playerPosition, null, null);
 
                                         // Mark the item as having been added to the scrobble queue
                                         //(potential improvement, move this property to _currentMediaItem and remove the local variable)
@@ -254,10 +254,10 @@ namespace ITunesScrobblePlugin
                                         if (_currentMediaItem != null)
                                         {
                                             // Fire the 'track monitoring has ended' event for the previous item
-                                            _onTrackMonitoringEnded?.Invoke(_currentMediaItem);
+                                            _onTrackMonitoringEnded?.BeginInvoke(_currentMediaItem, null, null);
 
                                             // Fire the 'scrobble the item' event for the previous item
-                                            _onScrobbleTrack?.Invoke(_currentMediaItem);
+                                            _onScrobbleTrack?.BeginInvoke(_currentMediaItem, null, null);
                                         }
 
                                         Console.WriteLine("iTunes: Raising Track Change Method.");
@@ -269,7 +269,7 @@ namespace ITunesScrobblePlugin
                                             _currentMediaItem = mediaDetail;
 
                                             // Fire the 'track monitoring has started' even for the new item
-                                            _onTrackMonitoringStarted?.Invoke(mediaDetail, false);
+                                            _onTrackMonitoringStarted?.BeginInvoke(mediaDetail, false, null, null);
 
                                             // Track when we started monitoring the new item (to pass to the Last.fm API)
                                             mediaDetail.StartedPlaying = DateTime.Now;
@@ -293,12 +293,15 @@ namespace ITunesScrobblePlugin
                                         if (_lastStatePaused)
                                         {
                                             // Fire the 'we started monitoring this item' event
-                                            _onTrackMonitoringStarted?.Invoke(_currentMediaItem, _lastStatePaused);
+                                            _onTrackMonitoringStarted?.BeginInvoke(_currentMediaItem, _lastStatePaused, null, null);
+
+                                            // Reset the pause state flag
+                                            _lastStatePaused = false;
                                         }
 
                                         // Fire the 'we are still monitoring this item event' (possibly should be inside an else, although won't hurt
                                         // where it is)
-                                        _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
+                                        _onTrackMonitoring?.BeginInvoke(_currentMediaItem, (int)playerPosition, null, null);
 
                                         // Update the current media tracking time
                                         _currentMediaTrackingTime += _timerInterval;
@@ -307,10 +310,10 @@ namespace ITunesScrobblePlugin
                                     else if (!isPlaying)
                                     {
                                         // If we had been playing, invoke the Track Ended callback
-                                        if (_currentMediaTrackingTime > _timerInterval)
+                                        if (_currentMediaTrackingTime > _timerInterval && !_lastStatePaused)
                                         {
                                             // Fire the 'we've stopped tracking this item' event
-                                            _onTrackMonitoringEnded?.Invoke(mediaDetail);
+                                            _onTrackMonitoringEnded?.BeginInvoke(mediaDetail, null, null);
                                         }
 
                                         // Set the persisted pause state
@@ -352,7 +355,7 @@ namespace ITunesScrobblePlugin
                         }
                         else if (iTunesProcesses.Length == 0 && _currentMediaItem != null)
                         {
-                            _onTrackMonitoringEnded?.Invoke(_currentMediaItem);
+                            _onTrackMonitoringEnded?.BeginInvoke(_currentMediaItem, null, null);
                             _currentMediaItem = null;
                             _currentMediaWasScrobbled = false;
                             Console.WriteLine("iTunes process not detected.  Waiting for iTunes process to start...");

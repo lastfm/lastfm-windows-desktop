@@ -161,7 +161,7 @@ namespace DesktopScrobbler
             {
                 // Create a new scrobbler timer, to fire every second
                 _scrobbleTimer = new System.Timers.Timer();
-                _scrobbleTimer.Interval = 1000;
+                _scrobbleTimer.Interval = 2000;
 
                 // The ananoymous delegate event that occurs every time the timer fires (elapses)
                 _scrobbleTimer.Elapsed += async (o, e) =>
@@ -213,6 +213,8 @@ namespace DesktopScrobbler
                                 // Determine if the media player is in the 'Playing' state
                                 bool isPlaying = playerState == WMPPlayState.wmppsPlaying;
 
+                                bool isTrackChanging = playerState == WMPPlayState.wmppsTransitioning;
+
                                 // Determine if the current media item is scrobbleable
                                 bool canScrobble = _currentMediaTrackingTime >= _minimumScrobbleSeconds &&
                                     (_currentMediaTrackingTime >= Convert.ToInt32(Math.Min(Convert.ToInt32(_currentMediaItem?.TrackLength) / 2, 4 * 60)) && !_currentMediaWasScrobbled);
@@ -229,16 +231,16 @@ namespace DesktopScrobbler
                                     _lastStatePaused = false;
 
                                     // Reset the current tracking time to the default number of timer seconds
-                                    _currentMediaTrackingTime = 1;
+                                    _currentMediaTrackingTime = (_currentMediaTrackingTime == 2) ? 3 : 2;
 
                                     // If we knew about a media item before we got here
                                     if (_currentMediaItem != null)
                                     {
                                         // Fire the 'track monitoring has ended' event for the previous item
-                                        _onTrackMonitoringEnded?.Invoke(_currentMediaItem);
+                                        _onTrackMonitoringEnded?.BeginInvoke(_currentMediaItem, null, null);
 
                                         // Fire the 'scrobble the item' event for the previous item
-                                        _onScrobbleTrack?.Invoke(_currentMediaItem);
+                                        _onScrobbleTrack?.BeginInvoke(_currentMediaItem, null, null);
                                     }
 
                                     Console.WriteLine("Windows Media Player: Raising Track Change Method.");
@@ -253,11 +255,13 @@ namespace DesktopScrobbler
                                         _currentMediaItem = mediaDetail;
 
                                         // Fire the 'track monitoring has started' even for the new item
-                                        _onTrackMonitoringStarted?.Invoke(mediaDetail, false);
+                                        _onTrackMonitoringStarted?.BeginInvoke(mediaDetail, false, null, null);
                                     }
                                     // Otherwise if we got here because the current item has ended, and no new item is playing
                                     else if (hasReachedTrackEnd)
                                     {
+                                        _currentMediaTrackingTime = 2;
+
                                         // Clear the currently tracked media item, so that if the user starts playing it again, it is treated
                                         // as an entirely new scrobble
                                         _currentMediaItem = null;
@@ -277,10 +281,10 @@ namespace DesktopScrobbler
                                     }
 
                                     // Fire the 'we are still tracking this item' event
-                                    _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
+                                    _onTrackMonitoring?.BeginInvoke(_currentMediaItem, (int)playerPosition, null, null);
 
                                     // Update the current media tracking time
-                                    _currentMediaTrackingTime++;
+                                    _currentMediaTrackingTime += 2;
 
                                     // Mark the item as having been added to the scrobble queue
                                     //(potential improvement, move this property to _currentMediaItem and remove the local variable)
@@ -295,24 +299,34 @@ namespace DesktopScrobbler
                                     if (_lastStatePaused)
                                     {
                                         // Fire the 'we started monitoring this item' event
-                                        _onTrackMonitoringStarted?.Invoke(_currentMediaItem, _lastStatePaused);
+                                        _onTrackMonitoringStarted?.BeginInvoke(_currentMediaItem, _lastStatePaused, null, null);
+
+                                        // Reset the pause flag
+                                        _lastStatePaused = false;
                                     }
 
                                     // Fire the 'we are still monitoring this item event' (possibly should be inside an else, although won't hurt
                                     // where it is)
-                                    _onTrackMonitoring?.Invoke(_currentMediaItem, (int)playerPosition);
+                                    _onTrackMonitoring?.BeginInvoke(_currentMediaItem, (int)playerPosition, null, null);
 
                                     // Update the current media tracking time
-                                    _currentMediaTrackingTime++;
+                                    _currentMediaTrackingTime += 2;
                                 }
                                 // The media player is not playing
-                                else if (!isPlaying)
+                                else if (!isPlaying && !isTrackChanging)
                                 {
                                     // If we had been playing, invoke the Track Ended callback
-                                    if (_currentMediaTrackingTime > 0)
+                                    if (_currentMediaTrackingTime > 1 && !_lastStatePaused)
                                     {
-                                        _onTrackMonitoringEnded?.Invoke(mediaDetail);
-                                        _currentMediaItem = null;
+                                        _onTrackMonitoringEnded?.BeginInvoke(mediaDetail, null, null);
+
+                                        if (!isPaused)
+                                        {
+                                            // Fire the 'scrobble the item' event for the previous item
+                                            _onScrobbleTrack?.BeginInvoke(_currentMediaItem, null, null);
+
+                                            //_currentMediaItem = null;
+                                        }
                                     }
 
                                     // Set the persisted pause state
@@ -335,7 +349,7 @@ namespace DesktopScrobbler
                         }
                         else if (_currentMediaItem != null)
                         {
-                            _onTrackMonitoringEnded?.Invoke(_currentMediaItem);
+                            _onTrackMonitoringEnded?.BeginInvoke(_currentMediaItem, null, null);
                             _currentMediaItem = null;
                             _currentMediaWasScrobbled = false;
                         }

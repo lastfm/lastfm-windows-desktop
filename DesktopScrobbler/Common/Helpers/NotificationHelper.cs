@@ -45,7 +45,7 @@ namespace LastFM.Common.Helpers
                 // Warning: this could be potentially stealing focus....
                 notificationWindow.TopMost = true;
 
-                owner.Invoke(new MethodInvoker(() =>
+                owner.BeginInvoke(new MethodInvoker(() =>
                 {
                     // Determine what the screen size is of the screen where the specified form is currently located
                     var workingArea = Screen.GetWorkingArea(owner);
@@ -166,7 +166,7 @@ namespace LastFM.Common.Helpers
                 if (!sender.IsDisposed && !sender.Disposing)
                 {
                     // Perform a cross-thread safe closure of the form
-                    sender.Invoke(new MethodInvoker(sender.Close));
+                    sender.BeginInvoke(new MethodInvoker(sender.Close));
                 }
 
                 // Remove the form from the notifications queue
@@ -193,7 +193,7 @@ namespace LastFM.Common.Helpers
                 if (notificationWindow != null && !notificationWindow.IsDisposed && !notificationWindow.Disposing)
                 {
                     // Perform a thread-safe closure of the window
-                    notificationWindow.Invoke(new MethodInvoker(notificationWindow.Close));
+                    notificationWindow.BeginInvoke(new MethodInvoker(notificationWindow.Close));
                 }
             }
 

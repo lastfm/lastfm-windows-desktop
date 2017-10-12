@@ -5,11 +5,11 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using LastFM.ApiClient.Models;
-using LastFM.Common.Helpers;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Net;
 using LastFM.ApiClient.Helpers;
+using LastFMApiClient.Helpers;
 
 namespace LastFM.ApiClient
 {
@@ -22,7 +22,7 @@ namespace LastFM.ApiClient
         // The API key given by the API website
         private string _apiKey = string.Empty;
 
-        // The API secret given by the API webstie
+        // The API secret given by the API website
         private string _apiSecret = string.Empty;
 
         // The base URL for the requests
@@ -173,7 +173,9 @@ namespace LastFM.ApiClient
                 // Send the request and get the response
                 response = await Post<PlayStatusResponse>(updateMethod, postContent, baseParameters.ToArray()).ConfigureAwait(false);
 
+#if DebugAPICalls
                 Console.WriteLine($"Sent Playing Status request ({updateMethod}), response:\r\n {response}");
+#endif
             }
 
             return response?.NowPlaying;
@@ -205,7 +207,9 @@ namespace LastFM.ApiClient
                 // Send the request and get the result
                 responseData = await Post<Track>(updateMethod, postContent, baseParameters.ToArray()).ConfigureAwait(false);
 
+#if DebugAPICalls
                 Console.WriteLine($"Sent Get love status request ({updateMethod}), response:\r\n {responseData}");
+#endif
             }
 
             return responseData;
@@ -247,7 +251,9 @@ namespace LastFM.ApiClient
                 // Post the request and get the response
                 var rawResponse = await Post<JObject>(updateMethod, postContent, baseParameters.ToArray()).ConfigureAwait(false);
 
+#if DebugAPICalls
                 Console.WriteLine($"Sent Love/Unlove track request ({updateMethod}), response:\r\n {rawResponse}");
+#endif
             }
         }
 
@@ -288,8 +294,9 @@ namespace LastFM.ApiClient
             // Post the scrobbles and get the result
             var rawResponse = await Post<JObject>("track.scrobble", postContent, baseParameters.ToArray()).ConfigureAwait(false);
 
+#if DebugAPICalls
             Console.WriteLine($"Sent Scrobble request, response:\r\n {rawResponse}");
-
+#endif
             // Use a dedicate method to get the scrobble response because the API does NOT correctly return the response
             // in a correct JSON formatted manner
             return GetScrobbleResponseFromScrobble(rawResponse);

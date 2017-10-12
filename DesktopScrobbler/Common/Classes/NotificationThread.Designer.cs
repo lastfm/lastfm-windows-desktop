@@ -145,7 +145,7 @@ namespace LastFM.Common.Classes
             // 
             this.trayIcon.ContextMenuStrip = this.trayMenu;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
-            this.trayIcon.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_Status_StartingUp;
+            this.trayIcon.Text = global::LastFM.Common.Localization.LocalizationStrings.NotificationThread_Status_WaitingToScrobble;
             // 
             // statusStrip1
             // 

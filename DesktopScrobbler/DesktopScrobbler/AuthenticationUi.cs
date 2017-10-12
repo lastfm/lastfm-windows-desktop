@@ -22,8 +22,21 @@ namespace DesktopScrobbler
         // An internal timer for checking the Last.fm API for when a user successfully authenticates and authorizes the application
         private Timer _authCheckTimer = null;
 
+        // The form that created this one, so that we can put out notifications and align them
+        // with the correct owner
+        private Form _owner;
+
         public AuthenticationUi()
         {
+            InitializeComponent();
+        }
+
+        // Constructor that specifies the form that created this one, so that we can put out notifications and align them
+        // with the correct owner
+        public AuthenticationUi(Form owner)
+        {
+            _owner = owner;
+
             InitializeComponent();
         }
 
@@ -83,7 +96,7 @@ namespace DesktopScrobbler
                 this.DialogResult = DialogResult.OK;
 
                 // Display a popup notification telling the user that we are running as them
-                NotificationHelper.ShowNotification(this, Core.APPLICATION_TITLE, string.Format(LocalizationStrings.PopupNotifications_SuccessfullyAuthorized, sessionToken.Name));
+                NotificationHelper.ShowNotification(_owner, Core.APPLICATION_TITLE, string.Format(LocalizationStrings.PopupNotifications_SuccessfullyAuthorized, sessionToken.Name));
 
                 // Close this form
                 this.Close();

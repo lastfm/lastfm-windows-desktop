@@ -45,7 +45,7 @@ namespace LastFM.Common.Helpers
                 // Warning: this could be potentially stealing focus....
                 notificationWindow.TopMost = true;
 
-                owner.Invoke(new MethodInvoker(() =>
+                owner.BeginInvoke(new MethodInvoker(() =>
                 {
                     // Determine what the screen size is of the screen where the specified form is currently located
                     var workingArea = Screen.GetWorkingArea(owner);

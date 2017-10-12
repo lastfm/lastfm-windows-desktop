@@ -167,7 +167,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)\BuildTask\bin\debug\VersionIncrementBuildTask.exe" "$(SolutionPath);23/09/2017;3</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(TargetPath)"</PostBuildEvent>

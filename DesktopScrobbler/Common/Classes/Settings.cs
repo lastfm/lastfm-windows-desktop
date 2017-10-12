@@ -34,8 +34,8 @@ namespace LastFM.Common
         public bool ShowNotifications { get; set; } = true;
 
         // Whether or not the application should show a popup notification for the track changed status
-        // Off by default, and NOT accessible from the current Ui, but still in use if you manually change the settings file)
-        public bool? ShowTrackChanges { get; set; } = false;
+        // On by default, and NOT accessible from the current Ui, but still in use if you manually change the settings file)
+        public bool? ShowTrackChanges { get; set; } = true;
 
         // Whether or not the application should show a popup notification for when a scrobble is sent to the Last.fm API
         // Off by default, and NOT accessible from the current Ui, but still in use if you manually change the settings file)

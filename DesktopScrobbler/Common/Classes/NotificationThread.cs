@@ -457,7 +457,7 @@ namespace LastFM.Common.Classes
             {
                 _currentMediaItem = mediaItem;
 
-                if (Core.Settings.ShowNotifications && (Core.Settings.ShowTrackChanges == null || Core.Settings.ShowTrackChanges == true))
+                if (Core.Settings.ShowNotifications)
                 {
                     string notificationText = string.Format(LocalizationStrings.PopupNotifications_TrackChanged, MediaHelper.GetTrackDescription(_currentMediaItem));
 

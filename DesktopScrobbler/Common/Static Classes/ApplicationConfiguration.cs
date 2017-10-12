@@ -4,6 +4,7 @@ using System.Linq;
 using LastFM.Common.Classes;
 using LastFM.Common.Factories;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace LastFM.Common
 {
@@ -27,21 +28,12 @@ namespace LastFM.Common
             {
                 // Read the contents of the settings file (from %appdata%)
                 string settingsFileContent = File.ReadAllText($"{Core.UserSettingsPath}{Core.FILENAME_SETTINGS}");
-
-                if (!string.IsNullOrEmpty(settingsFileContent))
-                {
-                    // Try and deserialize them
-                    Settings = JsonConvert.DeserializeObject<Settings>(settingsFileContent);
-                }
+                Settings = JsonConvert.DeserializeObject<Settings>(settingsFileContent);
             }
             catch (Exception ex)
             {
-                // Not much we can do if we can't read the settings file....
-                Settings = new Settings();
-
-                // Check the plugins have an appropriate default 'enabled' state registered in the settings
-                // (in case new plugins are loaded)
-                CheckPluginDefaultStatus();
+                // Not much we can do if we can't read the settings file (or it's corrupt)
+                Settings = new Settings() { ScrobblerStatus = new List<ScrobblerSourceStatus>() };
             }
         }
 
@@ -59,8 +51,8 @@ namespace LastFM.Common
             // Check to see if anything has been configured already, if not, add our two defaults
             if (Settings.ScrobblerStatus.Count == 0)
             {
-                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = iTunesSource.SourceIdentifier, IsEnabled = true });
-                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = windowsMediaSource.SourceIdentifier, IsEnabled = false });
+                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = iTunesSource.SourceIdentifier, IsEnabled = false });
+                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = windowsMediaSource.SourceIdentifier, IsEnabled = true });
             }
 
             // Now iterate all plugins (in case any others have been loaded) and default them to being off

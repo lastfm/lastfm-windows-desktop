@@ -436,7 +436,7 @@ namespace DesktopScrobbler
         {
             this.BeginInvoke(new MethodInvoker(() =>
             {
-                // Hide the (obsolete) 'Log Lin' link
+                // Hide the (obsolete) 'Log In' link
                 linkLogIn.Visible = false;
 
                 // If the current state shows that the user has a connection to the Last.fm API

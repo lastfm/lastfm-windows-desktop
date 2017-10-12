@@ -22,7 +22,7 @@ namespace LastFM.ApiClient
         // The API key given by the API website
         private string _apiKey = string.Empty;
 
-        // The API secret given by the API webstie
+        // The API secret given by the API website
         private string _apiSecret = string.Empty;
 
         // The base URL for the requests

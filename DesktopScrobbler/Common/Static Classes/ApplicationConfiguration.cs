@@ -51,8 +51,8 @@ namespace LastFM.Common
             // Check to see if anything has been configured already, if not, add our two defaults
             if (Settings.ScrobblerStatus.Count == 0)
             {
-                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = iTunesSource.SourceIdentifier, IsEnabled = true });
-                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = windowsMediaSource.SourceIdentifier, IsEnabled = false });
+                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = iTunesSource.SourceIdentifier, IsEnabled = false });
+                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = windowsMediaSource.SourceIdentifier, IsEnabled = true });
             }
 
             // Now iterate all plugins (in case any others have been loaded) and default them to being off

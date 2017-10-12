@@ -475,6 +475,7 @@ namespace LastFM.Common.Classes
                 this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+                    trayIcon.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
 
                     if ((LoveStatus)stripLoveTrack.Tag == LoveStatus.Love)
                     {
@@ -492,6 +493,7 @@ namespace LastFM.Common.Classes
                 {
                     mnuNowPlaying.Text = LocalizationStrings.NotificationThread_NowPlayingDefault;
                     mnuLoveThisTrack.Text = LocalizationStrings.NotificationThread_TrayMenu_Love_this_Track;
+                    ShowScrobbleState(); // updates tray icon to default
                 }));
             }
 
@@ -510,6 +512,7 @@ namespace LastFM.Common.Classes
                 this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
+                    trayIcon.Text = string.Format(LocalizationStrings.ScrobblerUi_CurrentTrack, MediaHelper.GetTrackDescription(mediaItem));
                 }));
             }
             else
@@ -517,6 +520,7 @@ namespace LastFM.Common.Classes
                 this.BeginInvoke(new MethodInvoker(() =>
                 {
                     mnuNowPlaying.Text = LocalizationStrings.NotificationThread_NowPlayingDefault;
+                    ShowScrobbleState(); // updates tray icon to default
                 }));
             }
         }

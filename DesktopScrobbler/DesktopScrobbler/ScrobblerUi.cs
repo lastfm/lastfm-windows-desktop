@@ -490,11 +490,13 @@ namespace DesktopScrobbler
                     RefreshOnlineStatus(OnlineState.Offline);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // There was probably a problem communicating with the Last.fm API, most likely because there was no connection
                 RefreshOnlineStatus(OnlineState.Offline);
                 SetStatus(LocalizationStrings.ScrobblerUi_Status_ConnectionToLastfmNotAvailable);
+
+                MessageBox.Show(this, $"Failed to correctly ascertain the user due to an error: \r\n{ex.Message}", "Failed to authenticate as user", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

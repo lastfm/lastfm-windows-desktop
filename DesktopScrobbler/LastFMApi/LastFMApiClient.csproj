@@ -55,6 +55,7 @@
     <Compile Include="Models\AuthenticationToken.cs" />
     <Compile Include="LastFMClient.cs" />
     <Compile Include="Models\CorrectedStatus.cs" />
+    <Compile Include="Models\ResponseError.cs" />
     <Compile Include="Models\IgnoredMessage.cs" />
     <Compile Include="Models\ImageMedia.cs" />
     <Compile Include="Models\MediaItem.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponseException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

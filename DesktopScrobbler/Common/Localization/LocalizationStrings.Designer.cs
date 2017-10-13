@@ -19,7 +19,7 @@ namespace LastFM.Common.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class LocalizationStrings {
@@ -405,6 +405,15 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This version of the application has been disabled by Last.fm.  Please install a newer version..
+        /// </summary>
+        public static string ScrobberlUi_ApplicationDisabledByLastFm {
+            get {
+                return ResourceManager.GetString("ScrobberlUi_ApplicationDisabledByLastFm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current track: {0}.
         /// </summary>
         public static string ScrobblerUi_CurrentTrack {
@@ -563,6 +572,15 @@ namespace LastFM.Common.Localization {
         public static string ScrobblerUi_TermsOfUse {
             get {
                 return ResourceManager.GetString("ScrobblerUi_TermsOfUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to correctly ascertain the user due to an error: \r\n{0}.
+        /// </summary>
+        public static string ScrobblerUi_UserAuthenticationFailed {
+            get {
+                return ResourceManager.GetString("ScrobblerUi_UserAuthenticationFailed", resourceCulture);
             }
         }
         

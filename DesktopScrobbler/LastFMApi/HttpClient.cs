@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Web;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
+using LastFM.ApiClient.Models;
 
 namespace LastFM.ApiClient
 {
@@ -30,6 +31,8 @@ namespace LastFM.ApiClient
 
         // The private user-agent string being passed to the API
         private const string _userAgentString = "Last.fm Desktop Scrobbler v";
+
+        public ResponseError LastErrorResponse { get; set; }
 
         // A helper function to automatically determine the version number of the application using the API client
         public string GetApplicationVersionNumber()
@@ -147,6 +150,13 @@ namespace LastFM.ApiClient
                 {
                     // Try to deserialize the response as the JSON object type requested
                     instance = JsonConvert.DeserializeObject<T>(responseString);
+                }
+                else
+                {
+                    // Convert the response into an appropriate Last.fm error code
+                    this.LastErrorResponse = JsonConvert.DeserializeObject<ResponseError>(responseString);
+
+                    throw new ResponseException();
                 }
             }
 

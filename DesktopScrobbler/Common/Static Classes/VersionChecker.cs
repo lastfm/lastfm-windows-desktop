@@ -128,12 +128,12 @@ namespace LastFM.Common.Static_Classes
 
             if (pageH3s != null)
             {
-                // The first one that has a 'Zip' file as its source, is our upgrade file
-                var firstZipLink = pageH3s.Select(h3 => h3.Descendants("a").FirstOrDefault(a => a.Attributes["href"] != null && a.Attributes["href"].Value != null && a.Attributes["href"].Value.ToLower().Contains(".zip"))).FirstOrDefault(item => item != null);
+                // The first one that has a 'Msi' file as its source, is our upgrade file
+                var firstMsiLink = pageH3s.Select(h3 => h3.Descendants("a").FirstOrDefault(a => a.Attributes["href"] != null && a.Attributes["href"].Value != null && a.Attributes["href"].Value.ToLower().Contains(".msi"))).FirstOrDefault(item => item != null);
 
-                if (firstZipLink != null)
+                if (firstMsiLink != null)
                 {
-                    List<string> linkText = firstZipLink.InnerText.Split(' ').ToList();
+                    List<string> linkText = firstMsiLink.InnerText.Split(' ').ToList();
                     if (linkText.Count >= 3)
                     {
                         // Use the link text to get the version number
@@ -150,7 +150,7 @@ namespace LastFM.Common.Static_Classes
                         {
                             state.IsNewVersion = true;
                             state.Version = webVersionInfo;
-                            state.Url = firstZipLink.Attributes["href"].Value;
+                            state.Url = firstMsiLink.Attributes["href"].Value;
                         }
                     }
                 }

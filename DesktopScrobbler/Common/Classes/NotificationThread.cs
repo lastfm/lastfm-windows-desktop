@@ -77,6 +77,8 @@ namespace LastFM.Common.Classes
             set { _apiClient = value; }
         }
 
+        protected bool IsApplicationClosing => _userExiting;
+
         // Default constructor for the Ui
         public NotificationThread()
         {
@@ -342,6 +344,9 @@ namespace LastFM.Common.Classes
 
             if (canCloseApp)
             {
+                // Make sure the application is aware that it's closing
+                _userExiting = true;
+
                 // Remove the icon from the tray
                 trayIcon.Visible = false;
                 trayIcon.Dispose();

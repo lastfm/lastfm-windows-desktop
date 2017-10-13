@@ -436,6 +436,9 @@ namespace DesktopScrobbler
             {
                 // Make an initial connection to get the user profile (to validate there is a connection)
                 DisplayCurrentUser();
+
+                // Show the Last.fm scrobbler icon in the system tray
+                base.ShowTrayIcon();
             }
         }
 
@@ -506,16 +509,28 @@ namespace DesktopScrobbler
                 {
                     if (lastError.Error == ReasonCodes.ErrorCode.InvalidAPIKey || lastError.Error == ReasonCodes.ErrorCode.SuspendedAPI)
                     {
+                        // Cross-thread invokation circumvention
                         this.Invoke(new MethodInvoker(() =>
                         {
+                            // Don't perform post start-up operations
                             _applicationStartupDenied = true;
+
+                            // Remove the tray icon, which by now is available
+                            base.HideTrayIcon();
+
+                            // Display the application in the taskbar so that the user is aware that something might be up
                             this.ShowInTaskbar = true;
+
+                            // Show a message box telling the user of imending doom
                             MessageBox.Show(LocalizationStrings.ScrobberlUi_ApplicationDisabledByLastFm, Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                            // Quit the application gracefully
                             ExitApplication();
                         }));
                     }
                     else if (lastError.Error == ReasonCodes.ErrorCode.InvalidSessionKey)
                     {
+                        // Cross-thread invokation circumvention
                         this.Invoke(new MethodInvoker(() =>
                         {
                             // Clear the current user session details
@@ -546,9 +561,6 @@ namespace DesktopScrobbler
                 if (!base.IsApplicationClosing)
                 {
                     ShowIdleStatus();
-
-                    // Show the Last.fm scrobbler icon in the system tray
-                    base.ShowTrayIcon();
                 }
             }
         }

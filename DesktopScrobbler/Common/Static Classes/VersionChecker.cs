@@ -133,11 +133,13 @@ namespace LastFM.Common.Static_Classes
 
                 if (firstZipLink != null)
                 {
-                    List<string> linkText = firstZipLink.InnerText.Split(' ').ToList();
-                    if (linkText.Count >= 3)
+                    var linkVersion = firstZipLink.Attributes["data-version"];
+
+                    //List<string> linkText = firstZipLink.InnerText.Split(' ').ToList();
+                    if (linkVersion?.Value != null)
                     {
                         // Use the link text to get the version number
-                        string webVersionInfo = linkText[1];
+                        string webVersionInfo = linkVersion.Value;
 
                         // Get the current version number (note the process DOESN'T take into account revisions...)
                         string appVersionInfo = ApplicationUtility.BuildVersion();

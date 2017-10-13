@@ -496,7 +496,7 @@ namespace DesktopScrobbler
                 RefreshOnlineStatus(OnlineState.Offline);
                 SetStatus(LocalizationStrings.ScrobblerUi_Status_ConnectionToLastfmNotAvailable);
 
-                MessageBox.Show(this, $"Failed to correctly ascertain the user due to an error: \r\n{ex.Message}", "Failed to authenticate as user", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, string.Format(LocalizationStrings.ScrobblerUi_UserAuthenticationFailed, ex.Message), Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

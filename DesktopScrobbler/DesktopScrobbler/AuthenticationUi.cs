@@ -96,7 +96,7 @@ namespace DesktopScrobbler
                 this.DialogResult = DialogResult.OK;
 
                 // Display a popup notification telling the user that we are running as them
-                NotificationHelper.ShowNotification(_owner, Core.APPLICATION_TITLE, string.Format(LocalizationStrings.PopupNotifications_SuccessfullyAuthorized, sessionToken.Name));
+                NotificationHelper.ShowNotificationSynch(_owner, Core.APPLICATION_TITLE, string.Format(LocalizationStrings.PopupNotifications_SuccessfullyAuthorized, sessionToken.Name));
 
                 // Close this form
                 this.Close();

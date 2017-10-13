@@ -47,67 +47,90 @@ namespace LastFM.Common.Helpers
 
                 owner.BeginInvoke(new MethodInvoker(() =>
                 {
-                    // Determine what the screen size is of the screen where the specified form is currently located
-                    var workingArea = Screen.GetWorkingArea(owner);
-
-                    // Get the total height of all the open notifications displayed to find out where the bottom point point
-                    // for the new window will be
-                    var totalDisplayWindowHeight = (notificationWindow.Height * _notifications.Count) + (5 * _notifications.Count);
-
-                    // Determine the 'Y' co-ordinate of the new notification
-                    var newWindowTopPoint = ((workingArea.Top + workingArea.Height) - totalDisplayWindowHeight) - (notificationWindow.Height + 5);
-
-                    // Deteremine the 'X' co-ordinate of the new notification
-                    var newWindowLeftpoint = (workingArea.Left + workingArea.Width) - (notificationWindow.Width + 11); //workingArea.Width;
-
-                    // Determine how wide (in case of DPI changes) the notification should be
-                    // (note this may be a redundant step)
-                    var widthToSet = notificationWindow.Width;
-
-                    // By default, make the notification window 'zero' size as we're using a 'expanding window' transition
-                    //notificationWindow.Width = 0;
-                    notificationWindow.Opacity = 0.0;
-
-                    // Move it to the bottom right
-                    SetWindowPos(notificationWindow.Handle, HWND_TOPMOST, newWindowLeftpoint, newWindowTopPoint, notificationWindow.Width, notificationWindow.Height, SWP_NOACTIVATE);
-
-                    // Display the notification with no focus
-                    ShowWindow(notificationWindow.Handle, SW_SHOWNOACTIVATE);
-
-                    // Add this notification to the displayed notifications stack
-                    _notifications.Add(notificationWindow);
-
-                    // Start a new 'display the window' transition
-                    Transition showingAnimation = new Transition(new TransitionType_Deceleration(500));
-                    showingAnimation.Tag = notificationWindow;
-
-                    // Define what to do when the transition has completed
-                    showingAnimation.TransitionCompletedEvent += async (o, ev) =>
-                    {
-                        Transition completedTransition = o as Transition;
-                        if (completedTransition != null)
-                        {
-                            // Remove the transition from the queue as it has completed
-                            _runningTransitions.Remove(completedTransition);
-
-                            // Raise the delegate event for successful completion of the 'displaying' transition
-                            Notification_OnShownComplete(completedTransition.Tag as PopupNotificationUi);
-                        }
-                    };
-
-                    // Add the transition to the transitions queue (so that if we close the application we can stop all the transitions from running)
-                    _runningTransitions.Add(showingAnimation);
-
-                    // This was in place when the transition used to be 'Slide in the notification from the bottom right of the current window'
-                    //showingAnimation.add(notificationWindow, "Left", newWindowLeftpoint - (notificationWindow.Width + 11));
-
-                    // Where the notification window is displayed, change the window size incremently until it's reached the maximum size
-                    showingAnimation.add(notificationWindow, "Opacity", 1.0);
-
-                    // Run the 'Display' transition
-                    showingAnimation.run();
+                    DisplayNotification(owner, notificationWindow);
                 }));
             }
+        }
+
+        public static void ShowNotificationSynch(Form owner, string title, string notificationText)
+        {
+            // Only run transitions and display popups if the application isn't shutting down
+            if (!Core.ApplicationIsShuttingDown)
+            {
+                // Create a new popup window
+                PopupNotificationUi notificationWindow = new PopupNotificationUi(title, notificationText);
+
+                // Warning: this could be potentially stealing focus....
+                notificationWindow.TopMost = true;
+
+                owner.Invoke(new MethodInvoker(() =>
+                {
+                    DisplayNotification(owner, notificationWindow);
+                }));
+            }
+        }
+
+        private static void DisplayNotification(Form owner, PopupNotificationUi notificationWindow)
+        {
+            // Determine what the screen size is of the screen where the specified form is currently located
+            var workingArea = Screen.GetWorkingArea(owner);
+
+            // Get the total height of all the open notifications displayed to find out where the bottom point point
+            // for the new window will be
+            var totalDisplayWindowHeight = (notificationWindow.Height * _notifications.Count) + (5 * _notifications.Count);
+
+            // Determine the 'Y' co-ordinate of the new notification
+            var newWindowTopPoint = ((workingArea.Top + workingArea.Height) - totalDisplayWindowHeight) - (notificationWindow.Height + 5);
+
+            // Deteremine the 'X' co-ordinate of the new notification
+            var newWindowLeftpoint = (workingArea.Left + workingArea.Width) - (notificationWindow.Width + 11); //workingArea.Width;
+
+            // Determine how wide (in case of DPI changes) the notification should be
+            // (note this may be a redundant step)
+            var widthToSet = notificationWindow.Width;
+
+            // By default, make the notification window 'zero' size as we're using a 'expanding window' transition
+            //notificationWindow.Width = 0;
+            notificationWindow.Opacity = 0.0;
+
+            // Move it to the bottom right
+            SetWindowPos(notificationWindow.Handle, HWND_TOPMOST, newWindowLeftpoint, newWindowTopPoint, notificationWindow.Width, notificationWindow.Height, SWP_NOACTIVATE);
+
+            // Display the notification with no focus
+            ShowWindow(notificationWindow.Handle, SW_SHOWNOACTIVATE);
+
+            // Add this notification to the displayed notifications stack
+            _notifications.Add(notificationWindow);
+
+            // Start a new 'display the window' transition
+            Transition showingAnimation = new Transition(new TransitionType_Deceleration(500));
+            showingAnimation.Tag = notificationWindow;
+
+            // Define what to do when the transition has completed
+            showingAnimation.TransitionCompletedEvent += async (o, ev) =>
+            {
+                Transition completedTransition = o as Transition;
+                if (completedTransition != null)
+                {
+                    // Remove the transition from the queue as it has completed
+                    _runningTransitions.Remove(completedTransition);
+
+                    // Raise the delegate event for successful completion of the 'displaying' transition
+                    Notification_OnShownComplete(completedTransition.Tag as PopupNotificationUi);
+                }
+            };
+
+            // Add the transition to the transitions queue (so that if we close the application we can stop all the transitions from running)
+            _runningTransitions.Add(showingAnimation);
+
+            // This was in place when the transition used to be 'Slide in the notification from the bottom right of the current window'
+            //showingAnimation.add(notificationWindow, "Left", newWindowLeftpoint - (notificationWindow.Width + 11));
+
+            // Where the notification window is displayed, change the window size incremently until it's reached the maximum size
+            showingAnimation.add(notificationWindow, "Opacity", 1.0);
+
+            // Run the 'Display' transition
+            showingAnimation.run();
         }
 
         // Delegate function used when a popup notification has successfully completed displaying

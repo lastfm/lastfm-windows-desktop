@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ITunesScrobblePlugin;
 using LastFM.ApiClient;
+using LastFM.ApiClient.Enums;
 using LastFM.ApiClient.Models;
 using LastFM.Common;
 using LastFM.Common.Static_Classes;
@@ -45,6 +46,9 @@ namespace DesktopScrobbler
 
         // The Last.fm logo in its disabled state (greyscale)
         private Image _greyStateLogo = null;
+
+        // Tracking if the application was allowed to start
+        private bool _applicationStartupDenied = false;
 
         // Constructor for the user interface
         public ScrobblerUi()
@@ -236,20 +240,8 @@ namespace DesktopScrobbler
                 // Disable scrobbling
                 ScrobbleFactory.ScrobblingEnabled = false;
 
-                // Modify the settings and de-authorize the application
-                Core.Settings.UserHasAuthorizedApp = false;
-
-                // Clear the stored session token
-                Core.Settings.SessionToken = string.Empty;
-
-                // Clear the stored username
-                Core.Settings.Username = string.Empty;
-
-                // Save the current settings file
-                Core.SaveSettings();
-
-                // Clear the token state of the API Client
-                base.APIClient.LoggedOut();
+                // Clear the current user session details
+                ResetUserSessionStateToDefault();
 
                 // Refresh the user interface to reflect the current logged in state
                 RefreshOnlineStatus(OnlineState.Offline);
@@ -257,6 +249,25 @@ namespace DesktopScrobbler
                 // Run the authentication loop again (in case they want to switch users)
                 Startup(true);
             }
+        }
+
+        // Clear the current user session details and save an updated settings file to invalidate the current session key
+        private void ResetUserSessionStateToDefault()
+        {
+            // Modify the settings and de-authorize the application
+            Core.Settings.UserHasAuthorizedApp = false;
+
+            // Clear the stored session token
+            Core.Settings.SessionToken = string.Empty;
+
+            // Clear the stored username
+            Core.Settings.Username = string.Empty;
+
+            // Save the current settings file
+            Core.SaveSettings();
+
+            // Clear the token state of the API Client
+            base.APIClient.LoggedOut();
         }
 
         // Method used to display the users profile when they click on the 'View your profile link' (now redundant)
@@ -423,9 +434,6 @@ namespace DesktopScrobbler
             // If the user has authorized the application
             if (Core.Settings.UserHasAuthorizedApp)
             {
-                // Show the Last.fm scrobbler icon in the system tray
-                base.ShowTrayIcon();
-
                 // Make an initial connection to get the user profile (to validate there is a connection)
                 DisplayCurrentUser();
             }
@@ -490,17 +498,58 @@ namespace DesktopScrobbler
                     RefreshOnlineStatus(OnlineState.Offline);
                 }
             }
+            catch (ResponseException rEx)
+            {
+                ResponseError lastError = base.APIClient?.LastErrorResponse;
+
+                if (lastError != null)
+                {
+                    if (lastError.Error == ReasonCodes.ErrorCode.InvalidAPIKey || lastError.Error == ReasonCodes.ErrorCode.SuspendedAPI)
+                    {
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            _applicationStartupDenied = true;
+                            this.ShowInTaskbar = true;
+                            MessageBox.Show(LocalizationStrings.ScrobberlUi_ApplicationDisabledByLastFm, Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            ExitApplication();
+                        }));
+                    }
+                    else if (lastError.Error == ReasonCodes.ErrorCode.InvalidSessionKey)
+                    {
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            // Clear the current user session details
+                            ResetUserSessionStateToDefault();
+
+                            // Refresh the user interface to reflect the current logged in state
+                            RefreshOnlineStatus(OnlineState.Offline);
+
+                            // Run the authentication loop again (in case they want to switch users)
+                            Startup(true);
+                        }));
+                    }
+                }
+            }
             catch (Exception ex)
             {
                 // There was probably a problem communicating with the Last.fm API, most likely because there was no connection
                 RefreshOnlineStatus(OnlineState.Offline);
                 SetStatus(LocalizationStrings.ScrobblerUi_Status_ConnectionToLastfmNotAvailable);
 
-                MessageBox.Show(this, string.Format(LocalizationStrings.ScrobblerUi_UserAuthenticationFailed, ex.Message), Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    MessageBox.Show(this, string.Format(LocalizationStrings.ScrobblerUi_UserAuthenticationFailed, ex.Message), Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }));
             }
             finally
             {
-                ShowIdleStatus();
+                if (!base.IsApplicationClosing)
+                {
+                    ShowIdleStatus();
+
+                    // Show the Last.fm scrobbler icon in the system tray
+                    base.ShowTrayIcon();
+                }
             }
         }
 

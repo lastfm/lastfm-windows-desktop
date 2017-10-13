@@ -366,4 +366,8 @@ Click on 'Log In' to open Last.fm, then click on 'Yes, allow access' in the brow
     <value>Failed to correctly ascertain the user due to an error: \r\n{0}</value>
     <comment>ScrobblerUi: Message body displayed if an exception occurs whilst trying to display the current user details</comment>
   </data>
+  <data name="ScrobberlUi_ApplicationDisabledByLastFm" xml:space="preserve">
+    <value>This version of the application has been disabled by Last.fm.  Please install a newer version.</value>
+    <comment>Scrobbler Ui: Message body displayed when the user is using an application that has an invalid session key</comment>
+  </data>
 </root>

@@ -405,6 +405,15 @@ namespace LastFM.Common.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This version of the application has been disabled by Last.fm.  Please install a newer version..
+        /// </summary>
+        public static string ScrobberlUi_ApplicationDisabledByLastFm {
+            get {
+                return ResourceManager.GetString("ScrobberlUi_ApplicationDisabledByLastFm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current track: {0}.
         /// </summary>
         public static string ScrobblerUi_CurrentTrack {

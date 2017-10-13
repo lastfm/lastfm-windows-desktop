@@ -45,14 +45,14 @@ namespace LastFM.Common
         {
             // The Last.fm preferred configuration for this application is to have iTunes on by default, and Windows Media Player disabled
             // This is because this application exists to solve the problem that iTunes broke their event driven model, by removing the events.
-            IScrobbleSource windowsMediaSource = ScrobbleFactory.ScrobblePlugins.FirstOrDefault(plugin => plugin.SourceIdentifier == Guid.Parse("a458e8af-4282-4bd7-8894-14969c63a7d5"));
-            IScrobbleSource iTunesSource = ScrobbleFactory.ScrobblePlugins.FirstOrDefault(plugin => plugin.SourceIdentifier == Guid.Parse("7471fa52-0007-43c9-a644-945fbc7f5897"));
+            IScrobbleSource iTunesSource = ScrobbleFactory.ScrobblePlugins.FirstOrDefault(plugin => plugin.SourceIdentifier == Guid.Parse("a458e8af-4282-4bd7-8894-14969c63a7d5"));
+            IScrobbleSource windowsMediaSource = ScrobbleFactory.ScrobblePlugins.FirstOrDefault(plugin => plugin.SourceIdentifier == Guid.Parse("7471fa52-0007-43c9-a644-945fbc7f5897"));
 
             // Check to see if anything has been configured already, if not, add our two defaults
             if (Settings.ScrobblerStatus.Count == 0)
             {
-                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = iTunesSource.SourceIdentifier, IsEnabled = false });
-                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = windowsMediaSource.SourceIdentifier, IsEnabled = true });
+                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = iTunesSource.SourceIdentifier, IsEnabled = true });
+                Settings.ScrobblerStatus.Add(new ScrobblerSourceStatus() { Identifier = windowsMediaSource.SourceIdentifier, IsEnabled = false });
             }
 
             // Now iterate all plugins (in case any others have been loaded) and default them to being off

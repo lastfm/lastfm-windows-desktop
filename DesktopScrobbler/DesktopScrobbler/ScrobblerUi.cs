@@ -542,7 +542,7 @@ namespace DesktopScrobbler
             if (_authUi == null)
             {
                 // Create a new instance of the Ui, and pass it the API client
-                _authUi = new AuthenticationUi();
+                _authUi = new AuthenticationUi(this);
                 _authUi.StartPosition = FormStartPosition.CenterScreen;
                 _authUi.ApiClient = base.APIClient;
             }

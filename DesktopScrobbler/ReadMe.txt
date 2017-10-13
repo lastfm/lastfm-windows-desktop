@@ -142,3 +142,5 @@ Notes on Building a Production Version
    The build process will update the AssemblyInfo files to be based on today's date, but will not change the installer - and you probably want them the same anyway.
 5. you might find it helps to do "git update-index --assume-unchanged */*/*/APIDetails.cs */*/*/AssemblyInfo.cs" so you don't have too much crap to check in.
    NEVER COMMIT THE API DETAILS, OBVIOUSLY ;)
+6. You need to upload both the .msi (for the downloads page) and a zip containing the .msi AND setup.exe, for the updates page.
+

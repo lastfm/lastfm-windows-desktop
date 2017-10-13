@@ -362,4 +362,8 @@ Click on 'Log In' to open Last.fm, then click on 'Yes, allow access' in the brow
     <value>Now Playing...</value>
     <comment>NotificationUi:Now playing menu item default text</comment>
   </data>
+  <data name="ScrobblerUi_UserAuthenticationFailed" xml:space="preserve">
+    <value>Failed to correctly ascertain the user due to an error: \r\n{0}</value>
+    <comment>ScrobblerUi: Message body displayed if an exception occurs whilst trying to display the current user details</comment>
+  </data>
 </root>

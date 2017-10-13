@@ -490,11 +490,13 @@ namespace DesktopScrobbler
                     RefreshOnlineStatus(OnlineState.Offline);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // There was probably a problem communicating with the Last.fm API, most likely because there was no connection
                 RefreshOnlineStatus(OnlineState.Offline);
                 SetStatus(LocalizationStrings.ScrobblerUi_Status_ConnectionToLastfmNotAvailable);
+
+                MessageBox.Show(this, string.Format(LocalizationStrings.ScrobblerUi_UserAuthenticationFailed, ex.Message), Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

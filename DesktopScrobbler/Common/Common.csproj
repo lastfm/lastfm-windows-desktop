@@ -144,6 +144,10 @@
       <Project>{9056D2CC-A14E-42BF-84B9-8F357A1B8B8E}</Project>
       <Name>LastFMApiClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{8d19eb24-fe74-4dc4-9c3c-1a454a3eea82}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transitions\Transitions.csproj">
       <Project>{95CDE461-0720-4C3B-B5E1-D188391FB7C0}</Project>
       <Name>Transitions</Name>

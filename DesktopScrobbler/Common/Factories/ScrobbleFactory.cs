@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using LastFM.Common.Helpers;
 using LastFM.Common.Localization;
 using Newtonsoft.Json;
 
@@ -37,6 +38,9 @@ namespace LastFM.Common.Factories
 
         // A hook to the base User Interface
         private static NotificationThread _uiThread = null;
+
+        // Path and name of the debugging log file
+        private static string _logFilePathAndFilename = string.Empty;
 
         // Method definition for notifying the factory a plugin has started monitoring a media item
         public delegate void TrackMonitoringStarted(MediaItem mediaItem, bool wasResumed);
@@ -105,10 +109,11 @@ namespace LastFM.Common.Factories
         }
 
         // Entry point for the Scrobbler.  Accepts the API client and user interfaces instances in use.
-        public static async Task Initialize(LastFMClient lastFMClient, NotificationThread uiThread)
+        public static async Task Initialize(LastFMClient lastFMClient, NotificationThread uiThread, string logFilePathAndFilename)
         {
             _uiThread = uiThread;
             _lastFMClient = lastFMClient;
+            _logFilePathAndFilename = logFilePathAndFilename;
 
             // Initialize the plugins, irrespective of enabled state
             foreach (IScrobbleSource source in ScrobblePlugins)
@@ -136,15 +141,18 @@ namespace LastFM.Common.Factories
         {
             mediaItem.StartedPlaying = DateTime.Now;
 
+            Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Detected new track playing: {MediaHelper.GetTrackDescription(mediaItem)}");
+
             _uiThread.TrackMonitoringStarted(mediaItem, wasResumed);
 
             try
             {
                 _lastFMClient.SendMonitoringStatusChanged(mediaItem, LastFMClient.MonitoringStatus.StartedMonitoring).ConfigureAwait(false);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // No connection available...
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send new track playing status to Last.fm due to an error: {ex.Message}");
             }
 
             var loveStatus = await GetLoveStatus(mediaItem).ConfigureAwait(false);
@@ -157,14 +165,17 @@ namespace LastFM.Common.Factories
 
             try
             {
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Getting Love status for: {MediaHelper.GetTrackDescription(mediaItem)}");
+
                 // Get the current love status from the API
                 responseObject = await _lastFMClient.GetLoveStatus(mediaItem).ConfigureAwait(false);
 
                 // Pass the current love status back to the user interface
                 _uiThread.ResetLoveTrackState(Convert.ToBoolean(responseObject?.Info?.UserLoved) ? LastFMClient.LoveStatus.Unlove : LastFMClient.LoveStatus.Love);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to get love status from Last.fm due to an error: {ex.Message}");
             }
 
             return responseObject;
@@ -173,8 +184,18 @@ namespace LastFM.Common.Factories
         // Method use to notify the user interface, and the Last.fm API (undocumented method) that a plugin has stopped monitoring a media item
         private static void ScrobbleSource_OnTrackMonitoringEnded(MediaItem mediaItem)
         {
-            // Notify ell the API monitoring has stopped
-            _lastFMClient.SendMonitoringStatusChanged(mediaItem, LastFMClient.MonitoringStatus.StoppedMonitoring);
+            try
+            {
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Detected track ended: {MediaHelper.GetTrackDescription(mediaItem)}");
+
+                // Notify ell the API monitoring has stopped
+                _lastFMClient.SendMonitoringStatusChanged(mediaItem, LastFMClient.MonitoringStatus.StoppedMonitoring);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send track playing removal status to Last.fm due to an error: {ex.Message}");
+            }
 
             // Notify the user interface monitoring has stopped
             _uiThread.TrackMonitoringEnded(mediaItem);
@@ -227,6 +248,8 @@ namespace LastFM.Common.Factories
                             {
                                 // Ensure the media is split up into groups of 50
                                 List<MediaItem> scrobbleBatch = sourceMedia.Take(50).ToList();
+
+                                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Scrobbling {scrobbleBatch.Count} item(s) for scrobbling...");
 
                                 // Send the scrobbles to the API
                                 ScrobbleResponse scrobbleResult = await _lastFMClient.SendScrobbles(scrobbleBatch).ConfigureAwait(false);
@@ -427,15 +450,20 @@ namespace LastFM.Common.Factories
 
                 if (failedItems.Any())
                 {
+                    Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Caching {failedItems.Count} item(s) due to scrobble failure...");
+
                     string fileToWrite = $"{Core.UserCachePath}\\FailedScrobbles_{DateTime.Now:dd_MMM_yyyy}{Core.FAILEDSCROBBLE_LIMITEXCEEDEDFILENAMEEXTENSION}";
                     string dataToWrite = JsonConvert.SerializeObject(failedItems);
+
+                    Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Scrobble data being cached: {dataToWrite}");
 
                     try
                     {
                         File.WriteAllText(fileToWrite, dataToWrite, Encoding.UTF8);
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
+                        Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to write cache data due to an error: {ex.Message}");
                     }
                 }
             }
@@ -446,15 +474,20 @@ namespace LastFM.Common.Factories
         {
             if (scrobbles != null && scrobbles.Any())
             {
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Caching {scrobbles.Count} item(s) due to scrobbling being offline...");
+
                 string fileToWrite = $"{Core.UserCachePath}\\OfflineScrobbles_{DateTime.Now:dd_MMM_yyyy}{Core.FAILEDSCROBBLE_NOCONNECTION}";
                 string dataToWrite = JsonConvert.SerializeObject(scrobbles);
+
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Scrobble data being cached: {dataToWrite}");
 
                 try
                 {
                     File.WriteAllText(fileToWrite, dataToWrite, Encoding.UTF8);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
+                    Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to write cache data due to an error: {ex.Message}");
                 }
             }
         }
@@ -467,12 +500,14 @@ namespace LastFM.Common.Factories
 
             try
             {
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Checking Scrobble online status...");
+
                 currentUser = await _lastFMClient.GetUserInfo(Core.Settings.Username).ConfigureAwait(false);
                 canScrobble = !string.IsNullOrEmpty(currentUser?.Name);
             }
             catch (Exception ex)
             {
-
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to check online status due to an error: {ex.Message}");
             }
 
             OnlineStatusUpdated?.BeginInvoke((canScrobble) ? OnlineState.Online : OnlineState.Offline, currentUser, null, null);

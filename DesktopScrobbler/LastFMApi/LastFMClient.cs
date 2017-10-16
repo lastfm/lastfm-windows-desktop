@@ -16,6 +16,12 @@ namespace LastFM.ApiClient
     // A dedicated API client supporting specific requests used by the Desktop Scrobbler
     public class LastFMClient : HttpClient
     {
+        // Default constructor, modified so that we can support request / response logging
+        public LastFMClient(string logFilePath): base(logFilePath)
+        {
+            _logfilePathAndName = logFilePath;
+        }
+
         // The application name used on the API website
         private string _apiApplicationName = string.Empty;
 
@@ -30,6 +36,8 @@ namespace LastFM.ApiClient
 
         // The API version path
         private string _apiPath = "/2.0/";
+
+        private string _logfilePathAndName = string.Empty;
 
         // The current authentication token
         private AuthenticationToken _authToken = null;
@@ -62,7 +70,7 @@ namespace LastFM.ApiClient
         public string AuthenticationToken => _authToken?.Token;
 
         // The constructor for this API client
-        public LastFMClient(string lastFmBaseUrl, string apiKey, string apiSecret)
+        public LastFMClient(string lastFmBaseUrl, string apiKey, string apiSecret, string logPathAndFilename) : base(logPathAndFilename)
         {
             // Store the api details
             _apiKey = apiKey;
@@ -116,9 +124,10 @@ namespace LastFM.ApiClient
                 // Retrieve the Authentication token without using authentication
                 _authToken = await UnauthenticatedGet<AuthenticationToken>("auth.gettoken", baseParameters.ToArray()).ConfigureAwait(false);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
+                Logger.FileLogger.Write(_logfilePathAndName, "API Client Request", $"Failed to authenticate due to an error: {ex.Message}");
+                Console.WriteLine(ex);
             }
 
             return !string.IsNullOrEmpty(_authToken?.Token);

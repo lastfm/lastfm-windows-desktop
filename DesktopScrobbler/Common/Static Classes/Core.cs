@@ -28,6 +28,9 @@ namespace LastFM.Common
         // The file system path where the application stores cached scrobbles
         public static string UserCachePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Last.fm\\Desktop Scrobbler\\v3\\Cache\\";
 
+        // The file system path where the application stores log files
+        public static string UserLogPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Last.fm\\Desktop Scrobbler\\v3\\Logging\\";
+
         // The Url where the application checks for an updated version
         public const string UpdateUrl = "https://cdn.last.fm/client/Win/update3.html";
 
@@ -44,7 +47,7 @@ namespace LastFM.Common
         public static void InitializeApplication()
         {
             // Check that the necessary application paths exist
-            PathHelper.CheckPaths(UserSettingsPath, UserCachePath, UserDownloadsPath);
+            PathHelper.CheckPaths(UserSettingsPath, UserCachePath, UserDownloadsPath, UserLogPath);
 
             // Initialize the settings sub-system
             ApplicationConfiguration.Initialize();

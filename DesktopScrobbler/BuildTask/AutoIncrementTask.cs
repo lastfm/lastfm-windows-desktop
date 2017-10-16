@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace VersionIncrementBuildTask
@@ -36,19 +38,31 @@ namespace VersionIncrementBuildTask
 
 	         string[] content = File.ReadAllLines(AssemblyInfoPath, Encoding.UTF8);
 
-	         int lineIndex = 0;
+                int lineIndex = 0;
+                bool needsFileVersionAdding = true;
 
-	         foreach (string line in content)
-	         {
-				 if (line.Trim().StartsWith("[assembly: AssemblyVersion"))
-				 {
-					 content[lineIndex] = GetNewVersion(line);
-					 break;
-				 }
-		         lineIndex ++;
-	         }
+                foreach (string line in content)
+                {
+                    if (line.Trim().StartsWith("[assembly: AssemblyVersion"))
+                    {
+                        content[lineIndex] = GetNewVersion(line);
+                    }
+                    else if (line.Trim().StartsWith("[assembly: AssemblyFileVersion"))
+                    {
+                        needsFileVersionAdding = false;
+                        content[lineIndex] = GetNewVersion(line);
+                    }
+                    lineIndex++;
+                }
 
-			File.WriteAllLines(AssemblyInfoPath, content, Encoding.UTF8);
+                if (needsFileVersionAdding)
+                {
+                    List<string> fileLines = content.ToList();
+                    fileLines.Add(GetNewVersion("[assembly: AssemblyFileVersion(\"1.0.0.0\")]"));
+                    content = fileLines.ToArray();
+                }
+
+                File.WriteAllLines(AssemblyInfoPath, content, Encoding.UTF8);
 			}
          catch (Exception ex)
          {

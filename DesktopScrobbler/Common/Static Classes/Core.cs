@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LastFM.Common.Helpers;
 using LastFM.Common.Localization;
 
@@ -44,13 +45,15 @@ namespace LastFM.Common
         public static Settings Settings => ApplicationConfiguration.Settings;
 
         // Helper function for initializing the application (Check that the application paths and settings exist)
-        public static void InitializeApplication()
+        public static List<Exception> InitializeApplication()
         {
             // Check that the necessary application paths exist
-            PathHelper.CheckPaths(UserSettingsPath, UserCachePath, UserDownloadsPath, UserLogPath);
+            List<Exception> pathExceptions = PathHelper.CheckPaths(UserSettingsPath, UserCachePath, UserDownloadsPath, UserLogPath);
 
             // Initialize the settings sub-system
             ApplicationConfiguration.Initialize();
+
+            return pathExceptions;
         }
 
         // Helper function for saving changes to the setting file

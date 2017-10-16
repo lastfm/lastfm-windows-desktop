@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ITunesScrobblePlugin;
@@ -113,9 +114,14 @@ namespace DesktopScrobbler
                 // start communicating with Windows Media Player
                 _playerForm.Show();
             }
-            catch (Exception exception)
+            catch (COMException cEx)
             {
-                Console.WriteLine(exception);
+                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"(Expected) COM Exception raised: {cEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"Unexpected Exception raised: {ex.Message}");
             }
 
             _playerForm.Hide();
@@ -290,7 +296,15 @@ namespace DesktopScrobbler
                 SetStatus(LocalizationStrings.NotificationThread_Status_StartingUp);
 
                 // Initialize the application
-                Core.InitializeApplication();
+                List<Exception> pathExceptions = Core.InitializeApplication();
+
+                if (pathExceptions != null && pathExceptions.Any())
+                {
+                    foreach(Exception ex in pathExceptions)
+                    {
+                        Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"Unexpected Exception during application start: {ex.Message}");
+                    }
+                }
 
                 // Hide this user interface 
                 if (Core.Settings.StartMinimized)
@@ -550,6 +564,8 @@ namespace DesktopScrobbler
             }
             catch (Exception ex)
             {
+                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"Unexpected Exception raised displaying current user: {ex.Message}");
+
                 // There was probably a problem communicating with the Last.fm API, most likely because there was no connection
                 RefreshOnlineStatus(OnlineState.Offline);
                 SetStatus(LocalizationStrings.ScrobblerUi_Status_ConnectionToLastfmNotAvailable);

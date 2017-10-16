@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Last.fm Transitions Module")]
-[assembly: AssemblyDescription("Last.fm Transitions Module")]
+[assembly: AssemblyTitle("Logger")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Last.fm")]
-[assembly: AssemblyProduct("Last.fm Desktop Scrobbler")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Logger")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("419d7efe-7b63-4286-8730-546f530ec91a")]
+[assembly: Guid("8d19eb24-fe74-4dc4-9c3c-1a454a3eea82")]
 
 // Version information for an assembly consists of the following four values:
 //

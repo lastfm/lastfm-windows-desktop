@@ -50,6 +50,9 @@ namespace DesktopScrobbler
         // Tracking if the application was allowed to start
         private bool _applicationStartupDenied = false;
 
+        // Path and name of the logging file
+        private string _logPathAndFilename = $"{Core.UserLogPath}Debugging_Log.txt";
+
         // Constructor for the user interface
         public ScrobblerUi()
         {
@@ -314,7 +317,7 @@ namespace DesktopScrobbler
             await ConnectToLastFM(afterLogOut).ConfigureAwait(false);
 
             // Initialize the Scrobbling handler (only gets here when the client is authorized)
-            await ScrobbleFactory.Initialize(base.APIClient, this).ConfigureAwait(false);
+            await ScrobbleFactory.Initialize(base.APIClient, this, _logPathAndFilename).ConfigureAwait(false);
 
             // Make sure we have a default status available for all the loaded plugins
             ApplicationConfiguration.CheckPluginDefaultStatus();
@@ -395,7 +398,7 @@ namespace DesktopScrobbler
             if (!afterLogout)
             {
                 // Create a new instance of the Last.fm API client
-                base.APIClient = new LastFMClient(APIDetails.EndPointUrl, APIDetails.Key, APIDetails.SharedSecret);
+                base.APIClient = new LastFMClient(APIDetails.EndPointUrl, APIDetails.Key, APIDetails.SharedSecret, _logPathAndFilename);
             }
 
             // If the user hasn't authorised the application

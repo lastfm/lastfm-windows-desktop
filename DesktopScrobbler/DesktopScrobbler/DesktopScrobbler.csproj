@@ -130,6 +130,10 @@
       <Project>{9056d2cc-a14e-42bf-84b9-8f357a1b8b8e}</Project>
       <Name>LastFMApiClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{8d19eb24-fe74-4dc4-9c3c-1a454a3eea82}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PluginSupport\PluginSupport.csproj">
       <Project>{119a1e78-2110-48b3-a76b-f419a288d8b5}</Project>
       <Name>PluginSupport</Name>

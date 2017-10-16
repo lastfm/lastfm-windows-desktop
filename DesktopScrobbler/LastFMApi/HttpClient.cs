@@ -15,6 +15,9 @@ namespace LastFM.ApiClient
     // from JSON converted models
     public class HttpClient
     {
+
+        private string _logFilePath = string.Empty;
+
         // The type of the request being made
         public enum HttpRequestType
         {
@@ -33,6 +36,12 @@ namespace LastFM.ApiClient
         private const string _userAgentString = "Last.fm Desktop Scrobbler v";
 
         public ResponseError LastErrorResponse { get; set; }
+
+        // Default constructor, modified so that we can support request / response logging
+        public HttpClient(string logFilePath)
+        {
+            _logFilePath = logFilePath;
+        }
 
         // A helper function to automatically determine the version number of the application using the API client
         public string GetApplicationVersionNumber()
@@ -145,6 +154,10 @@ namespace LastFM.ApiClient
                     responseString = HttpResponsePreProcessing(responseString);
                 }
 
+                // Log the response
+                Logger.FileLogger.Write(_logFilePath, "API Client Response", $"Response received was: {responseMessage}");
+                Logger.FileLogger.Write(_logFilePath, "API Client Response", $"Response content was: {responseString}");
+
                 // If the response was in the 'success' state (or for Windows IIS, the response was found)
                 if (responseMessage.IsSuccessStatusCode || responseMessage.StatusCode == HttpStatusCode.Found)
                 {
@@ -220,6 +233,10 @@ namespace LastFM.ApiClient
                     responseString = HttpResponsePreProcessing(responseString);
                 }
 
+                // Log the request
+                Logger.FileLogger.Write(_logFilePath, "API Client Response", $"Response received was: {responseMessage}");
+                Logger.FileLogger.Write(_logFilePath, "API Client Response", $"Response content was: {responseString}");
+
                 // If the response was in the 'success' state (or for Windows IIS, the response was found)
                 if (responseMessage.IsSuccessStatusCode || responseMessage.StatusCode == HttpStatusCode.Found)
                 {
@@ -256,6 +273,8 @@ namespace LastFM.ApiClient
                 string requestUrl = $"{requestPath}?method={method}";                
                 string queryString = GetQueryString(requestParameters);
 
+                Logger.FileLogger.Write(_logFilePath, "API Client Request", $"Performing {Enum.GetName(typeof(HttpRequestType), requestType)} API Request to Url: {requestPath}, Method: {method}, Parameters: {queryString}");
+
                 // Perform the request and get the result in the form of the object type we need
                 instance = await PerformRequest<T>(requestType, requestUrl, queryString).ConfigureAwait(false);
             }
@@ -275,6 +294,8 @@ namespace LastFM.ApiClient
             {
                 // Validate the Url
                 requestPath = ValidateURLPath(requestPath);
+
+                Logger.FileLogger.Write(_logFilePath, "API Client Request", $"Performing {Enum.GetName(typeof(HttpRequestType), requestType)} API Request to Url: {requestPath}, Method: {method}");
 
                 // Perform the request and get the result in the form of the object type we need
                 instance = await PerformRequest<T>(requestType, requestPath, null, bodyContent).ConfigureAwait(false);

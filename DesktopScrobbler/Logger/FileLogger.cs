@@ -9,16 +9,23 @@ namespace Logger
 {
     public class FileLogger
     {
+        private static object _fileLock = new object();
+
         public static void Write(string pathAndFileName, string functionalArea, params string[] linesToWrite)
         {
             System.IO.StreamWriter logFile = null;
 
             try
             {
-                using (logFile = new System.IO.StreamWriter(pathAndFileName, true))
+                lock (_fileLock)
                 {
-                    string joinedLines = string.Join(Environment.NewLine, linesToWrite);
-                    logFile.Write($"{DateTime.Now.ToString(CultureInfo.InvariantCulture)}\t{functionalArea}\t{joinedLines}\r\n");
+                    using (logFile = new System.IO.StreamWriter(pathAndFileName, true))
+                    {
+                        string joinedLines = string.Join(Environment.NewLine, linesToWrite);
+                        logFile.Write($"{DateTime.Now.ToUniversalTime().ToString(CultureInfo.InvariantCulture)}\t{functionalArea}\t{joinedLines}\r\n");
+                        logFile.Close();
+                        logFile.Dispose();
+                    }
                 }
             }
             catch (Exception e)

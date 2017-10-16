@@ -278,6 +278,8 @@ namespace LastFM.Common.Factories
                         }
                         catch (Exception ex)
                         {
+                            Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send scrobbles to Last.fm due to an error: {ex.Message}");
+
                             // The API wasn't available.  Cache the media so we can try again.
                             CacheOfflineItems(sourceMedia);
 

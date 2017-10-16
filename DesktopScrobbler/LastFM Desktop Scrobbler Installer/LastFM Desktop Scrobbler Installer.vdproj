@@ -40,13 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_1D7810F48A539080AC5E494BBD9AB5FC"
-        "OwnerKey" = "8:_208E306BE18B47A18199C40D56CD02A2"
+        "OwnerKey" = "8:_129BC8B9429E65380E7A8E3F6B111AA5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1D7810F48A539080AC5E494BBD9AB5FC"
-        "OwnerKey" = "8:_129BC8B9429E65380E7A8E3F6B111AA5"
+        "OwnerKey" = "8:_208E306BE18B47A18199C40D56CD02A2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -160,37 +160,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0072D76A3B7FD22D6A192C36D4CF4279"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C493B36BC7881F9EE05B2879B0F536F3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_129BC8B9429E65380E7A8E3F6B111AA5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_73BB629C9B13D1B299A703CAC65B8552"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1D7810F48A539080AC5E494BBD9AB5FC"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_754FB4A0A745F4B8671269E45F3C3076"
+        "OwnerKey" = "8:_D4A2ECD38EF72B2C780EBA89EB3B0123"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -202,7 +172,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D4A2ECD38EF72B2C780EBA89EB3B0123"
+        "OwnerKey" = "8:_754FB4A0A745F4B8671269E45F3C3076"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_1D7810F48A539080AC5E494BBD9AB5FC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_73BB629C9B13D1B299A703CAC65B8552"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_129BC8B9429E65380E7A8E3F6B111AA5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C493B36BC7881F9EE05B2879B0F536F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0072D76A3B7FD22D6A192C36D4CF4279"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -335,11 +335,6 @@
             "AssemblyAsmDisplayName" = "8:PluginSupport, Version=3.1.23.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_0072D76A3B7FD22D6A192C36D4CF4279"
-                    {
-                    "Name" = "8:PluginSupport.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:PluginSupport.dll"
             "TargetName" = "8:"
@@ -366,11 +361,6 @@
             "AssemblyAsmDisplayName" = "8:LastFM.ApiClient, Version=3.1.23.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_129BC8B9429E65380E7A8E3F6B111AA5"
-                    {
-                    "Name" = "8:LastFM.ApiClient.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:LastFM.ApiClient.dll"
             "TargetName" = "8:"
@@ -397,11 +387,6 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_1D7810F48A539080AC5E494BBD9AB5FC"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -508,11 +493,6 @@
             "AssemblyAsmDisplayName" = "8:Transitions, Version=3.1.23.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_73BB629C9B13D1B299A703CAC65B8552"
-                    {
-                    "Name" = "8:Transitions.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Transitions.dll"
             "TargetName" = "8:"
@@ -559,11 +539,6 @@
             "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_754FB4A0A745F4B8671269E45F3C3076"
-                    {
-                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:ICSharpCode.SharpZipLib.dll"
             "TargetName" = "8:"
@@ -590,11 +565,6 @@
             "AssemblyAsmDisplayName" = "8:HtmlAgilityPack, Version=1.5.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_78B256C395BB5B5B4876A998D9944FAE"
-                    {
-                    "Name" = "8:HtmlAgilityPack.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:HtmlAgilityPack.dll"
             "TargetName" = "8:"
@@ -621,11 +591,6 @@
             "AssemblyAsmDisplayName" = "8:LastFM.Common, Version=3.1.23.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C493B36BC7881F9EE05B2879B0F536F3"
-                    {
-                    "Name" = "8:LastFM.Common.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:LastFM.Common.dll"
             "TargetName" = "8:"
@@ -652,11 +617,6 @@
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_D4A2ECD38EF72B2C780EBA89EB3B0123"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
@@ -794,15 +754,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Last.fm Desktop Scrobbler"
-        "ProductCode" = "8:{524B4129-251D-4597-9BB7-7560AF5DF0A5}"
-        "PackageCode" = "8:{42250F1D-38EC-4059-BE0E-2D46F10330EF}"
+        "ProductCode" = "8:{6A9D1358-561A-461C-B014-D33697CCFA44}"
+        "PackageCode" = "8:{9DE9131C-F9FB-46F5-BD83-44C7C402A54E}"
         "UpgradeCode" = "8:{D14A04F6-3BC6-4062-83AD-BB3EB3A46138}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.1.24"
+        "ProductVersion" = "8:3.1.25"
         "Manufacturer" = "8:Last.fm"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

@@ -152,7 +152,7 @@ namespace LastFM.Common.Factories
             catch (Exception ex)
             {
                 // No connection available...
-                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send new track playing status to Last.fm due to an error: {ex.Message}");
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send new track playing status to Last.fm due to an error: {ex}");
             }
 
             var loveStatus = await GetLoveStatus(mediaItem).ConfigureAwait(false);
@@ -175,7 +175,7 @@ namespace LastFM.Common.Factories
             }
             catch (Exception ex)
             {
-                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to get love status from Last.fm due to an error: {ex.Message}");
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to get love status from Last.fm due to an error: {ex}");
             }
 
             return responseObject;
@@ -194,7 +194,7 @@ namespace LastFM.Common.Factories
             }
             catch (Exception ex)
             {
-                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send track playing removal status to Last.fm due to an error: {ex.Message}");
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send track playing removal status to Last.fm due to an error: {ex}");
             }
 
             // Notify the user interface monitoring has stopped
@@ -278,7 +278,7 @@ namespace LastFM.Common.Factories
                         }
                         catch (Exception ex)
                         {
-                            Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send scrobbles to Last.fm due to an error: {ex.Message}");
+                            Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to send scrobbles to Last.fm due to an error: {ex}");
 
                             // The API wasn't available.  Cache the media so we can try again.
                             CacheOfflineItems(sourceMedia);
@@ -465,7 +465,7 @@ namespace LastFM.Common.Factories
                     }
                     catch (Exception ex)
                     {
-                        Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to write cache data due to an error: {ex.Message}");
+                        Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to write cache data due to an error: {ex}");
                     }
                 }
             }
@@ -489,7 +489,7 @@ namespace LastFM.Common.Factories
                 }
                 catch (Exception ex)
                 {
-                    Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to write cache data due to an error: {ex.Message}");
+                    Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to write cache data due to an error: {ex}");
                 }
             }
         }
@@ -509,7 +509,7 @@ namespace LastFM.Common.Factories
             }
             catch (Exception ex)
             {
-                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to check online status due to an error: {ex.Message}");
+                Logger.FileLogger.Write(_logFilePathAndFilename, "Scrobble Tracking", $"Failed to check online status due to an error: {ex}");
             }
 
             OnlineStatusUpdated?.BeginInvoke((canScrobble) ? OnlineState.Online : OnlineState.Offline, currentUser, null, null);

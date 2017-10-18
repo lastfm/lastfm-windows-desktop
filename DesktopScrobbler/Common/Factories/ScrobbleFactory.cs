@@ -287,11 +287,6 @@ namespace LastFM.Common.Factories
                             ShowScrobbleResult(sourceMedia);
                         }
                     }
-                    else
-                    {
-                        // The API wasn't available.  Cache the media so we can try again.
-                        CacheOfflineItems(sourceMedia);
-                    }
                 }
                 else
                 {

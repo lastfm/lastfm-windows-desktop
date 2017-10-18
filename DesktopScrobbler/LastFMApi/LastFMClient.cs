@@ -278,20 +278,24 @@ namespace LastFM.ApiClient
             // Iterate each of the media items
             foreach (MediaItem mediaItem in mediaItems)
             {
-                // Adds the basic details of the media as an array
-                baseParameters.Add($"artist[{mediaItemCount}]", mediaItem.ArtistName);
-                baseParameters.Add($"album[{mediaItemCount}]", mediaItem.AlbumName);
-
-                if (!string.IsNullOrEmpty(mediaItem.AlbumArtist))
+                // De-serialization for some reason causes a null entry to be injected
+                if (mediaItem != null)
                 {
-                    baseParameters.Add($"albumArtist[{mediaItemCount}]", mediaItem.AlbumArtist);
+                    // Adds the basic details of the media as an array
+                    baseParameters.Add($"artist[{mediaItemCount}]", mediaItem.ArtistName);
+                    baseParameters.Add($"album[{mediaItemCount}]", mediaItem.AlbumName);
+
+                    if (!string.IsNullOrEmpty(mediaItem.AlbumArtist))
+                    {
+                        baseParameters.Add($"albumArtist[{mediaItemCount}]", mediaItem.AlbumArtist);
+                    }
+
+                    baseParameters.Add($"track[{mediaItemCount}]", mediaItem.TrackName);
+                    baseParameters.Add($"duration[{mediaItemCount}]", mediaItem.TrackLength.ToString());
+                    baseParameters.Add($"timestamp[{mediaItemCount}]", UnixTimeStampHelper.GetUnixTimeStampFromDateTime(mediaItem.StartedPlaying).ToString("#0"));
+
+                    ++mediaItemCount;
                 }
-
-                baseParameters.Add($"track[{mediaItemCount}]", mediaItem.TrackName);
-                baseParameters.Add($"duration[{mediaItemCount}]", mediaItem.TrackLength.ToString());
-                baseParameters.Add($"timestamp[{mediaItemCount}]", UnixTimeStampHelper.GetUnixTimeStampFromDateTime(mediaItem.StartedPlaying).ToString("#0"));
-
-                ++mediaItemCount;
             }
 
             // Add the required authentication parameters

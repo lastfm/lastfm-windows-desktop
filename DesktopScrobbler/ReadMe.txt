@@ -144,3 +144,6 @@ Notes on Building a Production Version
    NEVER COMMIT THE API DETAILS, OBVIOUSLY ;)
 6. You need to upload both the .msi (for the downloads page) and a zip containing the .msi AND setup.exe, for the updates page.
 
+Other Notes
+===========
+Silent installation test command line: "LastFM Desktop Scrobbler Installer.msi" /quiet /qn /log install.log LAUNCHAPP=1

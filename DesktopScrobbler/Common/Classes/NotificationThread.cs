@@ -606,13 +606,18 @@ namespace LastFM.Common.Classes
                     stripUpdateProgress.Text = LocalizationStrings.NotificationThread_Status_ReadyToInstall;
 
                     mnuNewVersion.Text = string.Format(LocalizationStrings.NotificationThread_TrayMenu_InstallNewVersion, downloadedVersionInfo.Version);
-                    mnuNewVersion.Enabled = true;
-                    mnuNewVersion.Click += InstallUpdate;
-                    stripNewVersion.Click += InstallUpdate;
-                    stripUpdateProgress.Click += InstallUpdate;
 
-                    stripUpdateProgress.MouseEnter += Common_MouseEnter;
-                    stripUpdateProgress.MouseLeave += Common_MouseLeave;
+                    InstallUpdate(null, null);
+
+                    // Code below deprecated in favour of kicking off the install as soon as the download is done.
+
+                    //mnuNewVersion.Enabled = true;
+                    //mnuNewVersion.Click += InstallUpdate;
+                    //stripNewVersion.Click += InstallUpdate;
+                    //stripUpdateProgress.Click += InstallUpdate;
+
+                    //stripUpdateProgress.MouseEnter += Common_MouseEnter;
+                    //stripUpdateProgress.MouseLeave += Common_MouseLeave;
 
                 }
             }

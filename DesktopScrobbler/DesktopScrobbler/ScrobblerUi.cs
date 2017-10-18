@@ -116,12 +116,12 @@ namespace DesktopScrobbler
             }
             catch (COMException cEx)
             {
-                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"(Expected) COM Exception raised: {cEx.Message}");
+                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"(Expected) COM Exception raised: {cEx}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"Unexpected Exception raised: {ex.Message}");
+                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"Unexpected Exception raised: {ex}");
             }
 
             _playerForm.Hide();
@@ -564,7 +564,7 @@ namespace DesktopScrobbler
             }
             catch (Exception ex)
             {
-                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"Unexpected Exception raised displaying current user: {ex.Message}");
+                Logger.FileLogger.Write(_logPathAndFilename, "Scrobble Ui", $"Unexpected Exception raised displaying current user: {ex.ToString()}");
 
                 // There was probably a problem communicating with the Last.fm API, most likely because there was no connection
                 RefreshOnlineStatus(OnlineState.Offline);

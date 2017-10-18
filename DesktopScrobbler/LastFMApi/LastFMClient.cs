@@ -126,7 +126,7 @@ namespace LastFM.ApiClient
             }
             catch (Exception ex)
             {
-                Logger.FileLogger.Write(_logfilePathAndName, "API Client Request", $"Failed to authenticate due to an error: {ex.Message}");
+                Logger.FileLogger.Write(_logfilePathAndName, "API Client Request", $"Failed to authenticate due to an error: {ex}");
                 Console.WriteLine(ex);
             }
 
@@ -379,10 +379,11 @@ namespace LastFM.ApiClient
                 // Persist the current session token
                 _sessionToken = userSession?.SessionToken;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 _sessionToken = null;
-                Console.WriteLine(e);
+                Console.WriteLine(ex);
+                Logger.FileLogger.Write(_logfilePathAndName, "API Client Request", $"Failed to retrieve a session token due to an error: {ex}");
             }
 
             return _sessionToken;

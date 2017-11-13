@@ -40,13 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_1D7810F48A539080AC5E494BBD9AB5FC"
-        "OwnerKey" = "8:_208E306BE18B47A18199C40D56CD02A2"
+        "OwnerKey" = "8:_129BC8B9429E65380E7A8E3F6B111AA5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1D7810F48A539080AC5E494BBD9AB5FC"
-        "OwnerKey" = "8:_129BC8B9429E65380E7A8E3F6B111AA5"
+        "OwnerKey" = "8:_208E306BE18B47A18199C40D56CD02A2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -160,37 +160,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0072D76A3B7FD22D6A192C36D4CF4279"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C493B36BC7881F9EE05B2879B0F536F3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_129BC8B9429E65380E7A8E3F6B111AA5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_73BB629C9B13D1B299A703CAC65B8552"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1D7810F48A539080AC5E494BBD9AB5FC"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_754FB4A0A745F4B8671269E45F3C3076"
+        "OwnerKey" = "8:_D4A2ECD38EF72B2C780EBA89EB3B0123"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -202,7 +172,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D4A2ECD38EF72B2C780EBA89EB3B0123"
+        "OwnerKey" = "8:_754FB4A0A745F4B8671269E45F3C3076"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_1D7810F48A539080AC5E494BBD9AB5FC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_73BB629C9B13D1B299A703CAC65B8552"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_129BC8B9429E65380E7A8E3F6B111AA5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C493B36BC7881F9EE05B2879B0F536F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0072D76A3B7FD22D6A192C36D4CF4279"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -754,15 +754,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Last.fm Desktop Scrobbler"
-        "ProductCode" = "8:{5C428842-EE01-414D-AC42-56DEFF454404}"
-        "PackageCode" = "8:{BCBF2822-9A37-4361-8AAA-134061D5577B}"
+        "ProductCode" = "8:{EEF2F789-893F-47B8-A817-81066D427FD1}"
+        "PackageCode" = "8:{317FF955-5651-434D-A527-CC91206B2521}"
         "UpgradeCode" = "8:{D14A04F6-3BC6-4062-83AD-BB3EB3A46138}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.1.27"
+        "ProductVersion" = "8:3.1.28"
         "Manufacturer" = "8:Last.fm"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

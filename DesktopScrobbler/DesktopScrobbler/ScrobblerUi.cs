@@ -355,6 +355,8 @@ namespace DesktopScrobbler
         {
             base.CurrentUser = latestUserInfo;
             RefreshOnlineStatus(currentState);
+
+            CheckLastResponseError();
         }
 
         // Method used to get the available external plugins
@@ -520,47 +522,7 @@ namespace DesktopScrobbler
             }
             catch (ResponseException rEx)
             {
-                ResponseError lastError = base.APIClient?.LastErrorResponse;
-
-                if (lastError != null)
-                {
-                    if (lastError.Error == ReasonCodes.ErrorCode.InvalidAPIKey || lastError.Error == ReasonCodes.ErrorCode.SuspendedAPI)
-                    {
-                        // Cross-thread invokation circumvention
-                        this.Invoke(new MethodInvoker(() =>
-                        {
-                            // Don't perform post start-up operations
-                            _applicationStartupDenied = true;
-
-                            // Remove the tray icon, which by now is available
-                            base.HideTrayIcon();
-
-                            // Display the application in the taskbar so that the user is aware that something might be up
-                            this.ShowInTaskbar = true;
-
-                            // Show a message box telling the user of imending doom
-                            MessageBox.Show(LocalizationStrings.ScrobberlUi_ApplicationDisabledByLastFm, Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                            // Quit the application gracefully
-                            ExitApplication();
-                        }));
-                    }
-                    else if (lastError.Error == ReasonCodes.ErrorCode.InvalidSessionKey)
-                    {
-                        // Cross-thread invokation circumvention
-                        this.Invoke(new MethodInvoker(() =>
-                        {
-                            // Clear the current user session details
-                            ResetUserSessionStateToDefault();
-
-                            // Refresh the user interface to reflect the current logged in state
-                            RefreshOnlineStatus(OnlineState.Offline);
-
-                            // Run the authentication loop again (in case they want to switch users)
-                            Startup(true);
-                        }));
-                    }
-                }
+                CheckLastResponseError();
             }
             catch (Exception ex)
             {
@@ -580,6 +542,51 @@ namespace DesktopScrobbler
                 if (!base.IsApplicationClosing)
                 {
                     ShowIdleStatus();
+                }
+            }
+        }
+
+        private void CheckLastResponseError()
+        {
+            ResponseError lastError = base.APIClient?.LastErrorResponse;
+
+            if (lastError != null)
+            {
+                if (lastError.Error == ReasonCodes.ErrorCode.InvalidAPIKey || lastError.Error == ReasonCodes.ErrorCode.SuspendedAPI)
+                {
+                    // Cross-thread invokation circumvention
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        // Don't perform post start-up operations
+                        _applicationStartupDenied = true;
+
+                        // Remove the tray icon, which by now is available
+                        base.HideTrayIcon();
+
+                        // Display the application in the taskbar so that the user is aware that something might be up
+                        this.ShowInTaskbar = true;
+
+                        // Show a message box telling the user of imending doom
+                        MessageBox.Show(LocalizationStrings.ScrobberlUi_ApplicationDisabledByLastFm, Core.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        // Quit the application gracefully
+                        ExitApplication();
+                    }));
+                }
+                else if (lastError.Error == ReasonCodes.ErrorCode.InvalidSessionKey)
+                {
+                    // Cross-thread invokation circumvention
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        // Clear the current user session details
+                        ResetUserSessionStateToDefault();
+
+                        // Refresh the user interface to reflect the current logged in state
+                        RefreshOnlineStatus(OnlineState.Offline);
+
+                        // Run the authentication loop again (in case they want to switch users)
+                        Startup(true);
+                    }));
                 }
             }
         }

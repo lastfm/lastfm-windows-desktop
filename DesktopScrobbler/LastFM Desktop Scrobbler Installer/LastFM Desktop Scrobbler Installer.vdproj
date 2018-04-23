@@ -778,7 +778,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:cscript.exe \"$(ProjectDir)EnableLaunchApplication.js\" \"$(BuiltOuputPath)\"\r\n\"C:\\Microsoft SDKs\\ClickOnce\\SignTool\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d \"Last.fm Desktop Scrobbler\" \"$(BuiltOuputPath)\"\r\n\"C:\\Microsoft SDKs\\ClickOnce\\SignTool\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d \"Last.fm Desktop Scrobbler\" \"$(ProjectDir)\\$(Configuration)\\setup.exe\""
+        "PostBuildEvent" = "8:cscript.exe \"$(ProjectDir)EnableLaunchApplication.js\" \"$(BuiltOuputPath)\"\r\n\"C:\\Program Files (x86)\\Microsoft SDKs\\ClickOnce\\SignTool\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d \"Last.fm Desktop Scrobbler\" \"$(BuiltOuputPath)\"\r\n\"C:\\Program Files (x86)\Microsoft SDKs\\ClickOnce\\SignTool\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d \"Last.fm Desktop Scrobbler\" \"$(ProjectDir)\\$(Configuration)\\setup.exe\""
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"

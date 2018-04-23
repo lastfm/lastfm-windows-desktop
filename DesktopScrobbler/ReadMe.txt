@@ -126,10 +126,10 @@ In order to enable code signing, you will need to have a code signing cert insta
 Easiest way to build is to check out the codesigning branch, and rebase it onto master. (The following changes are already applied in that branch.)
 
 Add the following post-build event to every project in the solution (except the installer):
-  "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(TargetPath)"
+  "C:\Microsoft SDKs\ClickOnce\SignTool\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 "$(TargetPath)"
 
 Add the following post-build event to the installer in addition to the post-build event already there:
-  "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d "Last.fm Desktop Scrobbler" "$(BuiltOutputPath)"
+  "C:\Microsoft SDKs\ClickOnce\SignTool\signtool.exe" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d "Last.fm Desktop Scrobbler" "$(BuiltOutputPath)"
 
 
 Notes on Building a Production Version

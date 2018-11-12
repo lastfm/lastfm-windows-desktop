@@ -754,15 +754,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Last.fm Desktop Scrobbler"
-        "ProductCode" = "8:{EEF2F789-893F-47B8-A817-81066D427FD1}"
-        "PackageCode" = "8:{317FF955-5651-434D-A527-CC91206B2521}"
+        "ProductCode" = "8:{B13709CB-85AE-4F45-BFF9-2CB2B7A78F83}"
+        "PackageCode" = "8:{C304D9FF-2DA3-41B5-870F-400238F882CF}"
         "UpgradeCode" = "8:{D14A04F6-3BC6-4062-83AD-BB3EB3A46138}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.1.28"
+        "ProductVersion" = "8:3.1.29"
         "Manufacturer" = "8:Last.fm"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -778,7 +778,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:cscript.exe \"$(ProjectDir)EnableLaunchApplication.js\" \"$(BuiltOuputPath)\"\r\n\"C:\\Program Files (x86)\\Microsoft SDKs\\ClickOnce\\SignTool\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d \"Last.fm Desktop Scrobbler\" \"$(BuiltOuputPath)\"\r\n\"C:\\Program Files (x86)\Microsoft SDKs\\ClickOnce\\SignTool\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d \"Last.fm Desktop Scrobbler\" \"$(ProjectDir)\\$(Configuration)\\setup.exe\""
+        "PostBuildEvent" = "8:cscript.exe \"$(ProjectDir)EnableLaunchApplication.js\" \"$(BuiltOuputPath)\"\r\n\"C:\\Program Files (x86)\\Microsoft SDKs\\ClickOnce\\SignTool\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d \"Last.fm Desktop Scrobbler\" \"$(BuiltOuputPath)\"\r\n\"C:\\Program Files (x86)icrosoft SDKs\\ClickOnce\\SignTool\\signtool.exe\" sign /sha1 948A30D066775994CFCFA49FE55D8B17458AED41 /d \"Last.fm Desktop Scrobbler\" \"$(ProjectDir)\\$(Configuration)\\setup.exe\""
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
@@ -1398,7 +1398,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_208E306BE18B47A18199C40D56CD02A2"
             {
-            "SourcePath" = "8:..\\DesktopScrobbler\\obj\\Release\\Last.fm Desktop Scrobbler.exe"
+            "SourcePath" = "8:..\\DesktopScrobbler\\obj\\Debug\\Last.fm Desktop Scrobbler.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F6F4B1A292DE4A5A8157DED231B530CC"
